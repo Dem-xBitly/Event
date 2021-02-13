@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">EventPlatform</string>
+    <string name="sign_in"> SIGN IN </string>
+    <string name="sign_up"> SIGN UP </string>
+    <string name="login_to_your_account"> Log in to your account </string>
+    <string name="username"> username </string>
+    <string name="profile_number"> phone number </string>
+    <string name="password"> password </string>
+    <string name="male"> MALE </string>
+    <string name="female"> FEMALE </string>
+    <string name="ill_go"> I will go! </string>
+    <string name="profile"> Profile </string>
+    <string name="theme"> Dark Theme </string>
+    <string name="lang"> Language </string>
+    <string name="text_size"> Text Size </string>
+    <string name="donate"> Donate </string>
+    <string name="delete_account"> Delete Account </string>
+    <string name="apply"> Apply </string>
+    <string name="create_event"> CREATE EVENT </string>
+    <string name="max_amount"> mac amount </string>
+    <string name="find"> find </string>
+
 </resources>
