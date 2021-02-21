@@ -4,7 +4,7 @@
     <string name="sign_up"> SIGN UP </string>
     <string name="login_to_your_account"> Log in to your account </string>
     <string name="username"> username </string>
-    <string name="profile_number"> phone number </string>
+    <string name="email"> email </string>
     <string name="password"> password </string>
     <string name="male"> MALE </string>
     <string name="female"> FEMALE </string>
@@ -19,5 +19,12 @@
     <string name="create_event"> CREATE EVENT </string>
     <string name="max_amount"> mac amount </string>
     <string name="find"> find </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">News</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_messenger">Messenger</string>
+    <string name="title_activity_main2">MainActivity</string>
 
 </resources>
