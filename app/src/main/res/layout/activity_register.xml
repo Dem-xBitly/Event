@@ -28,86 +28,104 @@
         android:layout_marginTop="36dp"
         />
 
-    <EditText
-        android:id="@+id/username_sign_up"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="300dp"
-        android:minHeight="50dp"
-        android:hint="@string/username"
-        android:paddingLeft="10dp"
-        android:background="@drawable/edit_txt_shape"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/sign_up_txt"
-        android:layout_marginTop="120dp"
-        android:inputType="textPersonName"/>
+        android:layout_margin="30dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <EditText
+            android:id="@+id/username_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:hint="@string/username"
+            android:paddingStart="20dp"
+            android:textColorHint="@color/hints_color"
+            android:background="@drawable/edit_txt_shape"
+            android:inputType="textPersonName"/>
 
         <EditText
             android:id="@+id/email_edit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minWidth="300dp"
             android:minHeight="50dp"
             android:hint="@string/email"
-            android:paddingLeft="10dp"
+            android:textColorHint="@color/hints_color"
+            android:paddingStart="20dp"
             android:background="@drawable/edit_txt_shape"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/username_sign_up"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:inputType="textEmailAddress"/>
 
-    <EditText
-        android:id="@+id/password_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="300dp"
-        android:minHeight="50dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:background="@drawable/edit_txt_shape"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/email_edit"
-        android:layout_marginTop="40dp"/>
-
-    <LinearLayout
-        android:id="@+id/male_linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="300dp"
-        android:minHeight="50dp"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/password_sign_up"
-        android:layout_marginTop="40dp"
-        >
-        <CheckBox
-            android:id="@+id/male_check_register"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/password_sign_up"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MALE"
-            android:textSize="25sp"/>
+            android:minHeight="50dp"
+            android:hint="@string/password"
+            android:textColorHint="@color/hints_color"
+            android:inputType="textPassword"
+            android:paddingStart="20dp"
+            android:background="@drawable/edit_txt_shape"
+            android:layout_marginTop="20dp"/>
 
-        <CheckBox
-            android:id='@+id/female_check_register'
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/male_linear"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="FEMALE"
-            android:textSize="25sp"
-            android:layout_marginLeft="40dp"/>
+            android:minHeight="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <CheckBox
+                android:id="@+id/male_check_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/male"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id='@+id/female_check_register'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/female"
+                android:textSize="18sp"
+                android:layout_marginStart="40dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/sign_up_btn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/male_linear"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="85dp"
-        android:background="@drawable/sign_up_btn"
-        android:text="SIGN UP"
-        android:textColor="#fff"/>
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/sign_in_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/sign_up_btn"
+            android:text="@string/sign_up"
+            android:textSize="18sp"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/terms_of_service_and_privacy_policy"
+            android:textSize="16sp"
+            android:layout_marginTop="60dp"/>
+    </LinearLayout>
 
 
 </RelativeLayout>
