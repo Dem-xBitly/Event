@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/create_event_dialog_shape">
+
+    <TextView
+        android:id="@+id/create_event_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE EVENT"
+        android:textSize="25sp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/create_event_public"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PUBLIC"
+        android:background="@drawable/sign_in_btn"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:layout_below="@+id/create_event_txt"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/create_event_private"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRIVATE"
+        android:textColor="#fff"
+        android:background="@drawable/sign_up_btn"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:layout_below="@+id/create_event_txt"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@id/create_event_public"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+</RelativeLayout>

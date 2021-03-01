@@ -14,4 +14,14 @@
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">#606EED</item>
+        <item name="android:colorControlNormal">#606EED</item>
+        <item name="android:colorControlHighlight">#606EED</item>
+    </style>
+
+    <style name="mySpinnerItemStyle" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:textColor">#fff</item>
+    </style>
 </resources>

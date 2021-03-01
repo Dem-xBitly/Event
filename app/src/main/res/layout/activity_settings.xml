@@ -1,9 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    android:background="#fff">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/back_from_settings_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:background="@drawable/back_btn_background"
+        android:padding="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/settings_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SETTINGS"
+        android:textColor="#000"
+        android:textSize="26sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/profile_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/settings_txt"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/items_settings_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+
+        <ImageButton
+            android:id="@+id/to_profile_settings_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_navigate_next_24"
+            android:background="#f7f7f7"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="230dp"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/theme_liner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/profile_linear"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/items_settings_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/theme"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+
+        <Switch
+            android:id="@+id/theme_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#f7f7f7"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginLeft="170dp"
+            android:theme="@style/SwitchTheme"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lang_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/theme_liner"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/items_settings_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lang"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/languages"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="150dp"
+            android:background="#606EED"
+            android:layout_marginRight="10dp"
+            />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/text_size_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lang_linear"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/items_settings_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_size"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/textSizes"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="178dp"
+            android:layout_marginRight="10dp"
+            android:background="#606EED"
+            />
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>
