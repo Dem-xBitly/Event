@@ -110,7 +110,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/sign_in_btn"
+            android:id="@+id/sign_up_btn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/sign_up_btn"
