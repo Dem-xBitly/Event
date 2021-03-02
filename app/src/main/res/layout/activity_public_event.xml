@@ -29,25 +29,30 @@
 
     <EditText
         android:id="@+id/event_name_public"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="300dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:minHeight="50dp"
         android:hint="@string/name"
-        android:paddingLeft="10dp"
+        android:textColorHint="@color/hints_color"
+        android:paddingStart="20dp"
         android:background="@drawable/edit_txt_shape"
         android:layout_centerInParent="true"
         android:inputType="textPersonName"/>
 
     <Button
         android:id="@+id/next_btn_from_public_event_btn"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/event_name_public"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
+        android:layout_marginBottom="110dp"
         android:background="@drawable/sign_up_btn"
-        android:text="NEXT"
-        android:textColor="#fff"/>
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>
