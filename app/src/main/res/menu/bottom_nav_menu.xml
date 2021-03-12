@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_news_icon"
-        android:title="@string/title_home" />
+        android:title="@string/title_home"
+        app:labelVisibilityMode="unlabeled"/>
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_map_icon"
-        android:title="@string/title_dashboard" />
+        android:icon="@drawable/ic_map_icon_blew"
+        android:title="@string/title_dashboard"
+        app:labelVisibilityMode="unlabeled"/>
 
     <item
         android:id="@+id/navigation_message"
         android:icon="@drawable/ic_messages_icon"
-        android:title="@string/title_messenger" />
+        android:title="@string/title_messenger"
+        app:labelVisibilityMode="unlabeled"
+       />
 
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_bell_icon"
-        android:title="@string/title_notifications" />
+        android:title="@string/title_notifications"
+        app:labelVisibilityMode="unlabeled"
+        />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile_icon"
-        android:title="@string/title_profile" />
+        android:title="@string/title_profile"
+        app:labelVisibilityMode="unlabeled"/>
 
 </menu>
