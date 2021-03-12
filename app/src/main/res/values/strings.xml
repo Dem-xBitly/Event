@@ -28,6 +28,10 @@
     <string name="name">name</string>
     <string name="log_in_to_your_account">Log in to your account</string>
     <string name="terms_of_service_and_privacy_policy">Terms of Service and Privacy Policy</string>
+    <string name="publicc">PUBLIC</string>
+    <string name="privatee">PRIVATE</string>
+    <string name="next">NEXT</string>
+    <string name="profilee">PROFILE</string>
 
     <string-array name="languages">
         <item>Русский</item>
