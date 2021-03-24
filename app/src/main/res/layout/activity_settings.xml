@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:background="#fff">
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/back_from_settings_btn"
@@ -15,7 +15,7 @@
         android:src="@drawable/ic_baseline_arrow_back_24"
         android:background="@drawable/back_btn_background"
         android:padding="10dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"/>
 
     <TextView
