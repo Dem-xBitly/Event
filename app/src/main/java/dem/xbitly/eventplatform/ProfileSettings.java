@@ -70,6 +70,7 @@ public class ProfileSettings extends AppCompatActivity {
             }
         });
 
+
         apply_changes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
