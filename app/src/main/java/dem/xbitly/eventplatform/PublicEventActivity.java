@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -27,31 +28,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import dem.xbitly.eventplatform.databinding.ActivityPublicEventBinding;
+
 public class PublicEventActivity extends AppCompatActivity {
-    //объявление всех переменных
-    private Button next_btn;
-    private EditText event_name;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference ref;
-
-    private EditText event_max_amount;
 
     Calendar dateAndTime=Calendar.getInstance();
     String date_time;
 
     private HashMap <String, Integer> time;
 
+    private ActivityPublicEventBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_public_event);
-
-        //инициализация
-        next_btn = findViewById(R.id.next_btn_from_public_event_btn);
-        event_name = findViewById(R.id.event_name_public);
-        event_max_amount = findViewById(R.id.event_max_amount);
+        binding = ActivityPublicEventBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         time = new HashMap<>();
 
@@ -59,19 +56,28 @@ public class PublicEventActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("PublicEvents").child(mAuth.getCurrentUser().getUid()); //папка со всеми созданными евентами этого человека
 
-        next_btn.setOnClickListener(new View.OnClickListener() {
+
+        binding.infinityAmountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (event_name.getText().toString().isEmpty() && event_max_amount.getText().toString().isEmpty()){ //нельзя, чтобы поля пустыми были
+                binding.eventMaxAmount.setText("Infinity");
+                binding.eventMaxAmount.setEnabled(false);
+
+                time.put("max_amount", 0); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
+            }
+        });
+
+        binding.nextBtnFromPublicEventBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.eventNamePublic.getText().toString().isEmpty() && binding.eventMaxAmount.getText().toString().isEmpty()){ //нельзя, чтобы поля пустыми были
                     Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
                 }else { //если все хорошо, то создаем reference для этого мероприятия
-                    ref.child(event_name.getText().toString()).setValue("null").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    ref.child(binding.eventNamePublic.getText().toString()).setValue("null").addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
 
-                            time.put("max_amount", Integer.valueOf(event_max_amount.getText().toString()));
-                            //если все успешно записалось, то открываем диалоги для выбора даты и времени
-                            setTime();
+                            time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
                         }
                     });
 
@@ -129,7 +135,7 @@ public class PublicEventActivity extends AppCompatActivity {
             time.put("month", monthOfYear);
             time.put("year", year);
 
-            ref.child(event_name.getText().toString()).setValue(time)
+            ref.child(binding.eventNamePublic.getText().toString()).setValue(time)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -7,12 +7,17 @@ import androidx.core.content.ContextCompat;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import dem.xbitly.eventplatform.databinding.ActivityPickPlaceBinding;
+
 public class PickPlaceActivity extends AppCompatActivity {
+
+    private ActivityPickPlaceBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pick_place);
+        binding = ActivityPickPlaceBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
 //    private void getLocationPermission(){

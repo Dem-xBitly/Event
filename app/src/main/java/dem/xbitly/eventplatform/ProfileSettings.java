@@ -21,49 +21,42 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-public class ProfileSettings extends AppCompatActivity {
+import dem.xbitly.eventplatform.databinding.ActivityProfileSettingsBinding;
 
-    private ImageButton back_from_profile_settings;
-    private Button apply_changes;
-    private EditText new_username;
-    private CheckBox male_check;
-    private CheckBox female_check;
+public class ProfileSettings extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private FirebaseAuth mAuth;
 
+    private ActivityProfileSettingsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_settings);
-
-        back_from_profile_settings = findViewById(R.id.back_from_profile_settings_btn);
-        apply_changes = findViewById(R.id.apply_changes_profile_settings_btn);
-        new_username = findViewById(R.id.username_profile_settings);
-        male_check = findViewById(R.id.male_check);
-        female_check = findViewById(R.id.female_check);
+        binding = ActivityProfileSettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
 
-        male_check.setOnClickListener(new View.OnClickListener() {
+        binding.maleCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                female_check.setChecked(false);
+                binding.femaleCheck.setChecked(false);
             }
         });
 
-        female_check.setOnClickListener(new View.OnClickListener() {
+        binding.femaleCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                male_check.setChecked(false);
+                binding.maleCheck.setChecked(false);
             }
         });
 
 
-        back_from_profile_settings.setOnClickListener(new View.OnClickListener() {
+        binding.backFromProfileSettingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileSettings.this, SettingsActivity.class));
@@ -71,16 +64,16 @@ public class ProfileSettings extends AppCompatActivity {
         });
 
 
-        apply_changes.setOnClickListener(new View.OnClickListener() {
+        binding.applyChangesProfileSettingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new_username.getText().toString().isEmpty() || (!male_check.isChecked() && !female_check.isChecked())){
+                if (binding.usernameProfileSettings.getText().toString().isEmpty() || (!binding.maleCheck.isChecked() && !binding.femaleCheck.isChecked())){
                     Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    String gender = male_check.isChecked() ? "male" : "female";
+                    String gender = binding.maleCheck.isChecked() ? "male" : "female";
                     ref.child("gender").setValue(gender);
-                    ref.child("username").setValue( new_username.getText().toString());
+                    ref.child("username").setValue( binding.usernameProfileSettings.getText().toString());
                     startActivity(new Intent (ProfileSettings.this, SettingsActivity.class));
                 }
             }

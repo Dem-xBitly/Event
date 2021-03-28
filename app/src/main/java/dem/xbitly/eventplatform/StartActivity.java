@@ -7,20 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import dem.xbitly.eventplatform.databinding.ActivityStartBinding;
+
 public class StartActivity extends AppCompatActivity {
 
-    private Button to_sign_in;
-    private Button to_sign_up;
+    private ActivityStartBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        binding = ActivityStartBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        to_sign_in = findViewById(R.id.to_sign_in_btn);
-        to_sign_up = findViewById(R.id.to_sign_up_btn);
-
-        to_sign_in.setOnClickListener(new View.OnClickListener() {
+        binding.toSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in_intent = new Intent (StartActivity.this, LoginActivity.class);
@@ -28,7 +27,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        to_sign_up.setOnClickListener(new View.OnClickListener() {
+        binding.toSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent up_intent = new Intent (StartActivity.this, RegisterActivity.class);

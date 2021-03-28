@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
+
 public class PrivateEventActivity extends AppCompatActivity {
+
+    private ActivityEventPrivateBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_private);
+        binding = ActivityEventPrivateBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 }

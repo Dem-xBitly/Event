@@ -38,54 +38,42 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import dem.xbitly.eventplatform.databinding.ActivityRegisterBinding;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    private ImageButton back_to_start;
-    private Button sign_up;
-    private EditText username_edit;
-    private EditText email_edit;
-    private EditText password_edit;
     private FirebaseAuth mAuth;
 
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
-    private String value;
-
-    private CheckBox male_check;
-    private CheckBox female_check;
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-        back_to_start = findViewById(R.id.back_from_register_btn);
-        sign_up = findViewById(R.id.sign_up_btn);
-        username_edit = findViewById(R.id.username_sign_up);
-        email_edit = findViewById(R.id.email_edit);
-        password_edit = findViewById(R.id.password_sign_up);
-        male_check = findViewById(R.id.male_check_register);
-        female_check = findViewById(R.id.female_check_register);
-
         database = FirebaseDatabase.getInstance();
 
 
-        back_to_start.setOnClickListener(new View.OnClickListener() {
+        binding.backFromRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent startIntent = new Intent (RegisterActivity.this, StartActivity.class);
                 startActivity(startIntent);
             }
         });
-        sign_up.setOnClickListener(new View.OnClickListener() {
+        binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (username_edit.getText().toString().isEmpty() || email_edit.getText().toString().isEmpty() || password_edit.getText().toString().isEmpty() || (!male_check.isChecked() && !female_check.isChecked())){
+                if (binding.usernameSignUp.getText().toString().isEmpty() || binding.emailEdit.getText().toString().isEmpty() || binding.passwordSignUp.getText().toString().isEmpty() || (!binding.maleCheckRegister.isChecked() && !binding.femaleCheckRegister.isChecked())){
                     Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
                 }else {
-                    mAuth.createUserWithEmailAndPassword(email_edit.getText().toString(),  password_edit.getText().toString())
+                    mAuth.createUserWithEmailAndPassword(binding.emailEdit.getText().toString(),  binding.passwordSignUp.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -94,12 +82,12 @@ public class RegisterActivity extends AppCompatActivity {
                                         Snackbar.make(v, "User successfully created", Snackbar.LENGTH_SHORT).show();
                                         ref = database.getReference("Users");
 
-                                        String gender = male_check.isChecked() ? "male" : "female";
+                                        String gender = binding.maleCheckRegister.isChecked() ? "male" : "female";
 
                                         HashMap<String, String> userMap = new HashMap<>();
-                                        userMap.put ("username", username_edit.getText().toString());
-                                        userMap.put ("email", email_edit.getText().toString());
-                                        userMap.put ("password", password_edit.getText().toString());
+                                        userMap.put ("username", binding.usernameSignUp.getText().toString());
+                                        userMap.put ("email", binding.emailEdit.getText().toString());
+                                        userMap.put ("password", binding.passwordSignUp.getText().toString());
                                         userMap.put("gender", gender);
 
                                         ref.child(mAuth.getCurrentUser().getUid().toString()).setValue(userMap);

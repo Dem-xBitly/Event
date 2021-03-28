@@ -18,7 +18,7 @@
         android:layout_marginTop="30dp"/>
 
     <TextView
-        android:id="@+id/sign_in_txt"
+        android:id="@+id/create_public_event_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CREATE"
@@ -39,24 +39,121 @@
         android:textColorHint="@color/hints_color"
         android:paddingStart="20dp"
         android:background="@drawable/edit_txt_shape"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/create_public_event_txt"
+        android:layout_marginTop="170dp"
         android:inputType="textPersonName"/>
 
-    <EditText
-        android:id="@+id/event_max_amount"
+    <LinearLayout
+        android:id="@+id/max_amount_linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_height="50dp"
         android:minHeight="50dp"
-        android:hint="max amount"
-        android:textColorHint="@color/hints_color"
-        android:paddingStart="20dp"
-        android:background="@drawable/edit_txt_shape"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/event_name_public"
         android:layout_marginTop="20dp"
-        android:inputType="number"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <EditText
+            android:id="@+id/event_max_amount"
+            android:layout_width="282dp"
+            android:layout_height="50dp"
+            android:hint="max amount"
+            android:textColorHint="@color/hints_color"
+            android:background="@drawable/edit_txt_shape"
+            android:paddingStart="20dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            />
+
+        <ImageButton
+            android:id="@+id/infinity_amount_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_btn"
+            android:src="@drawable/finity_icon"
+            android:padding="15dp"
+            android:layout_marginLeft="15dp"
+            />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/time_linear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:minHeight="50dp"
+        android:layout_below="@+id/max_amount_linear"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <TextView
+            android:id="@+id/time_txt"
+            android:layout_width="282dp"
+            android:layout_height="50dp"
+            android:text="time"
+            android:paddingTop="10dp"
+            android:textColorHint="@color/hints_color"
+            android:background="@drawable/edit_txt_shape"
+            android:paddingStart="20dp"
+            android:textSize="22sp"
+            android:layout_below="@+id/max_amount_linear"
+            android:layout_centerHorizontal="true"
+            />
+
+        <ImageButton
+            android:id="@+id/pick_time_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_btn"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:padding="15dp"
+            android:layout_marginLeft="15dp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/date_linear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:minHeight="50dp"
+        android:layout_below="@+id/time_linear"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <TextView
+            android:id="@+id/date_txt"
+            android:layout_width="282dp"
+            android:layout_height="50dp"
+            android:text="date"
+            android:paddingTop="10dp"
+            android:textColorHint="@color/hints_color"
+            android:background="@drawable/edit_txt_shape"
+            android:paddingStart="20dp"
+            android:textSize="22sp"
+            android:layout_below="@+id/max_amount_linear"
+            android:layout_centerHorizontal="true"
+            />
+
+        <ImageButton
+            android:id="@+id/pick_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sign_up_btn"
+            android:src="@drawable/ic_baseline_date_range_24"
+            android:padding="15dp"
+            android:layout_marginLeft="15dp"
+            />
+
+    </LinearLayout>
 
 
     <Button
