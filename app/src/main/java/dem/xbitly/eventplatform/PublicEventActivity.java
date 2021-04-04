@@ -1,8 +1,10 @@
 package dem.xbitly.eventplatform;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -17,9 +19,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +41,8 @@ public class PublicEventActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference ref;
+
+    int PLACE_PICKER_REQUEST = 1;
 
     Calendar dateAndTime=Calendar.getInstance();
     String date_time;
@@ -54,7 +62,7 @@ public class PublicEventActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("PublicEvents").child(mAuth.getCurrentUser().getUid()); //папка со всеми созданными евентами этого человека
+        ref = database.getReference("PublicEvents").child(mAuth.getCurrentUser().getUid()); //раздел со всеми созданными евентами этого человека
 
 
         binding.infinityAmountBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,17 +75,50 @@ public class PublicEventActivity extends AppCompatActivity {
             }
         });
 
+        binding.pickDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDate();
+            }
+        });
+
+        binding.pickTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTime();
+            }
+        });
+
         binding.nextBtnFromPublicEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.eventNamePublic.getText().toString().isEmpty() && binding.eventMaxAmount.getText().toString().isEmpty()){ //нельзя, чтобы поля пустыми были
+                if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty() || binding.timeTxt.getText().toString().equals("time") || binding.dateTxt.getText().toString().equals("date")){ //нельзя, чтобы поля пустыми были
                     Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
-                }else { //если все хорошо, то создаем reference для этого мероприятия
-                    ref.child(binding.eventNamePublic.getText().toString()).setValue("null").addOnSuccessListener(new OnSuccessListener<Void>() {
+                }else {
+                    if (binding.eventMaxAmount.getText().toString().equals("Infinity")){
+                        time.put("max_amount", 0);
+                    }else {
+                        time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
+                    }
+                    //если все хорошо, то создаем reference для этого мероприятия
+                    ref.child(binding.eventNamePublic.getText().toString()).setValue(time).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onSuccess(Void aVoid) {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
-                            time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
+                                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                                try {
+                                    startActivityForResult(builder.build(PublicEventActivity.this),
+                                            PLACE_PICKER_REQUEST);
+                                } catch (GooglePlayServicesRepairableException e) {
+                                    e.printStackTrace();
+                                } catch (GooglePlayServicesNotAvailableException e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
+                            }
                         }
                     });
 
@@ -120,12 +161,13 @@ public class PublicEventActivity extends AppCompatActivity {
             time.put("minute", minute);
             time.put("hour", hourOfDay);
 
-            setDate();
+            binding.timeTxt.setText(hourOfDay + ":" + minute);
         }
     };
 
     // установка обработчика выбора даты
     DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+        @SuppressLint("SetTextI18n")
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
@@ -135,18 +177,32 @@ public class PublicEventActivity extends AppCompatActivity {
             time.put("month", monthOfYear);
             time.put("year", year);
 
-            ref.child(binding.eventNamePublic.getText().toString()).setValue(time)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                Intent intent = new Intent (PublicEventActivity.this, PickPlaceActivity.class);
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(PublicEventActivity.this, "Some error", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            binding.dateTxt.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
         }
     };
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+
+            if (resultCode == RESULT_OK) {
+                Place place = (Place) PlacePicker.getPlace(data, this);
+                StringBuilder stringBuilder = new StringBuilder();
+                String latitude = String.valueOf(place.getLatLng().latitude);
+                String longitude = String.valueOf(place.getLatLng().longitude);
+                stringBuilder.append("LATITUDE : ");
+                stringBuilder.append(latitude);
+                stringBuilder.append("\n");
+                stringBuilder.append("LONGITUDE");
+                stringBuilder.append(longitude);
+
+                ref.child(binding.eventNamePublic.getText().toString()).child("latitude").setValue(latitude);
+
+                Intent intent = new Intent (PublicEventActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }
