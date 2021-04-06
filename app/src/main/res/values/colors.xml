@@ -8,4 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="hints_color">#BF000000</color>
+    <color name="bottomViewColor">#3C2726</color>
+    <color name="secondaryTextColor">#D69894</color>
+    <color name="primaryTextColor">#B36963</color>
+    <color name="fabColor">#1D100F</color>
+    <color name="blue">#606EED</color>
 </resources>

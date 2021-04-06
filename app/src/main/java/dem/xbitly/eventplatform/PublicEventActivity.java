@@ -2,12 +2,22 @@ package dem.xbitly.eventplatform;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -19,9 +29,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.sucho.placepicker.AddressData;
+import com.sucho.placepicker.PlacePicker;
+
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,11 +42,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sucho.placepicker.Constants;
+import com.sucho.placepicker.MapType;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityPublicEventBinding;
+import dem.xbitly.eventplatform.ui.map.MapFragment;
 
 public class PublicEventActivity extends AppCompatActivity {
 
@@ -44,13 +59,14 @@ public class PublicEventActivity extends AppCompatActivity {
 
     int PLACE_PICKER_REQUEST = 1;
 
-    Calendar dateAndTime=Calendar.getInstance();
+    Calendar dateAndTime = Calendar.getInstance();
     String date_time;
 
-    private HashMap <String, Integer> time;
+    private HashMap<String, Integer> time;
 
     private ActivityPublicEventBinding binding;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,30 +108,30 @@ public class PublicEventActivity extends AppCompatActivity {
         binding.nextBtnFromPublicEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty() || binding.timeTxt.getText().toString().equals("time") || binding.dateTxt.getText().toString().equals("date")){ //нельзя, чтобы поля пустыми были
+                if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty() || binding.timeTxt.getText().toString().equals("time") || binding.dateTxt.getText().toString().equals("date")) { //нельзя, чтобы поля пустыми были
                     Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
-                }else {
-                    if (binding.eventMaxAmount.getText().toString().equals("Infinity")){
+                } else {
+                    if (binding.eventMaxAmount.getText().toString().equals("Infinity")) {
                         time.put("max_amount", 0);
-                    }else {
+                    } else {
                         time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
                     }
                     //если все хорошо, то создаем reference для этого мероприятия
                     ref.child(binding.eventNamePublic.getText().toString()).setValue(time).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
-                                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                                try {
-                                    startActivityForResult(builder.build(PublicEventActivity.this),
-                                            PLACE_PICKER_REQUEST);
-                                } catch (GooglePlayServicesRepairableException e) {
-                                    e.printStackTrace();
-                                } catch (GooglePlayServicesNotAvailableException e) {
-                                    e.printStackTrace();
-                                }
+                                Intent intent = new PlacePicker.IntentBuilder()
+                                        .setLatLong(40.748672, -73.985628)
+                                        .showLatLong(true)
+                                        .setMapType(MapType.NORMAL)
+                                        .setFabColor(R.color.blue)
+                                        .setMarkerDrawable(R.drawable.ic_map_marker)
+                                        .build(PublicEventActivity.this);
+
+                                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
                             }else {
                                 Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
                             }
@@ -125,6 +141,9 @@ public class PublicEventActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     // отображаем диалоговое окно для выбора даты
@@ -142,14 +161,6 @@ public class PublicEventActivity extends AppCompatActivity {
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
                 dateAndTime.get(Calendar.MINUTE), true)
                 .show();
-    }
-    // установка начальных даты и времени
-    private void setInitialDateTime() {
-
-        Toast.makeText(this, DateUtils.formatDateTime(this,
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
-                        | DateUtils.FORMAT_SHOW_TIME).toString(),Toast.LENGTH_LONG).show();
     }
 
     // установка обработчика выбора времени
@@ -184,25 +195,19 @@ public class PublicEventActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                AddressData addressData = data.getParcelableExtra(Constants.ADDRESS_INTENT);
+                double latitude = addressData.getLatitude();
+                double longitude = addressData.getLongitude();
+                ref.child(binding.eventNamePublic.getText().toString()).child("adress").child("latitude").setValue(latitude);
+                ref.child(binding.eventNamePublic.getText().toString()).child("adress").child("longitude").setValue(longitude);
 
-            if (resultCode == RESULT_OK) {
-                Place place = (Place) PlacePicker.getPlace(data, this);
-                StringBuilder stringBuilder = new StringBuilder();
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                stringBuilder.append("LATITUDE : ");
-                stringBuilder.append(latitude);
-                stringBuilder.append("\n");
-                stringBuilder.append("LONGITUDE");
-                stringBuilder.append(longitude);
-
-                ref.child(binding.eventNamePublic.getText().toString()).child("latitude").setValue(latitude);
-
-                Intent intent = new Intent (PublicEventActivity.this, MainActivity.class);
+                Intent intent = new Intent (PublicEventActivity.this, MapFragment.class);
                 startActivity(intent);
             }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
