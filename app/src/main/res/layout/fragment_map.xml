@@ -18,16 +18,14 @@
 
     <ImageButton
         android:id="@+id/create_event_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/ic_baseline_add_24"
         android:background="@drawable/new_event_btn_shape"
         android:padding="7dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="90dp"/>
-
-
 
 </RelativeLayout>

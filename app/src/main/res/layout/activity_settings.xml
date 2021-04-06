@@ -29,22 +29,23 @@
         android:layout_marginTop="36dp"
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/profile_linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_below="@+id/settings_txt"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/items_settings_shape">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/profile"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:textSize="20sp"
+            android:layout_centerVertical="true"
             android:textColor="#000"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
@@ -54,30 +55,32 @@
             android:id="@+id/to_profile_settings_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_navigate_next_24"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
             android:background="#f7f7f7"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="230dp"/>
+            android:src="@drawable/ic_baseline_navigate_next_24" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/theme_liner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_below="@+id/profile_linear"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/items_settings_shape">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/theme"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
             android:textSize="20sp"
             android:textColor="#000"
             android:layout_marginTop="10dp"
@@ -88,90 +91,77 @@
             android:id="@+id/theme_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
             android:background="#f7f7f7"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginLeft="170dp"
             android:theme="@style/SwitchTheme"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/lang_linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_below="@+id/theme_liner"
-        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/items_settings_shape">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lang"
-            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
             android:textSize="20sp"
             android:textColor="#000"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
-
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/languages"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="150dp"
-            android:background="#606EED"
-            android:layout_marginRight="10dp"
-            />
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/spiner_shape"
+            android:entries="@array/languages" />
 
+    </RelativeLayout>
 
-
-
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/text_size_linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_below="@+id/lang_linear"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/items_settings_shape">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_size"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
             android:textSize="20sp"
             android:textColor="#000"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
-
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/textSizes"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="178dp"
-            android:layout_marginRight="10dp"
-            android:background="#606EED"
-            />
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/spiner_shape"
+            android:entries="@array/textSizes" />
 
-
-
-
-    </LinearLayout>
-
-
-
-
-
+    </RelativeLayout>
 </RelativeLayout>
