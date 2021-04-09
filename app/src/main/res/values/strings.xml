@@ -16,7 +16,7 @@
     <string name="delete_account"> Delete Account </string>
     <string name="apply"> Apply </string>
     <string name="create_event"> CREATE EVENT </string>
-    <string name="max_amount"> mac amount </string>
+    <string name="max_amount"> max amount </string>
     <string name="find"> find </string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
@@ -32,6 +32,9 @@
     <string name="privatee">PRIVATE</string>
     <string name="next">NEXT</string>
     <string name="profilee">PROFILE</string>
+    <string name="create">CREATE</string>
+    <string name="time">time</string>
+    <string name="date">date</string>
 
     <string-array name="languages">
         <item>Русский</item>

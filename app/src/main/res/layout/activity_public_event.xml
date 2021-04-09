@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,157 +13,131 @@
         android:src="@drawable/ic_baseline_arrow_back_24"
         android:background="@drawable/back_btn_background"
         android:padding="10dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/create_public_event_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CREATE"
+        android:text="@string/create"
         android:textColor="#000"
         android:textSize="26sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        />
+        android:layout_marginTop="36dp" />
 
-    <EditText
-        android:id="@+id/event_name_public"
+
+    <LinearLayout
+        android:id="@+id/linnn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:minHeight="50dp"
-        android:hint="@string/name"
-        android:textColorHint="@color/hints_color"
-        android:paddingStart="20dp"
-        android:background="@drawable/edit_txt_shape"
-        android:layout_below="@+id/create_public_event_txt"
-        android:layout_marginTop="170dp"
-        android:inputType="textPersonName"/>
-
-    <LinearLayout
-        android:id="@+id/max_amount_linear"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:minHeight="50dp"
-        android:layout_below="@+id/event_name_public"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:weightSum="4"
+        android:orientation="vertical"
+        android:layout_margin="30dp"
+        android:layout_centerVertical="true">
 
         <EditText
-            android:id="@+id/event_max_amount"
-            android:layout_width="282dp"
+            android:id="@+id/event_name_public"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="max amount"
-            android:textColorHint="@color/hints_color"
-            android:background="@drawable/edit_txt_shape"
+            android:hint="@string/name"
+            android:textColorHint="@color/black75"
             android:paddingStart="20dp"
-            android:layout_centerHorizontal="true"
-            android:inputType="number"
-            />
+            android:background="@drawable/edit_txt_shape"
+            android:inputType="textPersonName"/>
 
-        <ImageButton
-            android:id="@+id/infinity_amount_btn"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/sign_up_btn"
-            android:src="@drawable/finity_icon"
-            android:padding="15dp"
-            android:layout_marginLeft="15dp"
-            />
+            android:layout_marginTop="20dp">
 
+            <EditText
+                android:id="@+id/event_max_amount"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/infinity_amount_btn"
+                android:background="@drawable/edit_txt_shape"
+                android:hint="@string/max_amount"
+                android:inputType="number"
+                android:paddingStart="20dp"
+                android:textColorHint="@color/black75" />
+
+            <ImageButton
+                android:id="@+id/infinity_amount_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/sign_up_btn"
+                android:padding="15dp"
+                android:src="@drawable/finity_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <EditText
+                android:id="@+id/event_time"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/pick_time_btn"
+                android:background="@drawable/edit_txt_shape"
+                android:hint="@string/time"
+                android:inputType="time"
+                android:paddingStart="20dp"
+                android:textColorHint="@color/black75" />
+            <ImageButton
+                android:id="@+id/pick_time_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/sign_up_btn"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_access_time_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <EditText
+                android:id="@+id/event_date"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/pick_date_btn"
+                android:background="@drawable/edit_txt_shape"
+                android:hint="@string/date"
+                android:inputType="date"
+                android:paddingStart="20dp"
+                android:textColorHint="@color/black75" />
+
+            <ImageButton
+                android:id="@+id/pick_date_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:background="@drawable/sign_up_btn"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_date_range_24" />
+        </RelativeLayout>
 
     </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/time_linear"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:minHeight="50dp"
-        android:layout_below="@+id/max_amount_linear"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
-
-        <TextView
-            android:id="@+id/time_txt"
-            android:layout_width="282dp"
-            android:layout_height="50dp"
-            android:text="time"
-            android:paddingTop="10dp"
-            android:textColorHint="@color/hints_color"
-            android:background="@drawable/edit_txt_shape"
-            android:paddingStart="20dp"
-            android:textSize="22sp"
-            android:layout_below="@+id/max_amount_linear"
-            android:layout_centerHorizontal="true"
-            />
-
-        <ImageButton
-            android:id="@+id/pick_time_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sign_up_btn"
-            android:src="@drawable/ic_baseline_access_time_24"
-            android:padding="15dp"
-            android:layout_marginLeft="15dp"
-            />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/date_linear"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:minHeight="50dp"
-        android:layout_below="@+id/time_linear"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
-
-        <TextView
-            android:id="@+id/date_txt"
-            android:layout_width="282dp"
-            android:layout_height="50dp"
-            android:text="date"
-            android:paddingTop="10dp"
-            android:textColorHint="@color/hints_color"
-            android:background="@drawable/edit_txt_shape"
-            android:paddingStart="20dp"
-            android:textSize="22sp"
-            android:layout_below="@+id/max_amount_linear"
-            android:layout_centerHorizontal="true"
-            />
-
-        <ImageButton
-            android:id="@+id/pick_date_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sign_up_btn"
-            android:src="@drawable/ic_baseline_date_range_24"
-            android:padding="15dp"
-            android:layout_marginLeft="15dp"
-            />
-
-    </LinearLayout>
-
 
     <Button
         android:id="@+id/next_btn_from_public_event_btn"
         android:layout_width="match_parent"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/linnn"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="110dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/sign_up_btn"
         android:text="@string/next"
         android:textColor="@color/white"
