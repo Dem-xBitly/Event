@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:hint="@string/username"
+            android:textColor="@color/black"
             android:paddingStart="20dp"
             android:textColorHint="@color/black75"
             android:background="@drawable/edit_txt_shape"
@@ -53,6 +54,7 @@
             android:hint="@string/email"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:textColor="@color/black"
             android:background="@drawable/edit_txt_shape"
             android:layout_marginTop="20dp"
             android:inputType="textEmailAddress"/>
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:hint="@string/password"
+            android:textColor="@color/black"
             android:textColorHint="@color/black75"
             android:inputType="textPassword"
             android:paddingStart="20dp"
@@ -73,6 +76,7 @@
             android:id="@+id/male_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:minHeight="50dp"
             android:orientation="horizontal"
             android:layout_marginTop="20dp">
@@ -80,6 +84,7 @@
                 android:id="@+id/male_check_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/male"
                 android:textSize="18sp"/>
 
@@ -87,6 +92,7 @@
                 android:id='@+id/female_check_register'
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/female"
                 android:textSize="18sp"
                 android:layout_marginStart="40dp"/>

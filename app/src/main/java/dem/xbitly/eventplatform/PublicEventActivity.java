@@ -1,49 +1,31 @@
 package dem.xbitly.eventplatform;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.sucho.placepicker.AddressData;
-import com.sucho.placepicker.PlacePicker;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sucho.placepicker.AddressData;
 import com.sucho.placepicker.Constants;
 import com.sucho.placepicker.MapType;
+import com.sucho.placepicker.PlacePicker;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -57,10 +39,7 @@ public class PublicEventActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
-    int PLACE_PICKER_REQUEST = 1;
-
     Calendar dateAndTime = Calendar.getInstance();
-    String date_time;
 
     private HashMap<String, Integer> time;
 
@@ -81,64 +60,46 @@ public class PublicEventActivity extends AppCompatActivity {
         ref = database.getReference("PublicEvents").child(mAuth.getCurrentUser().getUid()); //раздел со всеми созданными евентами этого человека
 
 
-        binding.infinityAmountBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.eventMaxAmount.setText("Infinity");
-                binding.eventMaxAmount.setEnabled(false);
+        binding.infinityAmountBtn.setOnClickListener(v -> {
+            binding.eventMaxAmount.setText("Infinity");
+            binding.eventMaxAmount.setEnabled(false);
 
-                time.put("max_amount", 0); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
-            }
+            time.put("max_amount", 0); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
         });
 
-        binding.pickDateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDate();
-            }
-        });
+        binding.pickDateBtn.setOnClickListener(v -> setDate());
 
-        binding.pickTimeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setTime();
-            }
-        });
+        binding.pickTimeBtn.setOnClickListener(v -> setTime());
 
-        binding.nextBtnFromPublicEventBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty() || binding.timeTxt.getText().toString().equals("time") || binding.dateTxt.getText().toString().equals("date")) { //нельзя, чтобы поля пустыми были
-                    Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
+        binding.nextBtnFromPublicEventBtn.setOnClickListener(v -> {
+            if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty()
+                    || binding.eventTime.getText().toString().isEmpty() || binding.eventDate.getText().toString().isEmpty()) { //нельзя, чтобы поля пустыми были
+                Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
+            } else {
+                if (binding.eventMaxAmount.getText().toString().equals("Infinity")) {
+                    time.put("max_amount", 0);
                 } else {
-                    if (binding.eventMaxAmount.getText().toString().equals("Infinity")) {
-                        time.put("max_amount", 0);
-                    } else {
-                        time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
-                    }
-                    //если все хорошо, то создаем reference для этого мероприятия
-                    ref.child(binding.eventNamePublic.getText().toString()).setValue(time).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
-
-                                Intent intent = new PlacePicker.IntentBuilder()
-                                        .setLatLong(40.748672, -73.985628)
-                                        .showLatLong(true)
-                                        .setMapType(MapType.NORMAL)
-                                        .setFabColor(R.color.blue)
-                                        .setMarkerDrawable(R.drawable.ic_map_marker)
-                                        .build(PublicEventActivity.this);
-
-                                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
-                            }else {
-                                Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
+                    time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
                 }
+                //если все хорошо, то создаем reference для этого мероприятия
+                ref.child(binding.eventNamePublic.getText().toString()).setValue(time).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
+
+                        Intent intent = new PlacePicker.IntentBuilder()
+                                .setLatLong(40.748672, -73.985628)
+                                .showLatLong(true)
+                                .setMapType(MapType.NORMAL)
+                                .setFabColor(R.color.blue)
+                                .setMarkerDrawable(R.drawable.ic_map_marker)
+                                .build(PublicEventActivity.this);
+
+                        startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+                    }else {
+                        Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
@@ -172,7 +133,7 @@ public class PublicEventActivity extends AppCompatActivity {
             time.put("minute", minute);
             time.put("hour", hourOfDay);
 
-            binding.timeTxt.setText(hourOfDay + ":" + minute);
+            binding.eventTime.setText(hourOfDay + ":" + minute);
         }
     };
 
@@ -188,7 +149,7 @@ public class PublicEventActivity extends AppCompatActivity {
             time.put("month", monthOfYear);
             time.put("year", year);
 
-            binding.dateTxt.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+            binding.eventDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
         }
     };
 

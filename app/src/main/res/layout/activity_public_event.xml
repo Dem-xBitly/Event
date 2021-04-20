@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/name"
+            android:textColor="@color/black"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
             android:background="@drawable/edit_txt_shape"
@@ -56,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
                 android:layout_toStartOf="@+id/infinity_amount_btn"
                 android:background="@drawable/edit_txt_shape"
                 android:hint="@string/max_amount"
@@ -83,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
                 android:layout_toStartOf="@+id/pick_time_btn"
                 android:background="@drawable/edit_txt_shape"
                 android:hint="@string/time"
@@ -113,6 +116,7 @@
                 android:background="@drawable/edit_txt_shape"
                 android:hint="@string/date"
                 android:inputType="date"
+                android:textColor="@color/black"
                 android:paddingStart="20dp"
                 android:textColorHint="@color/black75" />
 
