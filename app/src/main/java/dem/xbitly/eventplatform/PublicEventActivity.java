@@ -16,12 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sucho.placepicker.AddressData;
 import com.sucho.placepicker.Constants;
 import com.sucho.placepicker.MapType;
@@ -31,7 +32,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityPublicEventBinding;
-import dem.xbitly.eventplatform.ui.map.MapFragment;
 
 public class PublicEventActivity extends AppCompatActivity {
 
@@ -57,8 +57,29 @@ public class PublicEventActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("PublicEvents").child(mAuth.getCurrentUser().getUid()); //раздел со всеми созданными евентами этого человека
 
+        ref = database.getReference("PublicEvents");
+        ref.addValueEventListener(new ValueEventListener(){
+
+            boolean a = true;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int y = Integer.parseInt(snapshot.child("count").getValue().toString())+1;
+                ref = database.getReference("PublicEvents").child(String.valueOf(y));
+                if(a){
+                    snapshot.getRef().child("count").setValue(y);
+                    a = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //раздел со всеми созданными евентами этого человека
 
         binding.infinityAmountBtn.setOnClickListener(v -> {
             binding.eventMaxAmount.setText("Infinity");
@@ -82,7 +103,7 @@ public class PublicEventActivity extends AppCompatActivity {
                     time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
                 }
                 //если все хорошо, то создаем reference для этого мероприятия
-                ref.child(binding.eventNamePublic.getText().toString()).setValue(time).addOnCompleteListener(task -> {
+                ref.setValue(time).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
@@ -95,10 +116,13 @@ public class PublicEventActivity extends AppCompatActivity {
                                 .build(PublicEventActivity.this);
 
                         startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
-                    }else {
+                    } else {
                         Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
+                ref.child("name").setValue(binding.eventNamePublic.getText().toString());
+                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });
@@ -161,10 +185,10 @@ public class PublicEventActivity extends AppCompatActivity {
                 AddressData addressData = data.getParcelableExtra(Constants.ADDRESS_INTENT);
                 double latitude = addressData.getLatitude();
                 double longitude = addressData.getLongitude();
-                ref.child(binding.eventNamePublic.getText().toString()).child("adress").child("latitude").setValue(latitude);
-                ref.child(binding.eventNamePublic.getText().toString()).child("adress").child("longitude").setValue(longitude);
+                ref.child("adress").child("latitude").setValue(latitude);
+                ref.child("adress").child("longitude").setValue(longitude);
 
-                Intent intent = new Intent (PublicEventActivity.this, MapFragment.class);
+                Intent intent = new Intent (PublicEventActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         } else {
