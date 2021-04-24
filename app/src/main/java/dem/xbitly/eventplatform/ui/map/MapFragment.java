@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import dem.xbitly.eventplatform.MainActivity;
+import dem.xbitly.eventplatform.PrivateEventActivity;
 import dem.xbitly.eventplatform.PublicEventActivity;
 import dem.xbitly.eventplatform.R;
 
@@ -99,6 +100,13 @@ public class MapFragment extends Fragment implements LocationListener {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(getContext(), PublicEventActivity.class));
+                    }
+                });
+
+                private_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getContext(), PrivateEventActivity.class));
                     }
                 });
             }
