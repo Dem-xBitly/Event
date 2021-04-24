@@ -61,6 +61,7 @@ public class PublicEventActivity extends AppCompatActivity {
         ref = database.getReference("PublicEvents");
         ref.addValueEventListener(new ValueEventListener(){
 
+
             boolean a = true;
 
             @Override
