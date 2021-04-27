@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EventPlatform</string>
+    <string name="app_name">Event Platform</string>
     <string name="sign_in"> SIGN IN </string>
     <string name="sign_up"> SIGN UP </string>
     <string name="username"> username </string>
@@ -18,13 +18,11 @@
     <string name="create_event"> CREATE EVENT </string>
     <string name="max_amount"> max amount </string>
     <string name="find"> find </string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">News</string>
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_messenger">Messenger</string>
-    <string name="title_activity_main2">MainActivity</string>
     <string name="name">name</string>
     <string name="log_in_to_your_account">Log in to your account</string>
     <string name="terms_of_service_and_privacy_policy">Terms of Service and Privacy Policy</string>
