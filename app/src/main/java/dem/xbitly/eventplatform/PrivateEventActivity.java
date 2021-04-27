@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +19,11 @@ import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sucho.placepicker.AddressData;
 import com.sucho.placepicker.Constants;
 import com.sucho.placepicker.MapType;
@@ -52,7 +56,28 @@ public class PrivateEventActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference("PrivateEvents").child(mAuth.getCurrentUser().getUid());
+
+        ref = database.getReference("PrivateEvents");
+        ref.addValueEventListener(new ValueEventListener(){
+
+
+            boolean a = true;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int y = Integer.parseInt(snapshot.child("count").getValue().toString())+1;
+                ref = database.getReference("PrivateEvents").child(String.valueOf(y));
+                if(a){
+                    snapshot.getRef().child("count").setValue(y);
+                    a = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         binding.pickDateBtn.setOnClickListener(v -> setDate());
@@ -65,7 +90,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                 Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
             } else {
                 //если все хорошо, то создаем reference для этого мероприятия
-                ref.child(binding.eventNamePrivate.getText().toString()).setValue(event_info).addOnCompleteListener(task -> {
+                ref.setValue(event_info).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
@@ -82,6 +107,9 @@ public class PrivateEventActivity extends AppCompatActivity {
                         Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
+                ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
+                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });
@@ -141,8 +169,8 @@ public class PrivateEventActivity extends AppCompatActivity {
                 AddressData addressData = data.getParcelableExtra(Constants.ADDRESS_INTENT);
                 double latitude = addressData.getLatitude();
                 double longitude = addressData.getLongitude();
-                ref.child(binding.eventNamePrivate.getText().toString()).child("adress").child("latitude").setValue(latitude);
-                ref.child(binding.eventNamePrivate.getText().toString()).child("adress").child("longitude").setValue(longitude);
+                ref.child("adress").child("latitude").setValue(latitude);
+                ref.child("adress").child("longitude").setValue(longitude);
 
                 Intent intent = new Intent (PrivateEventActivity.this, MapFragment.class);
                 startActivity(intent);
