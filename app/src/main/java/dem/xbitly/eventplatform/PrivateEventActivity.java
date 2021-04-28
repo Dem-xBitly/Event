@@ -10,11 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -91,7 +87,7 @@ public class PrivateEventActivity extends AppCompatActivity {
             } else {
                 //если все хорошо, то создаем reference для этого мероприятия
                 ref.setValue(event_info).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful()){
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new PlacePicker.IntentBuilder()
@@ -172,7 +168,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                 ref.child("adress").child("latitude").setValue(latitude);
                 ref.child("adress").child("longitude").setValue(longitude);
 
-                Intent intent = new Intent (PrivateEventActivity.this, MapFragment.class);
+                Intent intent = new Intent (PrivateEventActivity.this, UsersInvitationActivity.class);
                 startActivity(intent);
             }
         } else {
