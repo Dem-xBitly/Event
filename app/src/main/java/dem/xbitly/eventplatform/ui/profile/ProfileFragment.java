@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
         ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                username = snapshot.child("username").getValue().toString();
+                username = snapshot.child("name").getValue().toString();
                 profile_name.setText(username);
             }
 

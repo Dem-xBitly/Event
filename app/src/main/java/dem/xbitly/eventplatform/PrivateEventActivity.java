@@ -61,11 +61,20 @@ public class PrivateEventActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int y = Integer.parseInt(snapshot.child("count").getValue().toString())+1;
-                ref = database.getReference("PrivateEvents").child(String.valueOf(y));
-                if(a){
-                    snapshot.getRef().child("count").setValue(y);
-                    a = false;
+                try {
+                    int y = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
+                    ref = database.getReference("PrivateEvents").child(String.valueOf(y));
+                    if(a){
+                        snapshot.getRef().child("count").setValue(y);
+                        a = false;
+                    }
+                }catch(Exception e){
+                    int y = 1;
+                    ref = database.getReference("PrivateEvents").child(String.valueOf(y));
+                    if (a){
+                        snapshot.getRef().child("count").setValue(y);
+                        a = false;
+                    }
                 }
             }
 
