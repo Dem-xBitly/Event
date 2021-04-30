@@ -29,7 +29,7 @@ public class UserAdapter extends FirebaseRecyclerAdapter<User, UserAdapter.myvie
     @Override
     public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-       View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.users_single,parent,false);
+       View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_person,parent,false);
        return new myviewholder(view);
     }
 
@@ -39,8 +39,7 @@ public class UserAdapter extends FirebaseRecyclerAdapter<User, UserAdapter.myvie
         public myviewholder(@NonNull View itemView)
         {
             super(itemView);
-            name=(TextView)itemView.findViewById(R.id.user_single_name);
-            email=(TextView)itemView.findViewById(R.id.user_single_status);
+            name=(TextView)itemView.findViewById(R.id.username);
         }
     }
 }
