@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 String gender = binding.maleCheckRegister.isChecked() ? "male" : "female";
 
                                 HashMap<String, String> userMap = new HashMap<>();
-                                userMap.put ("username", binding.usernameSignUp.getText().toString());
+                                userMap.put ("name", binding.usernameSignUp.getText().toString());
                                 userMap.put ("email", binding.emailEdit.getText().toString());
                                 userMap.put ("password", binding.passwordSignUp.getText().toString());
                                 userMap.put("gender", gender);
@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 // ...
                             } else {
-                                Snackbar.make(v, "Some Error", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(v, "Some Error: " + task.getException(), Snackbar.LENGTH_SHORT).show();
                             }
                         });
             }

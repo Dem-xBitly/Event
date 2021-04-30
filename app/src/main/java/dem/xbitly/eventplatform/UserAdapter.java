@@ -22,7 +22,6 @@ public class UserAdapter extends FirebaseRecyclerAdapter<User, UserAdapter.myvie
     protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull User model)
     {
        holder.name.setText(model.getName());
-       holder.email.setText(model.getEmail());
     }
 
     @NonNull
