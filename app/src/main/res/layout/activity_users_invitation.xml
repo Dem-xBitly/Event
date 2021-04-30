@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UsersInvitationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:id="@+id/find_person_edittxt"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:minHeight="48dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_txt_shape"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/find_person_btn"
+            android:background="@drawable/sign_up_btn"
+            android:src="@drawable/ic_icon_find"
+            android:padding="12dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="10dp"/>
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id = "@+id/usersList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="609dp"
         android:background="#7F7878"
         />
-</RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:text="CREATE EVENT"
+        android:textColor="#fff"
+        />
+</LinearLayout>
