@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.users;
 
 public class User
 {
@@ -7,7 +7,7 @@ public class User
     {
 
     }
-    public User(String username, String course, String email, String purl) {
+    public User(String username) {
         this.username = username;
         this.email = email;
     }
@@ -27,5 +27,7 @@ public class User
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 
 }

@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EventPlatform">
-        <activity android:name=".UsersInvitationActivity"></activity>
+        <activity android:name=".users.UsersInvitationActivity"></activity>
         <activity android:name=".PickPlaceActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

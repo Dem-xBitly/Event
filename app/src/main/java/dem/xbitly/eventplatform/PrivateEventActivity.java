@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
-import dem.xbitly.eventplatform.ui.map.MapFragment;
+import dem.xbitly.eventplatform.users.UsersInvitationActivity;
 
 public class PrivateEventActivity extends AppCompatActivity {
 

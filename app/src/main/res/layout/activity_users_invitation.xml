@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UsersInvitationActivity">
+    tools:context=".users.UsersInvitationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,15 +14,18 @@
         android:layout_marginTop="15dp">
 
         <EditText
-            android:id="@+id/find_person_edittxt"
+            android:id="@+id/find_person_edit"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:maxWidth="250dp"
             android:minHeight="48dp"
             android:layout_marginTop="2dp"
             android:layout_marginLeft="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/edit_txt_shape"/>
+            android:background="@drawable/edit_txt_shape"
+            android:hint="find user"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -40,13 +43,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id = "@+id/usersList"
         android:layout_width="match_parent"
-        android:layout_height="609dp"
-        android:background="#7F7878"
+        android:layout_height="607dp"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#000"
         android:text="CREATE EVENT"
         android:textColor="#fff"
