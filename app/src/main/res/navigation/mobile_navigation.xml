@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dem.xbitly.eventplatform.ui.home.HomeFragment"
+        android:name="dem.xbitly.eventplatform.bottomnav.home.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="dem.xbitly.eventplatform.ui.map.MapFragment"
+        android:name="dem.xbitly.eventplatform.bottomnav.map.MapFragment"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_message"
-        android:name="dem.xbitly.eventplatform.ui.messanger.MessengerFragment"
+        android:name="dem.xbitly.eventplatform.bottomnav.messanger.MessengerFragment"
         tools:layout="@layout/fragment_messenger" />
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="dem.xbitly.eventplatform.ui.notifications.NotificationsFragment"
+        android:name="dem.xbitly.eventplatform.bottomnav.notifications.NotificationsFragment"
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="dem.xbitly.eventplatform.ui.profile.ProfileFragment"
+        android:name="dem.xbitly.eventplatform.bottomnav.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
 </navigation>

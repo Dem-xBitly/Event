@@ -1,16 +1,16 @@
-package dem.xbitly.eventplatform.ui.notifications;
+package dem.xbitly.eventplatform.bottomnav.messanger;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class MessengerViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public MessengerViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is messenger fragment");
     }
 
     public LiveData<String> getText() {

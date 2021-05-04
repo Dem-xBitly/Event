@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform.ui.home;
+package dem.xbitly.eventplatform.bottomnav.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

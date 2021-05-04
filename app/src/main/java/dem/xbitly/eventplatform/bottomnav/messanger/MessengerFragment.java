@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform.ui.messanger;
+package dem.xbitly.eventplatform.bottomnav.messanger;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import dem.xbitly.eventplatform.R;
-import dem.xbitly.eventplatform.ui.home.HomeViewModel;
 
 public class MessengerFragment extends Fragment {
 

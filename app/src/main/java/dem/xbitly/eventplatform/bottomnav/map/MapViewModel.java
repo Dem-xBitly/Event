@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform.ui.map;
+package dem.xbitly.eventplatform.bottomnav.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
