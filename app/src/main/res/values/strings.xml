@@ -33,6 +33,7 @@
     <string name="create">CREATE</string>
     <string name="time">time</string>
     <string name="date">date</string>
+    <string name="i_will_go">I will go</string>
 
     <string-array name="languages">
         <item>Русский</item>

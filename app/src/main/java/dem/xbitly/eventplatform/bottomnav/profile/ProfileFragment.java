@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.SettingsActivity;
 import dem.xbitly.eventplatform.StartActivity;
+import dem.xbitly.eventplatform.tape.TapeAdapter;
+import dem.xbitly.eventplatform.tape.TapeHolder;
 
 public class ProfileFragment extends Fragment {
 
@@ -29,6 +33,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton logout_btn;
     private ImageButton settings_btn;
+    private RecyclerView rv;
 
     private TextView profile_name;
 
@@ -46,6 +51,7 @@ public class ProfileFragment extends Fragment {
         dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Users");
         profile_name = root.findViewById(R.id.profile_name);
+        rv = root.findViewById(R.id.profile_posts_recycler);
 //        Toast.makeText(getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
         ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,6 +88,10 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        TapeAdapter tapeAdapter = new TapeAdapter(rv);
+        rv.setAdapter(tapeAdapter);
 
         return root;
     }
