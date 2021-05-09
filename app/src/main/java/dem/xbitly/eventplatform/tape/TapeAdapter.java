@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform.tape;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +16,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
-    private int countElements = 1;
+    private int countElements;
     private final RecyclerView rv;
     private FirebaseDatabase dBase;
     private DatabaseReference ref;
     private String[] idsReview;
     private final ArrayList<Review> review = new ArrayList<>();
 
-    public TapeAdapter(RecyclerView rv) {
+    public TapeAdapter(RecyclerView rv, int count) {
         this.rv = rv;
+        this.countElements = count;
     }
 
     @Override
@@ -48,29 +51,45 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     public void onBindViewHolder(@NonNull final TapeHolder holder, final int position) {
         dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Users");
-        ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        ref.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                idsReview = snapshot.child("myReviews").getValue().toString().split(",");
+                idsReview = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",");
+                String s = idsReview[position];
+                ref = dBase.getReference("Reviews").child(s);
+                ref.addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                        String s = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
+                        String t = Objects.requireNonNull(snapshot2.child("time").getValue()).toString();
+                        String d = Objects.requireNonNull(snapshot2.child("date").getValue()).toString();
+                        String a = Objects.requireNonNull(snapshot2.child("autor").getValue()).toString();
+                        ref = dBase.getReference("Users").child(a);
+                        Review reviews = new Review(s);
+                        reviews.setTime(t);
+                        reviews.setDate(d);
+                        ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot3) {
+                                holder.getUsername().setText(Objects.requireNonNull(snapshot3.child("name").getValue()).toString());
+                            }
 
-                // тут кароче как-то что-то не работает, но я не знаю как, исправлю утром
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                for (String s : idsReview) {
-                    ref = dBase.getReference("Reviews").child(s);
-                    ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                            String s = snapshot2.child("text").getValue().toString();
-                            review.add(new Review(s));
-                            holder.getText().setText(review.get(position).getText());
-                        }
+                            }
+                        });
+                        review.add(reviews);
+                        holder.getText().setText(review.get(position).getText());
+                        holder.getTimeAndData().setText(review.get(position).getDate() + " " + review.get(position).getTime());
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                }
+                    }
+                });
             }
 
             @Override

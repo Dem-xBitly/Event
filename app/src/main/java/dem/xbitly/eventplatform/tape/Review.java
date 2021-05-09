@@ -4,7 +4,7 @@ package dem.xbitly.eventplatform.tape;
 public class Review {
 
     private boolean liked;
-    private String text;
+    private String text, date, time;
 
     public Review(String text){
         this.text = text;
@@ -24,5 +24,21 @@ public class Review {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
