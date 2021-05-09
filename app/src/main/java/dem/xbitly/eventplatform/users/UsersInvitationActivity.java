@@ -49,38 +49,17 @@ public class UsersInvitationActivity extends AppCompatActivity {
         binding.usersList.addItemDecoration(new DividerItemDecoration(binding.usersList.getContext(), DividerItemDecoration.VERTICAL));
         binding.usersList.setAdapter(adapter);
 
-        ArrayList<User> data = adapter.getData();
-        ArrayList<String> users = new ArrayList<>();
-        for (int i=0; i<data.size(); i++){
-            User user = data.get(i);
-
-//            users.add(user.getName());
-        }
-
-        //Toast.makeText(UsersInvitationActivity.this, users.size(), Toast.LENGTH_LONG).show();
-
-        binding.findPersonEdit.addTextChangedListener(new TextWatcher() {
+        binding.inviteUsersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filter(s.toString());
+            public void onClick(View v) {
+                ArrayList<String> arr = adapter.getUsers_ids();
+                Toast.makeText(getApplicationContext(), arr.size(), Toast.LENGTH_LONG).show();
             }
         });
-    }
 
-    private void filter(String toString) {
-        ArrayList<User> filteredList = new ArrayList<>();
 
     }
+
 
 
 
