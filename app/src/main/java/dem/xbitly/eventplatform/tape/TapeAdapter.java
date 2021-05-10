@@ -1,6 +1,8 @@
 package dem.xbitly.eventplatform.tape;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.CommentActivity;
 import dem.xbitly.eventplatform.R;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
@@ -28,10 +31,14 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     private DatabaseReference ref;
     private String[] idsReview;
     private final ArrayList<Review> review = new ArrayList<>();
+    private Context context;
+    private String userID;
 
-    public TapeAdapter(RecyclerView rv, int count) {
+    public TapeAdapter(RecyclerView rv, int count, Context context, String userID) {
         this.rv = rv;
         this.countElements = count;
+        this.context = context;
+        this.userID = userID;
     }
 
     @Override
@@ -65,6 +72,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         String t = Objects.requireNonNull(snapshot2.child("time").getValue()).toString();
                         String d = Objects.requireNonNull(snapshot2.child("date").getValue()).toString();
                         String a = Objects.requireNonNull(snapshot2.child("autor").getValue()).toString();
+                        String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
                         ref = dBase.getReference("Users").child(a);
                         Review reviews = new Review(s);
                         reviews.setTime(t);
@@ -80,9 +88,37 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                             }
                         });
+
                         review.add(reviews);
-                        holder.getText().setText(review.get(position).getText());
+                        String str = review.get(position).getText();
+                        holder.getText().setText(str);
                         holder.getTimeAndData().setText(review.get(position).getDate() + " " + review.get(position).getTime());
+
+                        holder.getButtonLike().setOnClickListener(view -> {
+
+                            if(like.contains(userID)){
+                                holder.getButtonLike().setImageResource(R.drawable.ic_like_pressed);
+
+                                //надо сделать поиск userID в like и удаление его оттуда
+
+                            } else {
+                                holder.getButtonLike().setImageResource(R.drawable.ic_like);
+                                ref = dBase.getReference("Reviews").child(s);
+                                //ref.child(like).setValue(like+","+userID);
+                            }
+
+                        });
+
+                        holder.getButtonComment().setOnClickListener(view -> {
+                            Intent intent = new Intent(context, CommentActivity.class);
+                            if(str.length() > 9){
+                                intent.putExtra("name", str.substring(0, 7)+"...");
+                            } else {
+                                intent.putExtra("name", str);
+                            }
+                            intent.putExtra("id", s);
+                            context.startActivity(intent);
+                        });
                     }
 
                     @Override
