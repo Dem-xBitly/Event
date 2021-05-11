@@ -33,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -122,8 +123,10 @@ public class MapFragment extends Fragment implements LocationListener {
         public void onMapReady(GoogleMap googleMap) {
 
             LatLng sydney = new LatLng(-34, 151);
+            LatLng sydney2 = new LatLng(-34, 170);
             googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")
-                    // below line is use to add custom marker on our map.
+                    .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
+            googleMap.addMarker(new MarkerOptions().position(sydney2).title("Marker not in Sydney")
                     .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 

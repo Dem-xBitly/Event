@@ -5,7 +5,7 @@
     android:background="@color/white">
 
     <ImageButton
-        android:id="@+id/back_from_settings_btn"
+        android:id="@+id/back_from_comments_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_arrow_back_24"

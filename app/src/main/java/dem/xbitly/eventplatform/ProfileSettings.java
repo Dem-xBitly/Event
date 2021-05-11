@@ -45,7 +45,7 @@ public class ProfileSettings extends AppCompatActivity {
             else {
                 String gender = binding.maleCheck.isChecked() ? "male" : "female";
                 ref.child("gender").setValue(gender);
-                ref.child("username").setValue( binding.usernameProfileSettings.getText().toString());
+                ref.child("name").setValue( binding.usernameProfileSettings.getText().toString());
                 startActivity(new Intent (ProfileSettings.this, SettingsActivity.class));
             }
         });
