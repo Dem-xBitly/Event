@@ -25,17 +25,15 @@ import dem.xbitly.eventplatform.R;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
-    private int countElements;
-    private final RecyclerView rv;
+    private final int countElements;
     private FirebaseDatabase dBase;
-    private DatabaseReference ref;
+    private DatabaseReference ref, refLike;
     private String[] idsReview;
     private final ArrayList<Review> review = new ArrayList<>();
-    private Context context;
-    private String userID;
+    private final Context context;
+    private final String userID;
 
-    public TapeAdapter(RecyclerView rv, int count, Context context, String userID) {
-        this.rv = rv;
+    public TapeAdapter(int count, Context context, String userID) {
         this.countElements = count;
         this.context = context;
         this.userID = userID;
@@ -68,13 +66,13 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                        String s = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
+                        String s1 = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
                         String t = Objects.requireNonNull(snapshot2.child("time").getValue()).toString();
                         String d = Objects.requireNonNull(snapshot2.child("date").getValue()).toString();
                         String a = Objects.requireNonNull(snapshot2.child("autor").getValue()).toString();
                         String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
                         ref = dBase.getReference("Users").child(a);
-                        Review reviews = new Review(s);
+                        Review reviews = new Review(s1);
                         reviews.setTime(t);
                         reviews.setDate(d);
                         ref.addValueEventListener(new ValueEventListener() {
@@ -92,19 +90,28 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         review.add(reviews);
                         String str = review.get(position).getText();
                         holder.getText().setText(str);
+                        String[] split = like.split(",");
                         holder.getTimeAndData().setText(review.get(position).getDate() + " " + review.get(position).getTime());
+                        holder.getLike().setText("Like: " + (split.length-1));
+
+                        if(like.contains(userID)){
+                            holder.getButtonLike().setImageResource(R.drawable.ic_like_pressed);
+                        } else {
+                            holder.getButtonLike().setImageResource(R.drawable.ic_like);
+                        }
 
                         holder.getButtonLike().setOnClickListener(view -> {
 
-                            if(like.contains(userID)){
-                                holder.getButtonLike().setImageResource(R.drawable.ic_like_pressed);
+                            refLike = dBase.getReference("Reviews").child(s);
 
-                                //надо сделать поиск userID в like и удаление его оттуда
+                            if(like.contains(userID)){
+
+                                refLike.child("like").setValue(like.replace(","+userID, ""));
 
                             } else {
-                                holder.getButtonLike().setImageResource(R.drawable.ic_like);
-                                ref = dBase.getReference("Reviews").child(s);
-                                //ref.child(like).setValue(like+","+userID);
+
+                                refLike.child("like").setValue(like+","+userID);
+
                             }
 
                         });
@@ -118,6 +125,14 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                             }
                             intent.putExtra("id", s);
                             context.startActivity(intent);
+                        });
+
+                        holder.getButtonShare().setOnClickListener(view -> {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            intent.putExtra(Intent.EXTRA_TEXT, str);
+                            Intent chosenIntent = Intent.createChooser(intent, "Send review");
+                            context.startActivity(chosenIntent);
                         });
                     }
 

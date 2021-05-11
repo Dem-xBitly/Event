@@ -12,7 +12,7 @@ import dem.xbitly.eventplatform.R;
 
 public class TapeHolder extends RecyclerView.ViewHolder {
 
-    private final TextView text, username, timeAndData, countUsers;
+    private final TextView text, username, timeAndData, countUsers, like;
     private final ImageView photo;
     private final ImageButton buttonLike, buttonShare, buttonComment, buttonGo;
 
@@ -27,6 +27,7 @@ public class TapeHolder extends RecyclerView.ViewHolder {
         buttonComment = itemView.findViewById(R.id.comment);
         buttonShare = itemView.findViewById(R.id.share);
         buttonGo = itemView.findViewById(R.id.will_go);
+        like = itemView.findViewById(R.id.like_txt);
     }
 
     public TextView getUsername() {
@@ -63,5 +64,9 @@ public class TapeHolder extends RecyclerView.ViewHolder {
 
     public ImageButton getButtonGo() {
         return buttonGo;
+    }
+
+    public TextView getLike() {
+        return like;
     }
 }

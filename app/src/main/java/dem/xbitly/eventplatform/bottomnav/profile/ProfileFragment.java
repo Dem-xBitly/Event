@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-import dem.xbitly.eventplatform.MainActivity;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.SettingsActivity;
 import dem.xbitly.eventplatform.StartActivity;
@@ -57,7 +56,7 @@ public class ProfileFragment extends Fragment {
                 profile_name.setText(username);
                 int count = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",").length;
                 rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                TapeAdapter tapeAdapter = new TapeAdapter(rv, count, root.getContext(), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                TapeAdapter tapeAdapter = new TapeAdapter(count, root.getContext(), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                 rv.setAdapter(tapeAdapter);
             }
 
