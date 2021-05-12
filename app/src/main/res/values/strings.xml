@@ -19,7 +19,7 @@
     <string name="max_amount"> max amount </string>
     <string name="find"> find </string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">News</string>
+    <string name="title_map">Map</string>
     <string name="title_profile">Profile</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_messenger">Messenger</string>

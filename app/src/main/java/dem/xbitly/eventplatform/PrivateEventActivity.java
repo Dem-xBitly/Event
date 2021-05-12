@@ -40,6 +40,8 @@ public class PrivateEventActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
+    private int event_number; //номер евента
+
     Calendar dateAndTime = Calendar.getInstance();
 
     //All info about event
@@ -62,17 +64,17 @@ public class PrivateEventActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
-                    int y = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
-                    ref = database.getReference("PrivateEvents").child(String.valueOf(y));
+                    event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
+                    ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
                     if(a){
-                        snapshot.getRef().child("count").setValue(y);
+                        snapshot.getRef().child("count").setValue(event_number);
                         a = false;
                     }
                 }catch(Exception e){
-                    int y = 1;
-                    ref = database.getReference("PrivateEvents").child(String.valueOf(y));
+                    event_number = 1;
+                    ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
                     if (a){
-                        snapshot.getRef().child("count").setValue(y);
+                        snapshot.getRef().child("count").setValue(event_number);
                         a = false;
                     }
                 }
@@ -178,6 +180,8 @@ public class PrivateEventActivity extends AppCompatActivity {
                 ref.child("adress").child("longitude").setValue(longitude);
 
                 Intent intent = new Intent (PrivateEventActivity.this, UsersInvitationActivity.class);
+                intent.putExtra("event_number", event_number);
+                intent.putExtra("event_name", binding.eventNamePrivate.getText().toString());
                 startActivity(intent);
             }
         } else {

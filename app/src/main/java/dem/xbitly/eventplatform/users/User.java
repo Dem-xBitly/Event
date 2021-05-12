@@ -2,10 +2,10 @@ package dem.xbitly.eventplatform.users;
 
 public class User
 {
-  String username;
+  String name;
 
-    public User(String username) {
-        this.username = username;
+    public User(String name) {
+        this.name = name;
     }
 
     public User(){
@@ -13,10 +13,10 @@ public class User
     }
 
     public String getName() {
-        return username;
+        return name;
     }
 
-    public void setName(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 }
