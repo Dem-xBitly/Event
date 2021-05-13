@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -47,6 +48,8 @@ public class CommentActivity extends AppCompatActivity {
 
             String text = binding.commentEdit.getText().toString();
             Date date = new Date();
+            SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat formatForTime = new SimpleDateFormat("hh:mm");
             if(text.isEmpty()){
                 Snackbar.make(view, "Empty", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -60,14 +63,15 @@ public class CommentActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 ref.child("count").setValue(0);
                             }
+
                             ref.child("count").setValue(String.valueOf(count + 1));
                             ref.child(String.valueOf(count + 1)).child("autor").setValue(userID);
                             ref.child(String.valueOf(count + 1)).child("text").setValue(text);
-                            ref.child(String.valueOf(count + 1)).child("time").setValue(date.getHours() + ":" + date.getMinutes());
-                            ref.child(String.valueOf(count + 1)).child("date").setValue(date.getDay() + "." + date.getMonth() + "." + date.getYear());
+                            ref.child(String.valueOf(count + 1)).child("time").setValue(formatForTime.format(date));
+                            ref.child(String.valueOf(count + 1)).child("date").setValue(formatForDate.format(date));
                             binding.commentEdit.setText("");
                             binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
-                            CommentAdapter commentAdapter = new CommentAdapter(count+1, dBase, ref);
+                            CommentAdapter commentAdapter = new CommentAdapter((count+1), dBase, ref);
                             binding.commentsRecycler.setAdapter(commentAdapter);
                             r = false;
                         }
@@ -87,7 +91,13 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
-                CommentAdapter commentAdapter = new CommentAdapter(Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()), dBase, ref);
+                int count = 0;
+                try {
+                    count = Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString());
+                } catch (Exception e) {
+                    ref.child("count").setValue(0);
+                }
+                CommentAdapter commentAdapter = new CommentAdapter(count, dBase, ref);
                 binding.commentsRecycler.setAdapter(commentAdapter);
             }
 
@@ -96,6 +106,9 @@ public class CommentActivity extends AppCompatActivity {
 
             }
         });
+
+
+        binding.backFromCommentsBtn.setOnClickListener(view -> onBackPressed());
 
     }
 }
