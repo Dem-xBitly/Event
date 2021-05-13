@@ -48,6 +48,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
         });
     }
 
+
+
     @NonNull
     @NotNull
     @Override
