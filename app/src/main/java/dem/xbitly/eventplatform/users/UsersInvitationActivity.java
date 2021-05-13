@@ -25,8 +25,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import dem.xbitly.eventplatform.MainActivity;
 import dem.xbitly.eventplatform.R;
@@ -81,6 +84,8 @@ public class UsersInvitationActivity extends AppCompatActivity {
 //                Toast.makeText(UsersInvitationActivity.this, arr.size(), Toast.LENGTH_LONG).show();
                 System.out.println(arr.size());
                 for (int i=0; i<arr.size(); ++i){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
+                    String currentDateandTime = sdf.format(new Date());
 
                     String key = FirebaseDatabase.getInstance().getReference("Users").push().getKey(); //генерируем ключ приглашения
                     FirebaseDatabase.getInstance().getReference().child("Users").child(arr.get(i)).child("invitations").child(key)
@@ -88,9 +93,14 @@ public class UsersInvitationActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("Users").child(arr.get(i)).child("invitations").child(key)
                             .child("event_number").setValue(getIntent().getIntExtra("event_number", 0));
                     FirebaseDatabase.getInstance().getReference().child("Users").child(arr.get(i)).child("invitations").child(key)
+                            .child("time").setValue(currentDateandTime);
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(arr.get(i)).child("invitations").child(key)
                             .child("event_name").setValue(getIntent().getStringExtra("event_name"));
+
                     FirebaseDatabase.getInstance().getReference().child("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                             .child("invited").child(Integer.toString(i)).setValue(arr.get(i));
+
+
 
                 }
 

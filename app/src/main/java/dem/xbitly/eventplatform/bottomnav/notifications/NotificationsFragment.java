@@ -32,7 +32,6 @@ import dem.xbitly.eventplatform.databinding.FragmentNotificationsBinding;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel messengerViewModel;
-    private FragmentNotificationsBinding binding;
 
     private NotificationAdapter adapter;
 
@@ -44,7 +43,6 @@ public class NotificationsFragment extends Fragment {
         messengerViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-//        binding = FragmentNotificationsBinding.inflate(getLayoutInflater());
         recView = root.findViewById(R.id.notifications_recView);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
 

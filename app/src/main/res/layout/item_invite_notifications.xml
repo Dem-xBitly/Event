@@ -30,11 +30,21 @@
         android:id="@+id/event_name"
         tools:text="Event"
         android:layout_below="@+id/from"
-        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/profile_image"
         android:textSize="15sp"
         android:layout_marginStart="10dp"
         android:textColor="#606EED"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Date"
+        android:id="@+id/time_ago"
+        android:layout_below="@id/event_name"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_marginStart="10dp"
+        android:textSize="10sp"
+        android:textColor="#5A5858"/>
 
 
 <!--    <Button-->
