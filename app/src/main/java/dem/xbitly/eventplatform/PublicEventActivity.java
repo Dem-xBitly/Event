@@ -45,6 +45,8 @@ public class PublicEventActivity extends AppCompatActivity {
 
     private ActivityPublicEventBinding binding;
 
+    private int event_number;//номер евента
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +68,20 @@ public class PublicEventActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int y = Integer.parseInt(snapshot.child("count").getValue().toString())+1;
-                ref = database.getReference("PublicEvents").child(String.valueOf(y));
-                if(a){
-                    snapshot.getRef().child("count").setValue(y);
-                    a = false;
+                try {
+                    event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
+                    ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
+                    if(a){
+                        snapshot.getRef().child("count").setValue(event_number);
+                        a = false;
+                    }
+                }catch(Exception e){
+                    event_number = 1;
+                    ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
+                    if (a){
+                        snapshot.getRef().child("count").setValue(event_number);
+                        a = false;
+                    }
                 }
             }
 
@@ -108,15 +119,9 @@ public class PublicEventActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
-                        Intent intent = new PlacePicker.IntentBuilder()
-                                .setLatLong(40.748672, -73.985628)
-                                .showLatLong(true)
-                                .setMapType(MapType.NORMAL)
-                                .setFabColor(R.color.blue)
-                                .setMarkerDrawable(R.drawable.ic_map_marker)
-                                .build(PublicEventActivity.this);
-
-                        startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+                        Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
+                        intent.putExtra("event_number", event_number);
+                        startActivity(intent);
                     } else {
                         Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
                     }
@@ -178,22 +183,4 @@ public class PublicEventActivity extends AppCompatActivity {
         }
     };
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                AddressData addressData = data.getParcelableExtra(Constants.ADDRESS_INTENT);
-                double latitude = addressData.getLatitude();
-                double longitude = addressData.getLongitude();
-                ref.child("adress").child("latitude").setValue(latitude);
-                ref.child("adress").child("longitude").setValue(longitude);
-
-                Intent intent = new Intent (PublicEventActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 }

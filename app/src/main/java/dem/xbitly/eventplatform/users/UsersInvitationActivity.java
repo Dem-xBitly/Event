@@ -43,7 +43,6 @@ public class UsersInvitationActivity extends AppCompatActivity {
 
     private ActivityUsersInvitationBinding binding;
 
-    private int event_name;
 
     private String user_name;
 
@@ -81,7 +80,6 @@ public class UsersInvitationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ArrayList<String> arr = adapter.getUsers_ids();
-//                Toast.makeText(UsersInvitationActivity.this, arr.size(), Toast.LENGTH_LONG).show();
                 System.out.println(arr.size());
                 for (int i=0; i<arr.size(); ++i){
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -98,6 +96,8 @@ public class UsersInvitationActivity extends AppCompatActivity {
                             .child("event_name").setValue(getIntent().getStringExtra("event_name"));
                     FirebaseDatabase.getInstance().getReference().child("Users").child(arr.get(i)).child("invitations").child(key)
                             .child("accepted").setValue(false);
+
+
 
                     FirebaseDatabase.getInstance().getReference().child("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                             .child("invited").child(Integer.toString(i)).setValue(arr.get(i));
