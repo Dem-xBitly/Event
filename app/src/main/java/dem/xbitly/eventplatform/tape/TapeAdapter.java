@@ -97,13 +97,13 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
             } else {
                 loadReview(holder, position-(position/x));
             }
-        } else if (reviewsID.size() == invitesID.size()){
+        } else if (reviewsID.size() == invitesID.size()){ // это работает
             if (position%2 == 0){
                 loadInvite(holder, position-(position/2));
             } else {
                 loadReview(holder, position/2);
             }
-        } else if (y > 1){
+        } else if (y > 1){ //тут баг
             if (position%y == 0){
                 loadReview(holder, position/y);
             } else {
@@ -124,7 +124,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
 
-        ref = dBase.getReference("Invite").child(reviewsID.get(i));
+        ref = dBase.getReference("Invite").child(invitesID.get(i));
         ref.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
