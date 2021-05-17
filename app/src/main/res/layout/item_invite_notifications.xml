@@ -47,16 +47,17 @@
         android:textColor="#5A5858"/>
 
 
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@drawable/sign_in_btn"-->
-<!--        android:text="I'll go!"-->
-<!--        android:textSize="14sp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_toEndOf="@id/event_name"-->
-<!--        android:layout_marginStart="100dp"-->
-<!--        />-->
+    <Button
+        android:id="@+id/ill_go_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sign_in_btn"
+        android:text="I'll go!"
+        android:textSize="14sp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/event_name"
+        android:layout_marginStart="120dp"
+        />
 
 
 </RelativeLayout>
