@@ -21,7 +21,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentHolder> {
 
     private final int countElements;
     private final FirebaseDatabase dBase;
-    private DatabaseReference ref;
+    private DatabaseReference ref, ref1;
 
     public CommentAdapter(int countElements, FirebaseDatabase dBase, DatabaseReference ref) {
         this.countElements = countElements;
@@ -47,24 +47,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentHolder> {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    holder.getText().setText(Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("text").getValue()).toString());
-                    holder.getTimeAndData().setText(String.format("%s %s", Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("date").getValue()).toString(), Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("time").getValue()).toString()));
-                    ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("autor").getValue()).toString());
-                    ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot3) {
-                            holder.getUsername().setText(Objects.requireNonNull(snapshot3.child("name").getValue()).toString());
-                        }
+                holder.getText().setText(Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("text").getValue()).toString());
+                holder.getTimeAndData().setText(String.format("%s %s", Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("date").getValue()).toString(), Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("time").getValue()).toString()));
+                ref1 = dBase.getReference("Users").child(Objects.requireNonNull(snapshot.child(String.valueOf(position + 1)).child("autor").getValue()).toString());
+                ref1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot3) {
+                        holder.getUsername().setText(Objects.requireNonNull(snapshot3.child("name").getValue()).toString());
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                } catch (Exception e) {
-                    // тут кароче баг, надо исправить, сделаю чуть позже, сейчас уже чет не понимаю что не так
-                }
+                    }
+                });
             }
 
             @Override
