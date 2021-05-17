@@ -1,6 +1,7 @@
 package dem.xbitly.eventplatform.tape;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +15,8 @@ public class TapeHolder extends RecyclerView.ViewHolder {
 
     private final TextView text, username, timeAndData, countUsers, like;
     private final ImageView photo;
-    private final ImageButton buttonLike, buttonShare, buttonComment, buttonGo;
+    private final ImageButton buttonLike, buttonShare, buttonComment;
+    private final Button buttonGo;
 
     public TapeHolder(@NonNull View itemView) {
         super(itemView);
@@ -62,7 +64,7 @@ public class TapeHolder extends RecyclerView.ViewHolder {
         return buttonComment;
     }
 
-    public ImageButton getButtonGo() {
+    public Button getButtonGo() {
         return buttonGo;
     }
 

@@ -36,6 +36,7 @@ public class ProfileFragment extends Fragment {
 
     private TextView profile_name;
 
+
     private String username;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,15 +49,20 @@ public class ProfileFragment extends Fragment {
         DatabaseReference ref = dBase.getReference("Users");
         profile_name = root.findViewById(R.id.profile_name);
         rv = root.findViewById(R.id.profile_posts_recycler);
-//        Toast.makeText(getContext(), FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+
+
         ref.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 username = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
                 profile_name.setText(username);
-                int count = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",").length;
+
+                String[] sR = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",");
+                String[] sI = Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",");
+
                 rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                TapeAdapter tapeAdapter = new TapeAdapter(count, root.getContext(), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
                 rv.setAdapter(tapeAdapter);
             }
 
