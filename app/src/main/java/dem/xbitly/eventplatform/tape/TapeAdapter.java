@@ -30,11 +30,12 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     private final ArrayList<String> invitesID = new ArrayList<>();
     private final String userID;
     private final Context context;
+    private int countI = 0;
+    private int countR = 0;
     DatabaseReference ref, refLike;
 
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context) {
         this.countElements = sR.length + sI.length;
-
         this.reviewsID.addAll(Arrays.asList(sR));
         this.invitesID.addAll(Arrays.asList(sI));
         this.userID = userID;
@@ -43,28 +44,37 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     @Override
     public int getItemViewType(final int position) {
-        int x = reviewsID.size()/invitesID.size();
-        int y = invitesID.size()/reviewsID.size();
+        int x;
+        int y;
+        try {
+            x = reviewsID.size()/invitesID.size();
+            y = invitesID.size()/reviewsID.size();
+        } catch (Exception ArithmeticException) {
+            x = 0;
+            y = 0;
+        }
+
+
         if(x > 1){
-            if (position%x == 0){
+            if ((position+1)%(x+1) == 0){
                 return R.layout.item_invite;
             } else {
                 return R.layout.item_review;
             }
         } else if (reviewsID.size() == invitesID.size()){
             if (position%2 == 0){
-                return R.layout.item_invite;
-            } else {
                 return R.layout.item_review;
+            } else {
+                return R.layout.item_invite;
             }
         } else if (y > 1){
-            if (position%y == 0){
+            if ((position+1)%(y+1) == 0){
                 return R.layout.item_review;
             } else {
                 return R.layout.item_invite;
             }
         } else {
-            if(position < reviewsID.size()){
+            if (position < reviewsID.size()){
                 return R.layout.item_review;
             } else {
                 return R.layout.item_invite;
@@ -88,39 +98,47 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     @Override
     public void onBindViewHolder(@NonNull final TapeHolder holder, final int position) {
 
-        int x = reviewsID.size()/invitesID.size();
-        int y = invitesID.size()/reviewsID.size();
-
-        if(x > 1){
-            if (position%x == 0){
-                loadInvite(holder, position/x);
-            } else {
-                loadReview(holder, position-(position/x));
-            }
-        } else if (reviewsID.size() == invitesID.size()){ // это работает
-            if (position%2 == 0){
-                loadInvite(holder, position-(position/2));
-            } else {
-                loadReview(holder, position/2);
-            }
-        } else if (y > 1){ //тут баг
-            if (position%y == 0){
-                loadReview(holder, position/y);
-            } else {
-                loadInvite(holder, position-(position/y));
-            }
-        } else {
-            if(position < reviewsID.size()){
-                loadReview(holder, position);
-            } else {
-                loadInvite(holder, position-reviewsID.size());
-            }
+        int x;
+        int y;
+        try {
+            x = reviewsID.size()/invitesID.size();
+            y = invitesID.size()/reviewsID.size();
+        } catch (Exception ArithmeticException) {
+            x = 0;
+            y = 0;
         }
 
-        //тут мб будут баги, но я пока не поймал, если что испрвляется не сложно
+        if(x > 1) {
+            if ((position+1)%(x+1) == 0) {
+                loadInvite(holder);
+            } else {
+                loadReview(holder);
+            }
+        } else if (reviewsID.size() == invitesID.size()) {
+            if (position%2 == 0) {
+                loadReview(holder);
+            } else {
+                loadInvite(holder);
+            }
+        } else if (y > 1) {
+            if ((position+1)%(y+1) == 0) {
+                loadReview(holder);
+            } else {
+                loadInvite(holder);
+            }
+        } else {
+            if (position < reviewsID.size()){
+                loadReview(holder);
+            } else {
+                loadInvite(holder);
+            }
+        }
     }
 
-    private void loadInvite(@NonNull final TapeHolder holder, int i){
+    private void loadInvite(@NonNull final TapeHolder holder){
+
+        int i = getCountI();
+        setCountI(i+1);
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
 
@@ -167,7 +185,10 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     }
 
-    private void loadReview(@NonNull final TapeHolder holder, int i){
+    private void loadReview(@NonNull final TapeHolder holder){
+
+        int i = getCountR();
+        setCountR(i+1);
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
 
@@ -245,6 +266,22 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
             }
         });
+    }
+
+    public void setCountR(int r){
+        this.countR = r;
+    }
+
+    public void setCountI(int i){
+        this.countI = i;
+    }
+
+    public int getCountI(){
+        return this.countI;
+    }
+
+    public int getCountR(){
+        return this.countR;
     }
 
     @Override

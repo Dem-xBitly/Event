@@ -120,7 +120,9 @@ public class PublicEventActivity extends AppCompatActivity {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
-                        intent.putExtra("event_number", event_number);
+                        intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        intent.putExtra("eventID", event_number);
+
                         startActivity(intent);
                     } else {
                         Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
