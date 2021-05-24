@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="20dp"
-
     android:background="#fff"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -50,15 +49,14 @@
 
     <Button
         android:id="@+id/ill_go_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/sign_in_btn"
         android:text="I'll go!"
-        android:textSize="14sp"
-        android:layout_marginTop="20dp"
-        android:layout_toEndOf="@id/event_name"
-        android:layout_marginStart="120dp"
-        />
+        android:textSize="14sp" />
 
 
 </RelativeLayout>
