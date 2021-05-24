@@ -58,12 +58,30 @@ public class ProfileFragment extends Fragment {
                 username = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
                 profile_name.setText(username);
 
-                String[] sR = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",");
-                String[] sI = Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",");
+                try {
+                    String[] sR = Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",");
+                    String[] sI = Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",");
+                    rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                    TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
+                    rv.setAdapter(tapeAdapter);
+                } catch (Exception e) {
+                    try {
+                        String[] sR = new String[0];
+                        String[] sI = Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",");
+                        rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                        TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
+                        rv.setAdapter(tapeAdapter);
+                    } catch (Exception e2) {
+                        String[] sR = new String[0];
+                        String[] sI = new String[0];
+                        rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                        TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
+                        rv.setAdapter(tapeAdapter);
+                    }
+                }
 
-                rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
-                rv.setAdapter(tapeAdapter);
+
+
             }
 
             @Override

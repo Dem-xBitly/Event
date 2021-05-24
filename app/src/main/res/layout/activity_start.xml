@@ -7,7 +7,15 @@
     android:background="@color/white"
     tools:context=".StartActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ew"
+        android:layout_marginBottom="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/photo_to_start_1" />
     <RelativeLayout
+        android:id="@+id/ew"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true">

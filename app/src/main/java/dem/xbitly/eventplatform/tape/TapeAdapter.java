@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -164,8 +165,52 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     }
                 });
 
+                ref = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String go = "";
+                        int ee = 0;
+                        try {
+                            go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
+                            ee = Integer.parseInt(Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString());
+                        } catch (Exception e) {
+                            ref.child("go").setValue("");
+                        }
+                        if(go.contains(userID)){
+                            holder.getButtonGo().setText("Go!!!");
+                        }
+                        if(ee != 0){
+                            holder.getCountUsers().setText((go.split(",").length-1)+"/"+ee);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 holder.getButtonGo().setOnClickListener(view -> {
-                    //обработка кнопки willgo
+                    ref = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
+
+                            if (go.contains(userID)){
+                                Snackbar.make(view, "You're on your way", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                ref.child("go").setValue(go+","+userID);
+                                holder.getButtonGo().setText("Go!!!");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 });
 
                 holder.getButtonShare().setOnClickListener(view -> {
