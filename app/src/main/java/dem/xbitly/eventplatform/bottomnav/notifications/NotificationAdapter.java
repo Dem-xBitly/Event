@@ -36,7 +36,12 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
     DatabaseReference ref;
     int event_number;
-    int event_invitation_number;
+    String name, userID;
+    int day, month, year, hour, minute;
+    double longitude, latitude;
+    boolean have_event_number=false;
+
+    int event_number_in_private_events;
 
 
     public NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notification> options) {
@@ -48,9 +53,22 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
         holder.from.setText( model.getFrom() + " invited you to the event: ");
         holder.event_name.setText(model.getEvent_name());
 
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents");
+
+
 
         String key = getRef(i).getKey();
+        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                event_number_in_private_events = Integer.parseInt(snapshot.child("event_number").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("invitations").child(key).addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,33 +76,6 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                 String[] date = snapshot.child("time").getValue().toString().split("-");
                 holder.time_ago.setText(model.timeAgo(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2])));
 
-                ref.addValueEventListener(new ValueEventListener(){
-
-                    boolean a = true;
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        try {
-                            event_number = Integer.parseInt(snapshot.child("UserPrivateEvents").child("count").getValue().toString()) + 1;
-                            ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents").child(String.valueOf(event_number));
-                            if(a){
-                                snapshot.getRef().child("UserPrivateEvents").child("count").setValue(event_number);
-                                a = false;
-                            }
-                        }catch(Exception e){
-                            event_number = 1;
-                            ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents").child(String.valueOf(event_number));
-                            if (a){
-                                snapshot.getRef().child("UserPrivateEvents").child("count").setValue(event_number);
-                                a = false;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
 
                 FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
@@ -94,8 +85,6 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                 if (Boolean.parseBoolean(snapshot.child("accepted").getValue().toString())){
                                     holder.ill_go_btn.setText("Accepted");
                                     holder.ill_go_btn.setClickable(false);
-
-
                                 }else{
                                     holder.ill_go_btn.setText("I'll go!");
                                 }
@@ -106,26 +95,46 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                             }
                         });
+
                 holder.ill_go_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
-                                .child("accepted").setValue(true);
 
-                        ref.child("invitations").child(key).addValueEventListener(new ValueEventListener() {
+                        ref.addValueEventListener(new ValueEventListener() {
+                            boolean a = true;
                             @Override
-                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                event_invitation_number = Integer.parseInt(snapshot.child("event_number").getValue().toString());
-//                                ref.child("UserPrivateEvents").child(Integer.toString(event_number))
-//                                        .setValue(FirebaseDatabase.getInstance().getReference("PrivateEvents").child())
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                try {
+                                    event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
+                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(Integer.toString(event_number_in_private_events));
+
+                                    ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents");
+                                    if (a) {
+                                        snapshot.getRef().child("count").setValue(event_number);
+                                        a = false;
+                                    }
+
+                                } catch (Exception e) {
+                                    event_number = 1;
+                                    ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UsPrivateEvents");
+                                    if (a) {
+                                        snapshot.getRef().child("count").setValue(event_number);
+                                        a = false;
+                                    }
+                                }
                             }
 
                             @Override
-                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            public void onCancelled(@NonNull DatabaseError error) {
 
                             }
                         });
-                        ref.child("UserPrivateEvents").child(Integer.toString(event_number));
+
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
+                                .child("accepted").setValue(true);
+
+
                         holder.ill_go_btn.setText("Accepted");
                         holder.ill_go_btn.setClickable(false);
                     }
