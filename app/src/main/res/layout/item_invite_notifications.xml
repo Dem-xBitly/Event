@@ -52,9 +52,9 @@
         android:layout_width="75dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/from"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/sign_in_btn"
+        android:background="@drawable/item_ill_go_btn"
         android:text="I'll go!"
         android:textSize="14sp" />
 

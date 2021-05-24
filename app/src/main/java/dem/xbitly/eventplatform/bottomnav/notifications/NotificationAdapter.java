@@ -102,12 +102,16 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                         ref.addValueEventListener(new ValueEventListener() {
                             boolean a = true;
+                            boolean b = false;
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 try {
                                     event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
-                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(Integer.toString(event_number_in_private_events));
+                                    if (!b){
+                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(event_number_in_private_events);
+                                        b = true;
+                                    }
 
                                     ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents");
                                     if (a) {
@@ -118,6 +122,11 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                 } catch (Exception e) {
                                     event_number = 1;
                                     ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UsPrivateEvents");
+                                    if (!b){
+                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(event_number_in_private_events);
+                                        b = true;
+                                    }
                                     if (a) {
                                         snapshot.getRef().child("count").setValue(event_number);
                                         a = false;
@@ -146,7 +155,11 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
             }
         });
+
+
     }
+
+
 
 
 

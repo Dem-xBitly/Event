@@ -35,7 +35,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import dem.xbitly.eventplatform.PrivateEventActivity;
 import dem.xbitly.eventplatform.PublicEventActivity;
@@ -48,6 +55,7 @@ public class MapFragment extends Fragment implements LocationListener {
     private ImageButton create_event;
 
     private LocationManager locationManager;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -122,13 +130,47 @@ public class MapFragment extends Fragment implements LocationListener {
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
-            LatLng sydney = new LatLng(-34, 151);
-            LatLng sydney2 = new LatLng(-34, 170);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")
-                    .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
-            googleMap.addMarker(new MarkerOptions().position(sydney2).title("Marker not in Sydney")
-                    .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("UserPrivateEvents").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    int n = Integer.parseInt(snapshot.child("count").getValue().toString());
+
+                    for (int i=1; i<=n; ++i){
+                        try{
+                            String num = snapshot.child(Integer.toString(i)).getValue().toString();
+                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(num)
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                            double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
+                                            double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
+                                            LatLng sydney = new LatLng(latitude, longitude);
+                                            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")
+                                                    .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
+                                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                                        }
+                                    });
+                        }catch (Exception e){
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                }
+            });
+
+
+
 
 
         }
