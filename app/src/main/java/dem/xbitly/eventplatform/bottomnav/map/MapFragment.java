@@ -146,10 +146,11 @@ public class MapFragment extends Fragment implements LocationListener {
                                         public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                                             double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
                                             double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
-                                            LatLng sydney = new LatLng(latitude, longitude);
-                                            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")
+                                            String title = snapshot.child("name").getValue().toString();
+                                            LatLng marker = new LatLng(latitude, longitude);
+                                            googleMap.addMarker(new MarkerOptions().position(marker).title(title)
                                                     .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
-                                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                                         }
 
                                         @Override
