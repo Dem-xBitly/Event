@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -33,7 +35,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -150,7 +151,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 String title = snapshot.child("name").getValue().toString();
                                                 LatLng marker = new LatLng(latitude, longitude);
                                                 googleMap.addMarker(new MarkerOptions().position(marker).title(title)
-                                                        .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
+                                                        .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_map_marker)));
                                                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                                             }
 
@@ -173,6 +174,11 @@ public class MapFragment extends Fragment implements LocationListener {
 
                 }
             });
+
+
+
+
+
         }
     };
 
@@ -195,6 +201,21 @@ public class MapFragment extends Fragment implements LocationListener {
         vectorDrawable.draw(canvas);
 
         // after generating our bitmap we are returning our bitmap.
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    public static BitmapDescriptor getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
