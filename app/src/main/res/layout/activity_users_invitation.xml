@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,17 +8,19 @@
     tools:context=".users.UsersInvitationActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id = "@+id/usersList"
+        android:id="@+id/usersList"
         android:layout_width="match_parent"
-        android:layout_height="690dp"
-        />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/invite_users_btn"
+        android:layout_marginBottom="0dp" />
 
     <Button
         android:id="@+id/invite_users_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
         android:background="#000"
-        android:text="CREATE EVENT"
-        android:textColor="#fff"
-        />
-</LinearLayout>
+        android:text="@string/create_event"
+        android:textColor="#fff" />
+</RelativeLayout>

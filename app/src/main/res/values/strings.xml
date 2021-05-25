@@ -36,6 +36,7 @@
     <string name="i_will_go">I will go</string>
     <string name="write_a_comment">Write a comment</string>
     <string name="description">Description</string>
+    <string name="create_event">CREATE EVENT</string>
 
     <string-array name="languages">
         <item>Русский</item>
