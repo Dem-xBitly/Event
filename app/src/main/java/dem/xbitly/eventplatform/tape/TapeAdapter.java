@@ -197,6 +197,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
                             holder.getButtonGo().setText("Go!!!");
+                            ref.child("go").setValue(go+","+userID);
                         }
 
                         @Override

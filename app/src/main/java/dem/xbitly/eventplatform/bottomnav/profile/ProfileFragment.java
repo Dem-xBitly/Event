@@ -77,7 +77,6 @@ public class ProfileFragment extends Fragment {
                         rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
                         TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
                         rv.setAdapter(tapeAdapter);
-                        rv.setHasFixedSize(true);
                     }
                 }
 
