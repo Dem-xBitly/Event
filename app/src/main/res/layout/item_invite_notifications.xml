@@ -21,6 +21,7 @@
             tools:text="Ivan Ivanov"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_toEndOf="@+id/profile_image"
             android:textSize="18sp"/>
 

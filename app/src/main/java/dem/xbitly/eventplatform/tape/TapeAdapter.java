@@ -197,13 +197,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-
-                            if (go.contains(userID)){
-                                Snackbar.make(view, "You're on your way", Snackbar.LENGTH_SHORT).show();
-                            } else {
-                                ref.child("go").setValue(go+","+userID);
-                                holder.getButtonGo().setText("Go!!!");
-                            }
+                            holder.getButtonGo().setText("Go!!!");
                         }
 
                         @Override
