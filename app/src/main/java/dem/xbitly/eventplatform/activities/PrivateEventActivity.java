@@ -30,7 +30,6 @@ import java.util.HashMap;
 
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
-import dem.xbitly.eventplatform.users.UsersInvitationActivity;
 
 public class PrivateEventActivity extends AppCompatActivity {
 

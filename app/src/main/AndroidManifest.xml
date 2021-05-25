@@ -23,7 +23,7 @@
             android:value="AIzaSyBfUupkwJjDgpsFr1zcLEi7vmCH8x5Bk_8" />
 
         <activity android:name=".activities.CommentActivity" />
-        <activity android:name=".users.UsersInvitationActivity" />
+        <activity android:name=".activities.UsersInvitationActivity" />
         <activity android:name=".activities.PublicEventActivity" />
         <activity android:name=".activities.PrivateEventActivity" />
         <activity android:name=".activities.ProfileSettings" />

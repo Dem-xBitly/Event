@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform.users;
+package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,8 @@ import java.util.Locale;
 
 import dem.xbitly.eventplatform.activities.MainActivity;
 import dem.xbitly.eventplatform.databinding.ActivityUsersInvitationBinding;
+import dem.xbitly.eventplatform.users.User;
+import dem.xbitly.eventplatform.users.UserAdapter;
 
 public class UsersInvitationActivity extends AppCompatActivity {
     private UserAdapter adapter;
