@@ -65,10 +65,8 @@ public class HomeFragment extends Fragment {
                             s1.add((i+1)+"");
                         }
 
-                        String[] ss;
-                        String[] ss1;
-                        ss = s.toArray(new String[0]);
-                        ss1 = s1.toArray(new String[0]);
+                        String[] ss = s.toArray(new String[0]);
+                        String[] ss1 = s1.toArray(new String[0]);
 
                         rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
                         TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());

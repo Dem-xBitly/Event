@@ -32,7 +32,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     private final Context context;
     private int countI = 0;
     private int countR = 0;
-    DatabaseReference ref, refLike;
+    DatabaseReference ref, ref2, refLike;
 
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context) {
         this.countElements = sR.length + sI.length;
@@ -143,6 +143,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
 
         ref = dBase.getReference("Invite").child(invitesID.get(i));
+        ref2 = dBase.getReference("Invite");
         ref.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -164,8 +165,8 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     }
                 });
 
-                ref = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
-                ref.addValueEventListener(new ValueEventListener() {
+                ref2 = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
+                ref2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String go = "";
@@ -174,7 +175,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                             go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
                             ee = Integer.parseInt(Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString());
                         } catch (Exception e) {
-                            ref.child("go").setValue("");
+                            ref2.child("go").setValue("");
                         }
                         if(go.contains(userID)){
                             holder.getButtonGo().setText("Go!!!");
@@ -182,29 +183,23 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         if(ee != 0){
                             holder.getCountUsers().setText((go.split(",").length-1)+"/"+ee);
                         }
+                        String finalGo = go;
+                        holder.getButtonGo().setOnClickListener(view1 -> {
+                            ref2 = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
+                            if(!finalGo.contains(userID)) {
+                                holder.getButtonGo().setText("Go!!!");
+                                ref2.child("go").setValue(finalGo + "," + userID);
+                            } else {
+                                holder.getButtonGo().setText("I will go");
+                                ref2.child("go").setValue(finalGo.replace(","+userID, ""));
+                            }
+                        });
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                });
-
-                holder.getButtonGo().setOnClickListener(view -> {
-                    ref = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
-                    ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                            holder.getButtonGo().setText("Go!!!");
-                            ref.child("go").setValue(go+","+userID);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
                 });
 
                 holder.getButtonShare().setOnClickListener(view -> {
