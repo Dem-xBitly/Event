@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.notifications.Notification;
+import dem.xbitly.eventplatform.notifications.NotificationAdapter;
 
 public class NotificationsFragment extends Fragment {
 
