@@ -15,29 +15,39 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="false"
         android:theme="@style/Theme.EventPlatform" >
-        <activity android:name=".activities.EventDescriptionActivity" >
-        </activity>
+        <activity android:name=".activities.EventDescriptionActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBfUupkwJjDgpsFr1zcLEi7vmCH8x5Bk_8" />
 
-        <activity android:name=".activities.CommentActivity" />
-        <activity android:name=".activities.UsersInvitationActivity" />
-        <activity android:name=".activities.PublicEventActivity" />
-        <activity android:name=".activities.PrivateEventActivity" />
-        <activity android:name=".activities.ProfileSettings" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.MainActivity" >
+        <activity android:name=".activities.CommentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.UsersInvitationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.PublicEventActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.PrivateEventActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ProfileSettings"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.StartActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.StartActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
