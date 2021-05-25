@@ -135,32 +135,36 @@ public class MapFragment extends Fragment implements LocationListener {
                     .child("UserPrivateEvents").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                    int n = Integer.parseInt(snapshot.child("count").getValue().toString());
+                    try {
+                        int n = Integer.parseInt(snapshot.child("count").getValue().toString());
 
-                    for (int i=1; i<=n; ++i){
-                        try{
-                            String num = snapshot.child(Integer.toString(i)).getValue().toString();
-                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(num)
-                                    .addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                            double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
-                                            double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
-                                            String title = snapshot.child("name").getValue().toString();
-                                            LatLng marker = new LatLng(latitude, longitude);
-                                            googleMap.addMarker(new MarkerOptions().position(marker).title(title)
-                                                    .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
-                                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
-                                        }
+                        for (int i = 1; i <= n; ++i) {
+                            try {
+                                String num = snapshot.child(Integer.toString(i)).getValue().toString();
+                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(num)
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                                double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
+                                                double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
+                                                String title = snapshot.child("name").getValue().toString();
+                                                LatLng marker = new LatLng(latitude, longitude);
+                                                googleMap.addMarker(new MarkerOptions().position(marker).title(title)
+                                                        .icon(BitmapFromVector(getContext(), R.drawable.ic_map_marker)));
+                                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+                                            }
 
-                                        @Override
-                                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                                            @Override
+                                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                                        }
-                                    });
-                        }catch (Exception e){
+                                            }
+                                        });
+                            } catch (Exception e) {
 
+                            }
                         }
+                    }catch (Exception e){
+
                     }
                 }
 
