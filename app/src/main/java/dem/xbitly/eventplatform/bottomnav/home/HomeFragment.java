@@ -72,8 +72,9 @@ public class HomeFragment extends Fragment {
 
                         rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
                         TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
-                        rv.setAdapter(tapeAdapter);
                         rv.setHasFixedSize(true);
+                        rv.setAdapter(tapeAdapter);
+
 
                     }
 

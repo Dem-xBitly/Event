@@ -173,11 +173,6 @@ public class MapFragment extends Fragment implements LocationListener {
 
                 }
             });
-
-
-
-
-
         }
     };
 
