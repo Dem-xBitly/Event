@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent"
-    tools:context=".EventDescriptionActivity">
+    tools:context=".activities.EventDescriptionActivity">
 
   <ImageButton
       android:id="@+id/back_from_event_desc_btn"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".PublicEventActivity">
+    tools:context=".activities.PublicEventActivity">
 
     <ImageButton
         android:id="@+id/back_from_public_event_btn"

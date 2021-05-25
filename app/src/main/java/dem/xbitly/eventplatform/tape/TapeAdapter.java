@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import dem.xbitly.eventplatform.CommentActivity;
+import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.R;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {

@@ -1,7 +1,6 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,10 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sucho.placepicker.AddressData;
-import com.sucho.placepicker.Constants;
-import com.sucho.placepicker.MapType;
-import com.sucho.placepicker.PlacePicker;
 
 import java.util.Calendar;
 import java.util.HashMap;

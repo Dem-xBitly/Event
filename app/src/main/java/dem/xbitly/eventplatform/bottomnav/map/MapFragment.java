@@ -45,8 +45,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import dem.xbitly.eventplatform.PrivateEventActivity;
-import dem.xbitly.eventplatform.PublicEventActivity;
+import dem.xbitly.eventplatform.activities.PrivateEventActivity;
+import dem.xbitly.eventplatform.activities.PublicEventActivity;
 import dem.xbitly.eventplatform.R;
 
 public class MapFragment extends Fragment implements LocationListener {

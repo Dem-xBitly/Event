@@ -24,8 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
-import dem.xbitly.eventplatform.SettingsActivity;
-import dem.xbitly.eventplatform.StartActivity;
+import dem.xbitly.eventplatform.activities.SettingsActivity;
+import dem.xbitly.eventplatform.activities.StartActivity;
 import dem.xbitly.eventplatform.tape.TapeAdapter;
 
 public class ProfileFragment extends Fragment {

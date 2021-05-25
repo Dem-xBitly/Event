@@ -1,11 +1,10 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -13,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

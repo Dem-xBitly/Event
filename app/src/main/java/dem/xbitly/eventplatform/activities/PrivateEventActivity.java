@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +28,7 @@ import com.sucho.placepicker.PlacePicker;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
 import dem.xbitly.eventplatform.users.UsersInvitationActivity;
 

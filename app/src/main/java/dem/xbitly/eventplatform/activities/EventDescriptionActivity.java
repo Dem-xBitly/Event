@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventDescriptionBinding;
 
 public class EventDescriptionActivity extends AppCompatActivity {

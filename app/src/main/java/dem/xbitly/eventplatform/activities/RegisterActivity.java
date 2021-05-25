@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
