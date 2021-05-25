@@ -1,6 +1,5 @@
-package dem.xbitly.eventplatform.bottomnav.notifications;
+package dem.xbitly.eventplatform.notifications;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-
 import dem.xbitly.eventplatform.R;
-import dem.xbitly.eventplatform.users.User;
 
 public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, NotificationAdapter.viewholder>
 {

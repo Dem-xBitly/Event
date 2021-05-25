@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform.bottomnav.notifications;
+package dem.xbitly.eventplatform.notifications;
 
 import androidx.annotation.NonNull;
 
