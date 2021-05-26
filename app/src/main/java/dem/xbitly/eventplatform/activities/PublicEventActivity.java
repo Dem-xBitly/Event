@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityPublicEventBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class PublicEventActivity extends AppCompatActivity {
 
@@ -48,6 +49,8 @@ public class PublicEventActivity extends AppCompatActivity {
         binding = ActivityPublicEventBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        checkNetwork();
 
         time = new HashMap<>();
 
@@ -178,5 +181,12 @@ public class PublicEventActivity extends AppCompatActivity {
             binding.eventDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
         }
     };
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (PublicEventActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
+    }
 
 }

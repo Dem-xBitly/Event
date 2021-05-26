@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityRegisterBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -29,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
@@ -70,5 +73,11 @@ public class RegisterActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (RegisterActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

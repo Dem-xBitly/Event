@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityMainBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        checkNetwork();
+
         mAuth = FirebaseAuth.getInstance();
         setContentView(binding.getRoot());
         if (mAuth.getCurrentUser() == null) {
@@ -38,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
                     .build();
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupWithNavController(navView, navController);
+        }
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (MainActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
         }
     }
 

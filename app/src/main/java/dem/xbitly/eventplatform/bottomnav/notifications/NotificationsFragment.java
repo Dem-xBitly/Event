@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform.bottomnav.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
+import dem.xbitly.eventplatform.network.NetworkManager;
 import dem.xbitly.eventplatform.notifications.Notification;
 import dem.xbitly.eventplatform.notifications.NotificationAdapter;
 
@@ -33,6 +36,9 @@ public class NotificationsFragment extends Fragment {
         messengerViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        checkNetwork();
+
         recView = root.findViewById(R.id.notifications_recView);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -51,6 +57,13 @@ public class NotificationsFragment extends Fragment {
 
 
         return root;
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this.getContext())){
+            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 
     @Override

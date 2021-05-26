@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform.bottomnav.messanger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class MessengerFragment extends Fragment {
 
@@ -23,6 +26,9 @@ public class MessengerFragment extends Fragment {
         messengerViewModel =
                 new ViewModelProvider(this).get(MessengerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_messenger, container, false);
+
+        checkNetwork();
+
         final TextView textView = root.findViewById(R.id.text_messenger);
         messengerViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -31,5 +37,12 @@ public class MessengerFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this.getContext())){
+            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

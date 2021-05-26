@@ -45,9 +45,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
 import dem.xbitly.eventplatform.activities.PrivateEventActivity;
 import dem.xbitly.eventplatform.activities.PublicEventActivity;
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class MapFragment extends Fragment implements LocationListener {
 
@@ -64,6 +66,7 @@ public class MapFragment extends Fragment implements LocationListener {
                 new ViewModelProvider(this).get(MapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
 
+        checkNetwork();
 
         //Check permissions
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -217,6 +220,13 @@ public class MapFragment extends Fragment implements LocationListener {
         drawable.draw(canvas);
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this.getContext())){
+            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 
     @Override

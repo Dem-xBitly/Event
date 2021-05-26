@@ -24,8 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
 import dem.xbitly.eventplatform.activities.SettingsActivity;
 import dem.xbitly.eventplatform.activities.StartActivity;
+import dem.xbitly.eventplatform.network.NetworkManager;
 import dem.xbitly.eventplatform.tape.TapeAdapter;
 
 public class ProfileFragment extends Fragment {
@@ -36,7 +38,6 @@ public class ProfileFragment extends Fragment {
 
     private TextView profile_name;
 
-
     private String username;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,6 +45,8 @@ public class ProfileFragment extends Fragment {
         notificationsViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        checkNetwork();
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
         DatabaseReference ref = dBase.getReference("Users");
@@ -105,5 +108,11 @@ public class ProfileFragment extends Fragment {
         });
 
         return root;
+    }
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this.getContext())){
+            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform.bottomnav.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.CommentActivity;
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
+import dem.xbitly.eventplatform.activities.MainActivity;
+import dem.xbitly.eventplatform.network.NetworkManager;
 import dem.xbitly.eventplatform.tape.TapeAdapter;
 
 public class HomeFragment extends Fragment {
@@ -38,6 +43,8 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        checkNetwork();
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
         DatabaseReference ref = dBase.getReference("Reviews");
@@ -91,5 +98,12 @@ public class HomeFragment extends Fragment {
         });
 
         return root;
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this.getContext())){
+            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

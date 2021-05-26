@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 import dem.xbitly.eventplatform.comments.CommentAdapter;
 import dem.xbitly.eventplatform.databinding.ActivityCommentBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCommentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Reviews/"+getIntent().getSerializableExtra("id").toString()+"/comments");
@@ -108,5 +112,12 @@ public class CommentActivity extends AppCompatActivity {
 
         binding.backFromCommentsBtn.setOnClickListener(view -> onBackPressed());
 
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (CommentActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

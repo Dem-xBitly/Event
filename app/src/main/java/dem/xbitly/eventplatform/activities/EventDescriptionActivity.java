@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventDescriptionBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class EventDescriptionActivity extends AppCompatActivity {
 
@@ -37,6 +38,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEventDescriptionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Invite");
@@ -138,6 +141,13 @@ public class EventDescriptionActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (EventDescriptionActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
         }
     }
 }

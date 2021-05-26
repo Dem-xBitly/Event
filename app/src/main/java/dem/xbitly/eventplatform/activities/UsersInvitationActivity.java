@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import dem.xbitly.eventplatform.activities.MainActivity;
 import dem.xbitly.eventplatform.databinding.ActivityUsersInvitationBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 import dem.xbitly.eventplatform.users.User;
 import dem.xbitly.eventplatform.users.UserAdapter;
 
@@ -40,6 +41,8 @@ public class UsersInvitationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUsersInvitationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         binding.usersList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -103,6 +106,12 @@ public class UsersInvitationActivity extends AppCompatActivity {
 
     }
 
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (UsersInvitationActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
+    }
 
 
 

@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class PrivateEventActivity extends AppCompatActivity {
 
@@ -52,6 +53,9 @@ public class PrivateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEventPrivateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -186,6 +190,13 @@ public class PrivateEventActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (PrivateEventActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
         }
     }
 

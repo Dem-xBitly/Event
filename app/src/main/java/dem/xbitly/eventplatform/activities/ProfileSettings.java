@@ -2,6 +2,7 @@ package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import dem.xbitly.eventplatform.databinding.ActivityProfileSettingsBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class ProfileSettings extends AppCompatActivity {
 
@@ -25,6 +27,8 @@ public class ProfileSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -49,5 +53,12 @@ public class ProfileSettings extends AppCompatActivity {
                 startActivity(new Intent (ProfileSettings.this, SettingsActivity.class));
             }
         });
+    }
+
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (ProfileSettings.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dem.xbitly.eventplatform.databinding.ActivityLoginBinding;
+import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -25,9 +26,9 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        checkNetwork();
+
         mAuth = FirebaseAuth.getInstance();
-
-
 
         binding.signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,5 +60,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void checkNetwork(){
+        if(!NetworkManager.isNetworkAvailable(this)){
+            Intent in_intent = new Intent (LoginActivity.this, InternetErrorConnectionActivity.class);
+            startActivity(in_intent);
+        }
     }
 }
