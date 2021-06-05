@@ -64,7 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 ref.child(mAuth.getCurrentUser().getUid()).setValue(userMap);
                                 ref.child(mAuth.getCurrentUser().getUid()).child("Chats").child("count").setValue(0);
                                 ref.child(mAuth.getCurrentUser().getUid()).child("UserPrivateEvents").child("count").setValue(0);
-
+                                ref.child(mAuth.getCurrentUser().getUid()).child("myInvites").setValue("");
+                                ref.child(mAuth.getCurrentUser().getUid()).child("myReviews").setValue("");
 
                                 Intent intent = new Intent (RegisterActivity.this, MainActivity.class);
                                 startActivity(intent);

@@ -79,10 +79,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot2) {
                                     String str;
                                     if(e) {
-                                        try {
+                                        if (Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString().equals("")){
+                                            str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + (finalCount + 1);
+                                        } else {
                                             str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + "," + (finalCount + 1);
-                                        } catch (Exception e) {
-                                            str = "";
                                         }
                                         ref2.child("myInvites").setValue(str);
                                         e = false;

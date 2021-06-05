@@ -34,14 +34,12 @@ import dem.xbitly.eventplatform.tape.TapeAdapter;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-
     private RecyclerView rv;
+    private boolean isUpdateRV = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         checkNetwork();
@@ -75,10 +73,13 @@ public class HomeFragment extends Fragment {
                         String[] ss = s.toArray(new String[0]);
                         String[] ss1 = s1.toArray(new String[0]);
 
-                        rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                        TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
-                        rv.setHasFixedSize(true);
-                        rv.setAdapter(tapeAdapter);
+                        if(isUpdateRV) {
+                            isUpdateRV = false;
+                            rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
+                            TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
+                            rv.setHasFixedSize(true);
+                            rv.setAdapter(tapeAdapter);
+                        }
 
 
                     }
