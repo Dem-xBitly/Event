@@ -154,7 +154,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 String title = snapshot.child("name").getValue().toString();
                                                 LatLng marker = new LatLng(latitude, longitude);
                                                 googleMap.addMarker(new MarkerOptions().position(marker).title(title)
-                                                        .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_map_marker)));
+                                                        .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker)));
                                                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
                                             }
 

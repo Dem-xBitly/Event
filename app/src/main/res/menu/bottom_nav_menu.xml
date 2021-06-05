@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_news_icon"
-        android:title="@string/title_home"
-        app:labelVisibilityMode="unlabeled"/>
+        android:icon="@drawable/ic_tape"
+        android:title="News" />
 
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_map_icon"
-        android:title="@string/title_map"
-        app:labelVisibilityMode="unlabeled"/>
+        android:title="Map" />
 
     <item
         android:id="@+id/navigation_message"
-        android:icon="@drawable/ic_messages_icon"
-        android:title="@string/title_messenger"
-        app:labelVisibilityMode="unlabeled"
+        android:icon="@drawable/ic_chats"
+        android:title="Chats"
        />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_bell_icon"
-        android:title="@string/title_notifications"
-        app:labelVisibilityMode="unlabeled"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications"
         />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile_icon"
-        android:title="@string/title_profile"
-        app:labelVisibilityMode="unlabeled"/>
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        />
 
 </menu>

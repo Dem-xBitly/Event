@@ -62,7 +62,6 @@ public class PrivateEventActivity extends AppCompatActivity {
         ref = database.getReference("PrivateEvents");
         ref.addValueEventListener(new ValueEventListener(){
 
-
             boolean a = true;
 
             @Override
@@ -110,7 +109,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                                 .showLatLong(true)
                                 .setMapType(MapType.NORMAL)
                                 .setFabColor(R.color.blue)
-                                .setMarkerDrawable(R.drawable.ic_map_marker)
+                                .setMarkerDrawable(R.drawable.ic_location_marker)
                                 .build(PrivateEventActivity.this);
 
                         startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);

@@ -111,7 +111,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                         .showLatLong(true)
                         .setMapType(MapType.NORMAL)
                         .setFabColor(R.color.blue)
-                        .setMarkerDrawable(R.drawable.ic_map_marker)
+                        .setMarkerDrawable(R.drawable.ic_location_marker)
                         .build(EventDescriptionActivity.this);
 
                 startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
