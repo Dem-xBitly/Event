@@ -15,7 +15,7 @@ public class TapeHolder extends RecyclerView.ViewHolder {
 
     private final TextView text, username, timeAndData, countUsers, like;
     private final ImageView photo;
-    private final ImageButton buttonLike, buttonShare, buttonComment;
+    private final ImageButton buttonLike, buttonShare, buttonComment, buttonMenu;
     private final Button buttonGo;
 
     public TapeHolder(@NonNull View itemView) {
@@ -29,6 +29,7 @@ public class TapeHolder extends RecyclerView.ViewHolder {
         buttonComment = itemView.findViewById(R.id.comment);
         buttonShare = itemView.findViewById(R.id.share);
         buttonGo = itemView.findViewById(R.id.will_go);
+        buttonMenu = itemView.findViewById(R.id.menu);
         like = itemView.findViewById(R.id.like_txt);
     }
 
@@ -62,6 +63,10 @@ public class TapeHolder extends RecyclerView.ViewHolder {
 
     public ImageButton getButtonComment() {
         return buttonComment;
+    }
+
+    public ImageButton getButtonMenu() {
+        return buttonMenu;
     }
 
     public Button getButtonGo() {

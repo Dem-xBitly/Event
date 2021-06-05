@@ -3,9 +3,14 @@ package dem.xbitly.eventplatform.tape;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -182,6 +187,34 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     Intent chosenIntent = Intent.createChooser(intent, "Send review");
                     context.startActivity(chosenIntent);
                 });
+
+                holder.getButtonMenu().setOnClickListener(view -> {
+                    PopupMenu popup = new PopupMenu(context, view);
+                    if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
+                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                        popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
+                        SpannableString s = new SpannableString("Delete");
+                        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
+                        popup.getMenu().add(Menu.NONE, 2, Menu.NONE, s);
+                    } else {
+                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                    }
+                    popup.show();
+                    popup.setOnMenuItemClickListener(menuItem -> {
+                        switch (menuItem.getItemId()) {
+                            case 0:
+                                //code
+                                break;
+                            case 1:
+                                //code
+                                break;
+                            case 2:
+                                //code
+                                break;
+                        }
+                        return true;
+                    });
+                });
             }
 
             @Override
@@ -262,6 +295,34 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     intent.putExtra(Intent.EXTRA_TEXT, str);
                     Intent chosenIntent = Intent.createChooser(intent, "Send review");
                     context.startActivity(chosenIntent);
+                });
+
+                holder.getButtonMenu().setOnClickListener(view -> {
+                    PopupMenu popup = new PopupMenu(context, view);
+                    if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
+                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                        popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
+                        SpannableString s = new SpannableString("Delete");
+                        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
+                        popup.getMenu().add(Menu.NONE, 2, Menu.NONE, s);
+                    } else {
+                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                    }
+                    popup.show();
+                    popup.setOnMenuItemClickListener(menuItem -> {
+                        switch (menuItem.getItemId()) {
+                            case 0:
+                                //code
+                                break;
+                            case 1:
+                                //code
+                                break;
+                            case 2:
+                                //code
+                                break;
+                        }
+                        return true;
+                    });
                 });
             }
 
