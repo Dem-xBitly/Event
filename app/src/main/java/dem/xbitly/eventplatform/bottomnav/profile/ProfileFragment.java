@@ -64,7 +64,7 @@ public class ProfileFragment extends Fragment {
                 String[] sR = !Objects.requireNonNull(snapshot.child("myReviews").getValue().toString()).equals("") ? Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",") : new String[0];
                 String[] sI = !Objects.requireNonNull(snapshot.child("myInvites").getValue().toString()).equals("") ? Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",") : new String[0];
                 rv.setLayoutManager(new LinearLayoutManager(root.getContext()));
-                TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext());
+                TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
                 rv.setAdapter(tapeAdapter);
 
             }

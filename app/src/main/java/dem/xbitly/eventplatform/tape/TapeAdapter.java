@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +26,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.MainActivity;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
@@ -35,14 +38,16 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     private final ArrayList<String> invitesID = new ArrayList<>();
     private final String userID;
     private final Context context;
+    FragmentManager fragmentManager;
     DatabaseReference ref, ref2, refLike;
 
-    public TapeAdapter(String[] sR, String[] sI, String userID, Context context) {
+    public TapeAdapter(String[] sR, String[] sI, String userID, Context context, FragmentManager fragmentManager) {
         this.countElements = sR.length + sI.length;
         this.reviewsID.addAll(Arrays.asList(sR));
         this.invitesID.addAll(Arrays.asList(sI));
         this.userID = userID;
         this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -58,16 +63,16 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
             } else {
                 return R.layout.item_invite;
             }
-        }else if(sizeI < sizeR && sizeI != 0 && sizeR != 0){
+        }else if(sizeI < sizeR && sizeI != 0){
             int kf = sizeR / sizeI;
             if ((position+1)%(kf+1) == 0 && invitesID.contains(Integer.toString((position+1)/(kf+1)))) {
                 return R.layout.item_invite;
             } else {
                 return R.layout.item_review;
             }
-        }else if(sizeI != 0 && sizeR == 0){
+        }else if(sizeI != 0){
             return R.layout.item_invite;
-        }else if(sizeI == 0 && sizeR != 0){
+        }else if(sizeR != 0){
             return R.layout.item_review;
         } else {
             return 0;
@@ -101,16 +106,16 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
             } else {
                 loadInvite(holder, (position+1) - (position+1)/(kf+1) - 1);
             }
-        }else if(sizeI < sizeR && sizeI != 0 && sizeR != 0){
+        }else if(sizeI < sizeR && sizeI != 0){
             int kf = sizeR / sizeI;
             if ((position+1)%(kf+1) == 0 && invitesID.contains(Integer.toString((position+1)/(kf+1)))) {
                 loadInvite(holder, (position+1)/(kf+1) - 1);
             } else {
                 loadReview(holder, (position+1) - (position+1)/(kf+1) - 1);
             }
-        }else if(sizeI != 0 && sizeR == 0){
+        }else if(sizeI != 0){
             loadInvite(holder, position);
-        }else if(sizeI == 0 && sizeR != 0){
+        }else if(sizeR != 0){
             loadReview(holder, position);
         }
 
@@ -202,13 +207,15 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     popup.show();
                     popup.setOnMenuItemClickListener(menuItem -> {
                         switch (menuItem.getItemId()) {
-                            case 0:
+                            case 0: //About event
+                                //сюда надо передовать нормальные значния, полученные из firebase
+                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog("test", "Moscow", "11/20", "20.12.2021", "10:00");
+                                bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                break;
+                            case 1: //Edit
                                 //code
                                 break;
-                            case 1:
-                                //code
-                                break;
-                            case 2:
+                            case 2: //Delete
                                 //code
                                 break;
                         }
@@ -311,13 +318,15 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     popup.show();
                     popup.setOnMenuItemClickListener(menuItem -> {
                         switch (menuItem.getItemId()) {
-                            case 0:
+                            case 0: //About event
+                                //сюда надо передовать нормальные значния, полученные из firebase
+                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog("test", "Moscow", "11/20", "20.12.2021", "10:00");
+                                bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                break;
+                            case 1: //Edit
                                 //code
                                 break;
-                            case 1:
-                                //code
-                                break;
-                            case 2:
+                            case 2: //Delete
                                 //code
                                 break;
                         }
