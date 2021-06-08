@@ -151,6 +151,10 @@ public class UsersInvitationActivity extends AppCompatActivity {
                 }
             }
         });
+
+        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
+                .child("chatID").setValue(a);
+
         FirebaseDatabase.getInstance().getReference("Chats").child("count").setValue(a);
         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count").setValue(b);
         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(b)).child("chatID").setValue(a);
@@ -161,10 +165,9 @@ public class UsersInvitationActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("all_messages").child("1")
                 .child("from").setValue("App");
         FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
+                .child("userID").setValue("app");
+        FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
                 .child("text").setValue("Welcome to the chat of the event. Please, be polite to the rest of the chat and have a pleasant discussion!");
-
-        FirebaseDatabase.getInstance().getReference().child("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
-                .child("chatID").setValue(a);
     }
 
     public void checkNetwork(){

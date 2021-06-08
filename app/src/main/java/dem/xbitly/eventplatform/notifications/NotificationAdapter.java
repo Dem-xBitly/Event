@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
     boolean have_event_number=false;
 
     int event_number_in_private_events;
+
+    int countt;
 
 
     public NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notification> options) {
@@ -133,6 +137,82 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
                                 .child("accepted").setValue(true);
+
+                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key).child("event_number")
+                                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                if(task.isSuccessful()){
+                                    String event_number = task.getResult().getValue().toString();
+                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(event_number).child("chatID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                            if (task.isSuccessful()){
+                                                String chatID = task.getResult().getValue().toString();
+
+                                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(event_number).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                        if (task.isSuccessful()){
+                                                            String event_name = task.getResult().getValue().toString();
+                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count")
+                                                                    .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                    if (task.isSuccessful()){
+                                                                        countt = Integer.parseInt(task.getResult().getValue().toString());
+                                                                        countt++;
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
+                                                                                .child("count").setValue(countt);
+
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                                                .child(Integer.toString(countt)).child("name").setValue(event_name);
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                                FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                        if (task.isSuccessful()){
+                                                            int count = Integer.parseInt(task.getResult().getValue().toString());
+                                                            count++;
+                                                            FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child("count").setValue(count);
+                                                            FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child(Integer.toString(count)).setValue(FirebaseAuth.getInstance()
+                                                                    .getCurrentUser().getUid());
+
+
+
+                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count")
+                                                                    .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                    if (task.isSuccessful()){
+                                                                        countt = Integer.parseInt(task.getResult().getValue().toString());
+                                                                        countt++;
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
+                                                                                .child("count").setValue(countt);
+
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                                                .child(Integer.toString(countt)).child("chatID").setValue(chatID);
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                                                .child(Integer.toString(countt)).child("chatID").setValue(chatID);
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+
 
 
                         holder.ill_go_btn.setText("Accepted");

@@ -5,6 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     android:background="@drawable/message_single_shape">
 
     <TextView
@@ -24,10 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Many text of message"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/message_author"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="10dp"
         />
 
 

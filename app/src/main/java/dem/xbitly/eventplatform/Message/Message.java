@@ -1,19 +1,31 @@
 package dem.xbitly.eventplatform.Message;
 
+import java.util.ArrayList;
+
 public class Message {
     String text;
     String from;
+    String userID;
 
-    public Message (String text, String from){
+    public Message (String text, String from, String userID){
         this.text = text;
         this.from = from;
+        this.userID = userID;
+    }
+
+    public Message(){
+
     }
 
     public String getText(){return text;}
 
-    public void setText(String name){this.text=text;}
+    public void setText(String text){this.text=text;}
 
     public String getFrom(){return from;}
 
-    public void setName(String from){this.from=from;}
+    public void setFrom(String from){this.from=from;}
+
+    public String getUserID(){return userID;}
+
+    public void setUserID(String userID){this.userID=userID;}
 }

@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ChatActivity"
-    android:background="#F8F8F8">
+    android:background="#f0f0f0">
+
+    <ImageButton
+        android:id="@+id/back_from_chat_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:background="@drawable/back_btn_background"
+        android:padding="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/name_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="26sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/message_rec_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/messageRecView"
-        android:background="#F8F8F8"/>
+        android:layout_above="@+id/message_edit"
+        android:layout_below="@+id/name_txt"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="0dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/message_edit"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:background="#f0f0f0"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@+id/message_btn_send"
+        android:hint="@string/write_a_comment"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black75" />
+
+    <ImageButton
+        android:id="@+id/message_btn_send"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#f0f0f0"
+        android:src="@drawable/ic_baseline_send_24"/>
+</RelativeLayout>

@@ -45,6 +45,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
                         if (task.isSuccessful()){
                             Intent intent = new Intent (v.getContext(), ChatActivity.class);
                             intent.putExtra("chatID", Integer.parseInt(task.getResult().getValue().toString())); //chat id in all Chats
+                            intent.putExtra("chatID2", chat_id);
                             v.getContext().startActivity(intent);
                         }else{
                             Snackbar.make(v, "Hm, something went wrong", Snackbar.LENGTH_SHORT).show();
