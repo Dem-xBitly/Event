@@ -34,9 +34,11 @@ public class MessageAdapter extends FirebaseRecyclerAdapter<Message, MessageAdap
 
         if (msg.getUserID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             viewHolder.text.setText(msg.getText());
+            viewHolder.time.setText(msg.getTime());
         }else {
             viewHolder.from.setText(msg.getFrom());
             viewHolder.text.setText(msg.getText());
+            viewHolder.time.setText(msg.getText());
         }
 
     }
@@ -65,15 +67,17 @@ public class MessageAdapter extends FirebaseRecyclerAdapter<Message, MessageAdap
     }
 
     class viewHolder extends RecyclerView.ViewHolder {
-        TextView text, from;
+        TextView text, from, time;
         public viewHolder(@NonNull View itemView){
             super(itemView);
             if (itemView.equals(R.layout.message_from_me_single_layout)){
                 text = itemView.findViewById(R.id.message_text);
+                time = itemView.findViewById(R.id.time_txt);
             }
             else {
                 from = itemView.findViewById(R.id.message_author);
                 text = itemView.findViewById(R.id.message_text);
+                time = itemView.findViewById(R.id.time_txt);
             }
 
         }

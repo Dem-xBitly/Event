@@ -6,11 +6,13 @@ public class Message {
     String text;
     String from;
     String userID;
+    String time;
 
-    public Message (String text, String from, String userID){
+    public Message (String text, String from, String userID, String time){
         this.text = text;
         this.from = from;
         this.userID = userID;
+        this.time = time;
     }
 
     public Message(){
@@ -28,4 +30,8 @@ public class Message {
     public String getUserID(){return userID;}
 
     public void setUserID(String userID){this.userID=userID;}
+
+    public String getTime(){return time;}
+
+    public void setTime(String time){this.time=time;}
 }

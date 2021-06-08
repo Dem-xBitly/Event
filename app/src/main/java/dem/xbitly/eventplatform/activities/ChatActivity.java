@@ -20,7 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.Message.Message;
@@ -89,10 +92,12 @@ public class ChatActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull @NotNull Task<DataSnapshot> task2) {
                                         if (task2.isSuccessful()){
+                                            String time = new SimpleDateFormat("HH:mm").format(new Date());
                                             HashMap<String, String> messageInfo = new HashMap<>();
                                             messageInfo.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                                             messageInfo.put("from", task2.getResult().getValue().toString());
                                             messageInfo.put("text", binding.messageEdit.getText().toString());
+                                            messageInfo.put("time", time);
                                             FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
                                                     .child("messages").child("all_messages").child(Integer.toString(count)).setValue(messageInfo);
                                             binding.messageEdit.setText("");

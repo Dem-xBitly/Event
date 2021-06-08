@@ -168,6 +168,8 @@ public class UsersInvitationActivity extends AppCompatActivity {
                 .child("userID").setValue("app");
         FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
                 .child("text").setValue("Welcome to the chat of the event. Please, be polite to the rest of the chat and have a pleasant discussion!");
+        FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
+                .child("time").setValue("");
     }
 
     public void checkNetwork(){
