@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.Message.Message;
 import dem.xbitly.eventplatform.Message.MessageAdapter;
 import dem.xbitly.eventplatform.R;
@@ -111,6 +112,97 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        binding.eventInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                        .child("event_number").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful()){
+                            int event_number = Integer.parseInt(task.getResult().getValue().toString());
+                            HashMap<String, String> eventInfo = new HashMap<>();
+                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        eventInfo.put("name", task.getResult().getValue().toString());
+
+                                        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0))) //колво человек, зареганых на евент
+                                                .child("members").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    String count = task.getResult().getValue().toString();
+                                                    eventInfo.put("count", count);
+
+
+                                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("day").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                eventInfo.put("day", task.getResult().getValue().toString());
+
+
+                                                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("hour").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            eventInfo.put("hour", task.getResult().getValue().toString());
+
+                                                                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("minute").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                    if(task.isSuccessful()){
+                                                                                        eventInfo.put("minute", task.getResult().getValue().toString());
+
+                                                                                        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("month").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                                if(task.isSuccessful()){
+                                                                                                    eventInfo.put("month", task.getResult().getValue().toString());
+
+                                                                                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(event_number)).child("year").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                                            if(task.isSuccessful()){
+                                                                                                                eventInfo.put("year", task.getResult().getValue().toString());
+
+                                                                                                                String date = eventInfo.get("day") + "." + eventInfo.get("month") + "." + eventInfo.get("year");
+                                                                                                                String time = eventInfo.get("minute") + "." + eventInfo.get("hour");
+                                                                                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventInfo.get("name"), "Moscow", eventInfo.get("count"), date, time);
+                                                                                                                bottomSheetEventDialog.show(getSupportFragmentManager(), "Event Info");
+                                                                                                            }
+                                                                                                        }
+                                                                                                    });
+                                                                                                }
+                                                                                            }
+                                                                                        });
+
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+
+
+                        }
+                    }
+                });
             }
         });
 

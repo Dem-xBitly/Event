@@ -24,6 +24,16 @@
         android:layout_marginTop="36dp"
         />
 
+    <ImageButton
+        android:id="@+id/event_info_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_menu"
+        android:background="#f0f0f0"
+        android:layout_toEndOf="@id/name_txt"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="90dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_rec_view"
         android:layout_width="match_parent"
