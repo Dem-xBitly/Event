@@ -156,6 +156,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         int count2 = Integer.parseInt(task.getResult().getValue().toString());
                                         count2++;
 
+                                        FirebaseDatabase.getInstance().getReference("PublicEvents")
+                                                .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("chatID").setValue(count2);
+
                                         FirebaseDatabase.getInstance().getReference("Chats").child("count").setValue(count2);
                                         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(count2)).child("event_number").setValue(Integer.toString(getIntent().getIntExtra("event_number", 0)));
                                         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(count2)).child("members").child("count").setValue(1);
