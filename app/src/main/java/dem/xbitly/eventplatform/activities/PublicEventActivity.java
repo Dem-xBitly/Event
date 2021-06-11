@@ -36,7 +36,7 @@ public class PublicEventActivity extends AppCompatActivity {
 
     Calendar dateAndTime = Calendar.getInstance();
 
-    private HashMap<String, Integer> time;
+        private HashMap<String, String> event_info;
 
     private ActivityPublicEventBinding binding;
 
@@ -52,7 +52,7 @@ public class PublicEventActivity extends AppCompatActivity {
 
         checkNetwork();
 
-        time = new HashMap<>();
+        event_info = new HashMap<>();
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -94,7 +94,7 @@ public class PublicEventActivity extends AppCompatActivity {
             binding.eventMaxAmount.setText("Infinity");
             binding.eventMaxAmount.setEnabled(false);
 
-            time.put("max_amount", 0); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
+            event_info.put("max_amount", "0"); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
         });
 
         binding.pickDateBtn.setOnClickListener(v -> setDate());
@@ -102,23 +102,28 @@ public class PublicEventActivity extends AppCompatActivity {
         binding.pickTimeBtn.setOnClickListener(v -> setTime());
 
         binding.nextBtnFromPublicEventBtn.setOnClickListener(v -> {
+
             if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty()
                     || binding.eventTime.getText().toString().isEmpty() || binding.eventDate.getText().toString().isEmpty()) { //нельзя, чтобы поля пустыми были
                 Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
             } else {
                 if (binding.eventMaxAmount.getText().toString().equals("Infinity")) {
-                    time.put("max_amount", 0);
+                    event_info.put("max_amount", "0");
                 } else {
-                    time.put("max_amount", Integer.valueOf(binding.eventMaxAmount.getText().toString()));
+                    event_info.put("max_amount", binding.eventMaxAmount.getText().toString());
                 }
+                event_info.put("name", binding.eventNamePublic.getText().toString());
+                event_info.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                 //если все хорошо, то создаем reference для этого мероприятия
-                ref.setValue(time).addOnCompleteListener(task -> {
+                ref.setValue(event_info).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
                         intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
                         intent.putExtra("eventID", event_number);
+                        intent.putExtra("event_name", binding.eventNamePublic.getText().toString());
 
                         startActivity(intent);
                     } else {
@@ -126,8 +131,6 @@ public class PublicEventActivity extends AppCompatActivity {
                     }
                 });
 
-                ref.child("name").setValue(binding.eventNamePublic.getText().toString());
-                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });
@@ -159,8 +162,7 @@ public class PublicEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
 
-            time.put("minute", minute);
-            time.put("hour", hourOfDay);
+            event_info.put("time", hourOfDay + ":" + minute);
 
             binding.eventTime.setText(hourOfDay + ":" + minute);
         }
@@ -174,9 +176,7 @@ public class PublicEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            time.put("day", dayOfMonth);
-            time.put("month", monthOfYear);
-            time.put("year", year);
+            event_info.put("date", dayOfMonth + "." + monthOfYear + "." + year);
 
             binding.eventDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
         }

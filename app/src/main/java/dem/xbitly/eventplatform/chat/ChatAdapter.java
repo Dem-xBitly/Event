@@ -38,6 +38,11 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
             @Override
             public void onClick(View v) {
                 final String chat_id = getRef(i).getKey();
+                boolean privacy = true;
+                if (chat.getPrivacy().equals("no")){
+                    privacy = false;
+                }
+                boolean finalPrivacy = privacy;
                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(chat_id)
                         .child("chatID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -46,6 +51,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
                             Intent intent = new Intent (v.getContext(), ChatActivity.class);
                             intent.putExtra("chatID", Integer.parseInt(task.getResult().getValue().toString())); //chat id in all Chats
                             intent.putExtra("chatID2", chat_id);
+                            intent.putExtra("privacy", finalPrivacy); //private event or not
                             v.getContext().startActivity(intent);
                         }else{
                             Snackbar.make(v, "Hm, something went wrong", Snackbar.LENGTH_SHORT).show();

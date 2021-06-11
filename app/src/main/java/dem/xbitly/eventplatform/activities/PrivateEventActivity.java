@@ -3,16 +3,24 @@ package dem.xbitly.eventplatform.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +54,12 @@ public class PrivateEventActivity extends AppCompatActivity {
     Calendar dateAndTime = Calendar.getInstance();
 
     //All info about event
-    private HashMap<String, Integer> event_info = new HashMap<>();
+    private HashMap<String, String> event_info = new HashMap<>();
+
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +71,34 @@ public class PrivateEventActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//
+//            return;
+//        }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                        }
+                    }
+                });
+
+
 
         ref = database.getReference("PrivateEvents");
         ref.addValueEventListener(new ValueEventListener(){
@@ -105,7 +146,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                         Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new PlacePicker.IntentBuilder()
-                                .setLatLong(40.748672, -73.985628)
+                                .setLatLong(latitude, longitude)
                                 .showLatLong(true)
                                 .setMapType(MapType.NORMAL)
                                 .setFabColor(R.color.blue)
@@ -149,8 +190,7 @@ public class PrivateEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
 
-            event_info.put("minute", minute);
-            event_info.put("hour", hourOfDay);
+            event_info.put("time", hourOfDay + ":" + minute);
 
             binding.eventTime.setText(hourOfDay + ":" + minute);
         }
@@ -164,11 +204,9 @@ public class PrivateEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            event_info.put("day", dayOfMonth);
-            event_info.put("month", monthOfYear);
-            event_info.put("year", year);
+            event_info.put("date", dayOfMonth + "." + monthOfYear + "." + year);
 
-            binding.eventDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+            binding.eventDate.setText(dayOfMonth + "." + monthOfYear + "." + year);
         }
     };
 
