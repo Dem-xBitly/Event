@@ -155,7 +155,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                     }
                 });
-
+                String eventID = snapshot2.child("eventID").getValue().toString();
                 ref2 = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
                 ref2.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -184,7 +184,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 holder.getButtonGo().setText("I will go");
                                 ref2.child("go").setValue(finalGo.replace(","+userID, ""));
                             }
-                            ref.child("eventID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                     if (task.isSuccessful()){

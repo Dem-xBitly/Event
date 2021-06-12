@@ -38,7 +38,7 @@ public class MessageAdapter extends FirebaseRecyclerAdapter<Message, MessageAdap
         }else {
             viewHolder.from.setText(msg.getFrom());
             viewHolder.text.setText(msg.getText());
-            viewHolder.time.setText(msg.getText());
+            viewHolder.time.setText(msg.getTime());
         }
 
     }
