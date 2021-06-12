@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,7 +37,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +50,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
+import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
 import dem.xbitly.eventplatform.activities.PrivateEventActivity;
 import dem.xbitly.eventplatform.activities.PublicEventActivity;
@@ -58,6 +69,8 @@ public class MapFragment extends Fragment implements LocationListener {
     private ImageButton create_event;
 
     private LocationManager locationManager;
+
+    private HashMap<String, String> event_info = new HashMap<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -122,15 +135,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
@@ -154,8 +159,9 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 String title = snapshot.child("name").getValue().toString();
                                                 LatLng marker = new LatLng(latitude, longitude);
                                                 googleMap.addMarker(new MarkerOptions().position(marker).title(title)
-                                                        .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker)));
+                                                        .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker))).setTag(num);
                                                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+
                                             }
 
                                             @Override
@@ -170,7 +176,105 @@ public class MapFragment extends Fragment implements LocationListener {
                     }catch (Exception e){
 
                     }
+
+                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            String eventID = (String)marker.getTag();
+                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        event_info.put("name", task.getResult().getValue().toString());
+
+                                        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID).child("chatID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    String count_m = task.getResult().getValue().toString();
+                                                    FirebaseDatabase.getInstance().getReference("Chats").child(count_m) //колво человек, зареганых на евент
+                                                            .child("members").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                String count = task.getResult().getValue().toString();
+                                                                event_info.put("count", count);
+
+                                                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID).child("time").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                        if (task.isSuccessful()){
+                                                                            String time = task.getResult().getValue().toString();
+                                                                            event_info.put("time", time);
+                                                                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID).child("date").get()
+                                                                                    .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                            if(task.isSuccessful()){
+                                                                                                String date = task.getResult().getValue().toString();
+                                                                                                event_info.put("date", date);
+
+                                                                                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID)
+                                                                                                        .child("adress").child("longitude").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                                        if(task.isSuccessful()){
+                                                                                                            String longitude = task.getResult().getValue().toString();
+                                                                                                            event_info.put("longitude", longitude);
+                                                                                                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID)
+                                                                                                                    .child("adress").child("latitude").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                                                                @Override
+                                                                                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                                                                    if (task.isSuccessful()){
+                                                                                                                        String latitude = task.getResult().getValue().toString();
+                                                                                                                        double latitude_d = Double.parseDouble(latitude);
+                                                                                                                        double longitude_d = Double.parseDouble(event_info.get("longitude"));
+                                                                                                                        Geocoder geocoder;
+                                                                                                                        List<Address> addresses;
+                                                                                                                        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+                                                                                                                        try {
+                                                                                                                            addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
+
+                                                                                                                            String address = addresses.get(0).getAddressLine(0);
+                                                                                                                            String city = addresses.get(0).getLocality();
+                                                                                                                            String state = addresses.get(0).getAdminArea();
+                                                                                                                            String country = addresses.get(0).getCountryName();
+
+                                                                                                                            BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(event_info.get("name"),
+                                                                                                                                    address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"));
+                                                                                                                            bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
+                                                                                                                        } catch (IOException e) {
+                                                                                                                            e.printStackTrace();
+                                                                                                                        }
+
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            });
+                                                                                                        }
+                                                                                                    }
+                                                                                                });
+                                                                                            }
+                                                                                        }
+                                                                                    });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    });
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull @NotNull DatabaseError error) {
