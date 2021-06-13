@@ -300,7 +300,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         switch (menuItem.getItemId()) {
                             case 0: //About event
                                 //сюда надо передовать нормальные значния, полученные из firebase
-                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog("test", "Moscow", "11/20", "20.12.2021", "10:00");
+                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, "test", "Moscow", "11/20", "20.12.2021", "10:00", false);
                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
                                 break;
                             case 1: //Edit
@@ -337,6 +337,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                 holder.getText().setText(str);
 
                 String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
+                String eventID = Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString();
 
                 ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot2.child("userID").getValue()).toString());
                 ref.addValueEventListener(new ValueEventListener() {
@@ -411,7 +412,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         switch (menuItem.getItemId()) {
                             case 0: //About event
                                 //сюда надо передовать нормальные значния, полученные из firebase
-                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog("test", "Moscow", "11/20", "20.12.2021", "10:00");
+                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, "test", "Moscow", "11/20", "20.12.2021", "10:00", false);
                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
                                 break;
                             case 1: //Edit

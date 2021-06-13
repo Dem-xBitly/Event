@@ -142,4 +142,30 @@
             tools:text="10:00" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/btn_add_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/r5"
+        android:layout_marginBottom="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:id="@+id/i5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_add_blue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/i5"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:text="@string/add_review"/>
+    </RelativeLayout>
+
 </RelativeLayout>

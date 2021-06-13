@@ -80,7 +80,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                 if (Boolean.parseBoolean(snapshot.child("accepted").getValue().toString())){
                                     holder.ill_go_btn.setText("Accepted");
                                     holder.ill_go_btn.setClickable(false);
-                                }else{
+                                } else {
                                     holder.ill_go_btn.setText("I'll go!");
                                 }
                             }

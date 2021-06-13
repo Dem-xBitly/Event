@@ -207,8 +207,8 @@ public class ChatActivity extends AppCompatActivity {
                                                                                                                                     String state = addresses.get(0).getAdminArea();
                                                                                                                                     String country = addresses.get(0).getCountryName();
 
-                                                                                                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventInfo.get("name"),
-                                                                                                                                            address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"));
+                                                                                                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
+                                                                                                                                            address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false);
                                                                                                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                                                                                 } catch (IOException e) {
                                                                                                                                     e.printStackTrace();
@@ -288,8 +288,9 @@ public class ChatActivity extends AppCompatActivity {
                                                                                                                                     String state = addresses.get(0).getAdminArea();
                                                                                                                                     String country = addresses.get(0).getCountryName();
 
-                                                                                                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventInfo.get("name"),
-                                                                                                                                            address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"));
+
+                                                                                                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
+                                                                                                                                            address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), true);
                                                                                                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                                                                                 } catch (IOException e) {
                                                                                                                                     e.printStackTrace();

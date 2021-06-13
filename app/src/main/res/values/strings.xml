@@ -38,6 +38,8 @@
     <string name="create_event">CREATE EVENT</string>
     <string name="no_internet_connection">No internet connection :(</string>
     <string name="retry">retry</string>
+    <string name="write_a_message">Write a message</string>
+    <string name="add_review">Add review</string>
 
     <string-array name="languages">
         <item>Русский</item>

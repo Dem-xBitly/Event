@@ -273,8 +273,8 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String state = addresses.get(0).getAdminArea();
                                                                                                                                 String country = addresses.get(0).getCountryName();
 
-                                                                                                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(event_info.get("name"),
-                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"));
+                                                                                                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
+                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), false);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();
@@ -363,8 +363,8 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String state = addresses.get(0).getAdminArea();
                                                                                                                                 String country = addresses.get(0).getCountryName();
 
-                                                                                                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(event_info.get("name"),
-                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"));
+                                                                                                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
+                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), true);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();

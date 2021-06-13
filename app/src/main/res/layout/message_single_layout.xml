@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:minWidth="60dp"
+    android:layout_marginEnd="75dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/message_single_shape">
 
     <TextView
@@ -15,31 +17,26 @@
         android:layout_height="wrap_content"
         android:text="Author"
         android:textColor="#606EED"
-        android:textSize="15sp"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp" />
-
+        android:textSize="12sp"/>
 
     <TextView
         android:id="@+id/message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Many text of message"
-        android:textSize="15sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_author" />
+        android:minWidth="40dp"
+        android:layout_below="@id/message_author"
+        android:text="Mrfnrjfnrnjf "
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/time_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_below="@id/message_text"
+        android:layout_alignEnd="@+id/message_text"
+        android:layout_marginEnd="2dp"
         android:text="12:00"
         android:textColor="#B3000000"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_author" />
+        android:textSize="12sp" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
