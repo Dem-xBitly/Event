@@ -182,9 +182,8 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                                                     double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
                                                     double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
-                                                    String title = snapshot.child("name").getValue().toString();
                                                     LatLng marker = new LatLng(latitude, longitude);
-                                                    googleMap.addMarker(new MarkerOptions().position(marker).title(title)
+                                                    googleMap.addMarker(new MarkerOptions().position(marker)
                                                             .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker))).setTag(num);
                                                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
 
