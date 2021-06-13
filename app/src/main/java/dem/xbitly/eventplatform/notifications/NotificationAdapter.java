@@ -104,7 +104,9 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                     event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
                                     if (!b){
                                         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(event_number_in_private_events);
+                                                .child("UserPrivateEvents").child(Integer.toString(event_number)).child("eventID").setValue(event_number_in_private_events);
+                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("UserPrivateEvents").child(Integer.toString(event_number)).child("privacy").setValue("yes");
                                         b = true;
                                     }
 
@@ -167,6 +169,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                                                                         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
                                                                                 .child(Integer.toString(countt)).child("name").setValue(event_name);
+                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                                                .child(Integer.toString(countt)).child("privacy").setValue("yes");
                                                                     }
                                                                 }
                                                             });

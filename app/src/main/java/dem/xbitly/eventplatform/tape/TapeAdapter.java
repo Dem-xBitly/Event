@@ -48,6 +48,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     DatabaseReference ref, ref2, refLike;
 
     private int count;
+    private int count2;
 
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context, FragmentManager fragmentManager) {
         this.countElements = sR.length + sI.length;
@@ -184,6 +185,34 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 holder.getButtonGo().setText("I will go");
                                 ref2.child("go").setValue(finalGo.replace(","+userID, ""));
                             }
+
+                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        count = Integer.parseInt(task.getResult().getValue().toString());
+                                        count++;
+                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("UserPrivateEvents").child("count").setValue(count);
+                                        dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                if (task.isSuccessful()){
+                                                    String eventID = task.getResult().getValue().toString();
+
+                                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .child("UserPrivateEvents").child(Integer.toString(count)).child("privacy").setValue("no");
+
+                                                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                            .child("UserPrivateEvents").child(Integer.toString(count)).child("eventID").setValue(eventID);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
                             dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
