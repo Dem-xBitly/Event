@@ -107,6 +107,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                                 .child("UserPrivateEvents").child(Integer.toString(event_number)).child("eventID").setValue(event_number_in_private_events);
                                         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .child("UserPrivateEvents").child(Integer.toString(event_number)).child("privacy").setValue("yes");
+                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .child("UserPrivateEvents").child("count").setValue(event_number);
                                         b = true;
                                     }
 
@@ -118,7 +120,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                                 } catch (Exception e) {
                                     event_number = 1;
-                                    ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UsPrivateEvents");
+                                    ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents");
                                     if (!b){
                                         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .child("UserPrivateEvents").child(Integer.toString(event_number)).setValue(event_number_in_private_events);

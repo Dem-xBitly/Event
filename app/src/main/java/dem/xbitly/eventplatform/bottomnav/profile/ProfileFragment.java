@@ -41,6 +41,8 @@ public class ProfileFragment extends Fragment {
 
     private String username;
 
+    private boolean isUpdateRV = true;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
@@ -64,12 +66,22 @@ public class ProfileFragment extends Fragment {
 
                 String[] sR = !Objects.requireNonNull(snapshot.child("myReviews").getValue().toString()).equals("") ? Objects.requireNonNull(snapshot.child("myReviews").getValue()).toString().split(",") : new String[0];
                 String[] sI = !Objects.requireNonNull(snapshot.child("myInvites").getValue().toString()).equals("") ? Objects.requireNonNull(snapshot.child("myInvites").getValue()).toString().split(",") : new String[0];
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
-                linearLayoutManager.setReverseLayout(true);
-                linearLayoutManager.setStackFromEnd(true);
-                rv.setLayoutManager(linearLayoutManager);
-                TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
-                rv.setAdapter(tapeAdapter);
+                if(isUpdateRV) {
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
+                    rv.setLayoutManager(linearLayoutManager);
+                    rv.setHasFixedSize(true);
+                    try {
+                        isUpdateRV = false;
+                        TapeAdapter tapeAdapter = new TapeAdapter(sR, sI, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
+                        rv.setAdapter(tapeAdapter);
+                    } catch (Exception e){
+                        isUpdateRV = true;
+                    }
+
+                }
 
             }
 
