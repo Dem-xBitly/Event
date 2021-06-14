@@ -75,14 +75,18 @@ public class HomeFragment extends Fragment {
 
                         if(isUpdateRV) {
 
-                            isUpdateRV = false;
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
                             linearLayoutManager.setReverseLayout(true);
                             linearLayoutManager.setStackFromEnd(true);
                             rv.setLayoutManager(linearLayoutManager);
-                            TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
                             rv.setHasFixedSize(true);
-                            rv.setAdapter(tapeAdapter);
+                            try {
+                                isUpdateRV = false;
+                                TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
+                                rv.setAdapter(tapeAdapter);
+                            } catch (Exception e){
+                                isUpdateRV = true;
+                            }
 
                         }
 
