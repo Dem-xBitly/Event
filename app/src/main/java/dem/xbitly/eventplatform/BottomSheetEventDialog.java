@@ -1,5 +1,6 @@
 package dem.xbitly.eventplatform;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import dem.xbitly.eventplatform.activities.CommentActivity;
+import dem.xbitly.eventplatform.activities.CreateReviewActivity;
 
 public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
@@ -48,7 +52,14 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         if (userIsGo) {
             buttonAddReview.setVisibility(View.VISIBLE);
             buttonAddReview.setOnClickListener(view -> {
-                //перекинуть на создание отзыва и передача в интенте id
+                Intent intent = new Intent(v.getContext(), CreateReviewActivity.class);
+                if(this.name.length() > 9){
+                    intent.putExtra("nameEvent", this.name.substring(0, 7)+"...");
+                } else {
+                    intent.putExtra("nameEvent", this.name);
+                }
+                intent.putExtra("eventID", this.id);
+                v.getContext().startActivity(intent);
             });
         } else {
             buttonAddReview.setVisibility(View.GONE);

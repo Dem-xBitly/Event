@@ -40,6 +40,7 @@
     <string name="retry">retry</string>
     <string name="write_a_message">Write a message</string>
     <string name="add_review">Add review</string>
+    <string name="review">Review</string>
 
     <string-array name="languages">
         <item>Русский</item>
