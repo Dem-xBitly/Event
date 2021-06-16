@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,20 +34,28 @@ public class UserAdapter extends FirebaseRecyclerAdapter <User, UserAdapter.myvi
        holder.name.setText(model.getName());
 
 
+        if (users_ids.get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            holder.itemView.setClickable(false);
+        }
+
        holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               final String user_id = getRef(position).getKey();
-               if (holder.itemView.findViewById(R.id.check_user).getVisibility() == View.VISIBLE){ //если пользователь отменил приглашение(удалил галочку)
-                   holder.itemView.findViewById(R.id.check_user).setVisibility(View.INVISIBLE);
-                   users_ids.remove(user_id);
-               }else { //если пользователь приглашает (поставил галочку)
-                   users_ids.add(user_id);
-                   holder.itemView.findViewById(R.id.check_user).setVisibility(View.VISIBLE);
+               if (users_ids.get(position).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                   FancyToast.makeText(v.getContext(), "You can't invite yourself!",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+               }else{
+                   final String user_id = getRef(position).getKey();
+                   if (holder.itemView.findViewById(R.id.check_user).getVisibility() == View.VISIBLE){ //если пользователь отменил приглашение(удалил галочку)
+                       holder.itemView.findViewById(R.id.check_user).setVisibility(View.INVISIBLE);
+                       users_ids.remove(user_id);
+                   }else { //если пользователь приглашает (поставил галочку)
+                       users_ids.add(user_id);
+                       holder.itemView.findViewById(R.id.check_user).setVisibility(View.VISIBLE);
+                   }
                }
-
            }
        });
+
     }
 
     public ArrayList<String> getUsers_ids(){

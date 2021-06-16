@@ -2,10 +2,13 @@ package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +42,47 @@ public class CommentActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         checkNetwork();
+
+
+
+        binding.refreshComments.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        binding.refreshComments.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                binding.refreshComments.setRefreshing(true);
+                e = true;
+                ref.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(e) {
+                            binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
+                            int count = 0;
+                            try {
+                                count = Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString());
+                            } catch (Exception e) {
+                                ref.child("count").setValue(0);
+                            }
+                            CommentAdapter commentAdapter = new CommentAdapter(count, dBase, ref);
+                            binding.commentsRecycler.setAdapter(commentAdapter);
+                            e = false;
+                            binding.refreshComments.setRefreshing(false);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
 
         dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Reviews/"+getIntent().getSerializableExtra("id").toString()+"/comments");
@@ -79,6 +123,7 @@ public class CommentActivity extends AppCompatActivity {
                             CommentAdapter commentAdapter = new CommentAdapter((count+1), dBase, ref);
                             binding.commentsRecycler.setAdapter(commentAdapter);
                             r = false;
+
                         }
                     }
 
@@ -103,6 +148,7 @@ public class CommentActivity extends AppCompatActivity {
                     CommentAdapter commentAdapter = new CommentAdapter(count, dBase, ref);
                     binding.commentsRecycler.setAdapter(commentAdapter);
                     e = false;
+
                 }
             }
 
@@ -115,7 +161,11 @@ public class CommentActivity extends AppCompatActivity {
 
         binding.backFromCommentsBtn.setOnClickListener(view -> onBackPressed());
 
+
+
     }
+
+
 
     public void checkNetwork(){
         if(!NetworkManager.isNetworkAvailable(this)){

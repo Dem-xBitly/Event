@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView rv;
     private boolean isUpdateRV = true;
 
+    private SwipeRefreshLayout refresh;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -49,6 +52,21 @@ public class HomeFragment extends Fragment {
         DatabaseReference ref2 = dBase.getReference("Invite");
 
         rv = root.findViewById(R.id.home_posts_recycler);
+        refresh = root.findViewById(R.id.refresh_tape);
+
+        refresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh.setRefreshing(true);
+                isUpdateRV = true;
+                updateRecycler(ref, ref2, root);
+            }
+        });
 
         updateRecycler(ref, ref2, root);
 
@@ -104,7 +122,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-
+                refresh.setRefreshing(false);
             }
 
             @Override
