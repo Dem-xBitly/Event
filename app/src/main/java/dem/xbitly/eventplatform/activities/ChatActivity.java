@@ -11,9 +11,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +35,6 @@ import java.util.Locale;
 import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.Message.Message;
 import dem.xbitly.eventplatform.Message.MessageAdapter;
-import dem.xbitly.eventplatform.R;
-import dem.xbitly.eventplatform.chat.Chat;
-import dem.xbitly.eventplatform.chat.ChatAdapter;
 import dem.xbitly.eventplatform.databinding.ActivityChatBinding;
 import dem.xbitly.eventplatform.network.NetworkManager;
 
@@ -132,7 +126,6 @@ public class ChatActivity extends AppCompatActivity {
         binding.eventInfoBtn.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(getApplicationContext(), v);
             popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
-            popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Write review");
             popup.show();
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -250,16 +243,16 @@ public class ChatActivity extends AppCompatActivity {
                                 }
                             });
                             break;
-
-                        case 1:
-
-                            break;
                     }
 
 
                     return false;
                 }
             });
+        });
+
+        binding.backFromChatBtn.setOnClickListener(view -> {
+            onBackPressed();
         });
 
     }
