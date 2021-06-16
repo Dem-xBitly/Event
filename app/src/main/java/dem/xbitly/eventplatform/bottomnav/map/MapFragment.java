@@ -71,6 +71,8 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private LocationManager locationManager;
 
+    private Context context;
+
     private HashMap<String, String> event_info = new HashMap<>();
 
 
@@ -79,6 +81,7 @@ public class MapFragment extends Fragment implements LocationListener {
         dashboardViewModel =
                 new ViewModelProvider(this).get(MapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
+        this.context = root.getContext();
 
         checkNetwork();
 
@@ -163,8 +166,8 @@ public class MapFragment extends Fragment implements LocationListener {
                                                     double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
                                                     String title = snapshot.child("name").getValue().toString();
                                                     LatLng marker = new LatLng(latitude, longitude);
-                                                    googleMap.addMarker(new MarkerOptions().position(marker).title(title)
-                                                            .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker))).setTag(num);
+                                                    googleMap.addMarker(new MarkerOptions().position(marker)
+                                                            .icon(getBitmapFromVectorDrawable(context, R.drawable.ic_location_marker))).setTag(num);
                                                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
 
                                                 }
@@ -184,7 +187,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                     double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
                                                     LatLng marker = new LatLng(latitude, longitude);
                                                     googleMap.addMarker(new MarkerOptions().position(marker)
-                                                            .icon(getBitmapFromVectorDrawable(getContext(), R.drawable.ic_location_marker))).setTag(num);
+                                                            .icon(getBitmapFromVectorDrawable(context, R.drawable.ic_location_marker))).setTag(num);
                                                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
 
                                                 }
