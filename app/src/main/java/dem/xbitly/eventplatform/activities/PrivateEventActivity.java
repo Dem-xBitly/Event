@@ -65,6 +65,8 @@ public class PrivateEventActivity extends AppCompatActivity {
     private double latitude;
     private double longitude;
 
+    boolean a = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,34 +108,7 @@ public class PrivateEventActivity extends AppCompatActivity {
         binding.eventTime.setEnabled(false);
 
         ref = database.getReference("PrivateEvents");
-        ref.addValueEventListener(new ValueEventListener(){
 
-            boolean a = true;
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
-                    ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
-                    if(a){
-                        snapshot.getRef().child("count").setValue(event_number);
-                        a = false;
-                    }
-                }catch(Exception e){
-                    event_number = 1;
-                    ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
-                    if (a){
-                        snapshot.getRef().child("count").setValue(event_number);
-                        a = false;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
         binding.pickDateBtn.setOnClickListener(v -> setDate());
@@ -146,26 +121,68 @@ public class PrivateEventActivity extends AppCompatActivity {
                 FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             } else {
                 //если все хорошо, то создаем reference для этого мероприятия
-                ref.setValue(event_info).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
+                ref.addValueEventListener(new ValueEventListener(){
 
-                        Intent intent = new PlacePicker.IntentBuilder()
-                                .setLatLong(latitude, longitude)
-                                .showLatLong(true)
-                                .setMapType(MapType.NORMAL)
-                                .setFabColor(R.color.blue)
-                                .setMarkerDrawable(R.drawable.ic_location_marker_green)
-                                .build(PrivateEventActivity.this);
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(a) {
+                            try {
+                                event_number = Integer.parseInt(snapshot.child("count").getValue().toString());
+                                ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
+                                ref.setValue(event_info).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()){
 
-                        startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
-                    }else {
-                        Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
+                                        Intent intent = new PlacePicker.IntentBuilder()
+                                                .setLatLong(latitude, longitude)
+                                                .showLatLong(true)
+                                                .setMapType(MapType.NORMAL)
+                                                .setFabColor(R.color.blue)
+                                                .setMarkerDrawable(R.drawable.ic_location_marker_green)
+                                                .build(PrivateEventActivity.this);
+
+                                        startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+                                    }else {
+                                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                    }
+                                });
+
+                                ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
+                                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                snapshot.getRef().child("count").setValue(event_number + 1);
+                                a = false;
+                            } catch (Exception e) {
+                                event_number = 1;
+                                ref = database.getReference("PrivateEvents").child(String.valueOf(event_number));
+                                ref.setValue(event_info).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()){
+
+                                        Intent intent = new PlacePicker.IntentBuilder()
+                                                .setLatLong(latitude, longitude)
+                                                .showLatLong(true)
+                                                .setMapType(MapType.NORMAL)
+                                                .setFabColor(R.color.blue)
+                                                .setMarkerDrawable(R.drawable.ic_location_marker_green)
+                                                .build(PrivateEventActivity.this);
+
+                                        startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+                                    }else {
+                                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                    }
+                                });
+
+                                ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
+                                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                snapshot.getRef().child("count").setValue(event_number + 1);
+                                a = false;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
-
-                ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
-                ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });

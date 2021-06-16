@@ -37,6 +37,10 @@ public class PublicEventActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
+
+    boolean a = true;
+
+
     Calendar dateAndTime = Calendar.getInstance();
 
         private HashMap<String, String> event_info;
@@ -61,35 +65,6 @@ public class PublicEventActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         ref = database.getReference("PublicEvents");
-        ref.addValueEventListener(new ValueEventListener(){
-
-
-            boolean a = true;
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    event_number = Integer.parseInt(snapshot.child("count").getValue().toString()) + 1;
-                    ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
-                    if(a){
-                        snapshot.getRef().child("count").setValue(event_number);
-                        a = false;
-                    }
-                }catch(Exception e){
-                    event_number = 1;
-                    ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
-                    if (a){
-                        snapshot.getRef().child("count").setValue(event_number);
-                        a = false;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         binding.eventDate.setEnabled(false);
         binding.eventTime.setEnabled(false);
@@ -122,17 +97,54 @@ public class PublicEventActivity extends AppCompatActivity {
                 event_info.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 //если все хорошо, то создаем reference для этого мероприятия
-                ref.setValue(event_info).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                ref.addValueEventListener(new ValueEventListener(){
 
-                        Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
-                        intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        intent.putExtra("eventID", event_number);
-                        intent.putExtra("event_name", binding.eventNamePublic.getText().toString());
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(a) {
+                            try {
+                                event_number = Integer.parseInt(snapshot.child("count").getValue().toString());
+                                ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
+                                ref.setValue(event_info).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
 
-                        startActivity(intent);
-                    } else {
-                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                        Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
+                                        intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        intent.putExtra("eventID", event_number);
+                                        intent.putExtra("event_name", binding.eventNamePublic.getText().toString());
+
+                                        startActivity(intent);
+                                    } else {
+                                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                    }
+                                });
+                                snapshot.getRef().child("count").setValue(event_number+1);
+                                a = false;
+                            } catch (Exception e) {
+                                event_number = 1;
+                                ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
+                                ref.setValue(event_info).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+
+                                        Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
+                                        intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        intent.putExtra("eventID", event_number);
+                                        intent.putExtra("event_name", binding.eventNamePublic.getText().toString());
+
+                                        startActivity(intent);
+                                    } else {
+                                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                    }
+                                });
+                                snapshot.getRef().child("count").setValue(event_number+1);
+                                a = false;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
 
