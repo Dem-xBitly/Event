@@ -26,10 +26,24 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="60dp"
+            android:textColor="@color/black"
             android:textSize="18sp"
-            android:layout_centerVertical="true"
-            tools:text="NAME OF EVENT"
-            android:textColor="@color/black"/>
+            tools:text="NAME OF EVENT" />
+
+        <TextView
+            android:id="@+id/text_private"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private"
+            android:textSize="14sp"
+            android:textColor="@color/black75"
+            android:layout_below="@+id/name"/>
+
+
 
     </RelativeLayout>
 

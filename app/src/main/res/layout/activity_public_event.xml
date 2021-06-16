@@ -44,6 +44,9 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:background="@drawable/edit_txt_shape"
             android:inputType="textPersonName"/>
 
@@ -63,6 +66,9 @@
                 android:hint="@string/max_amount"
                 android:inputType="number"
                 android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textColorHint="@color/black75" />
 
             <ImageButton
@@ -91,6 +97,9 @@
                 android:hint="@string/time"
                 android:inputType="time"
                 android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textColorHint="@color/black75" />
             <ImageButton
                 android:id="@+id/pick_time_btn"
@@ -118,6 +127,9 @@
                 android:inputType="date"
                 android:textColor="@color/black"
                 android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textColorHint="@color/black75" />
 
             <ImageButton

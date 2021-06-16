@@ -41,6 +41,9 @@
             android:hint="@string/username"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:background="@drawable/edit_txt_shape"
             android:inputType="textPersonName"/>
 

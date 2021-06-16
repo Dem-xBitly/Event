@@ -42,6 +42,9 @@
             android:hint="@string/username"
             android:textColor="@color/black"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:textColorHint="@color/black75"
             android:background="@drawable/edit_txt_shape"
             android:inputType="textPersonName"/>
@@ -54,6 +57,9 @@
             android:hint="@string/email"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:textColor="@color/black"
             android:background="@drawable/edit_txt_shape"
             android:layout_marginTop="20dp"
@@ -69,6 +75,9 @@
             android:textColorHint="@color/black75"
             android:inputType="textPassword"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:background="@drawable/edit_txt_shape"
             android:layout_marginTop="20dp"/>
 

@@ -38,8 +38,9 @@
         android:inputType="textMultiLine"
         android:layout_height="wrap_content"
         android:paddingStart="20dp"
-        android:paddingBottom="10dp"
+        android:paddingEnd="20dp"
         android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black75" />
 

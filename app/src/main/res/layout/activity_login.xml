@@ -42,6 +42,9 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:background="@drawable/edit_txt_shape"
             android:inputType="textEmailAddress"/>
 
@@ -51,10 +54,12 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:hint="@string/password"
-
             android:textColor="@color/black"
             android:textColorHint="@color/black75"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:inputType="textPassword"
             android:background="@drawable/edit_txt_shape"
             android:layout_marginTop="20dp"/>

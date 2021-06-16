@@ -49,8 +49,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     private int count;
 
-    private String eventId;
-
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context, FragmentManager fragmentManager) {
         this.countElements = sR.length + sI.length;
         this.reviewsID.addAll(Arrays.asList(sR));
@@ -172,6 +170,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         }
                         if(go.contains(userID)){
                             holder.getButtonGo().setText("Refuse");
+                            holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg_success);
                         }
                         if(ee != 0){
                             holder.getCountUsers().setText((go.split(",").length-1)+"/"+ee);
@@ -185,6 +184,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                             if(!finalGo.contains(userID)) {
                                 if(finalGo.split(",").length <= finalEe || finalEe == 0) {
                                     holder.getButtonGo().setText("Refuse");
+                                    holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg_success);
 
                                     ref2.child("go").setValue(finalGo + "," + userID);
                                     FirebaseDatabase.getInstance().getReference("Users").child(userID)
@@ -197,7 +197,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                             dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
                                                     String eventID1 = task1.getResult().getValue().toString();
-                                                    eventId = eventID1;
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                             .child("UserPrivateEvents").child(eventID1).child("privacy").setValue("no");
@@ -237,7 +236,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                                                                     chatInfo.put("name", name);
                                                                                     chatInfo.put("privacy", "no");
                                                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                                            .child("Chats").child("chats").child(eventId).setValue(chatInfo);
+                                                                                            .child("Chats").child("chats").child(eventID).setValue(chatInfo);
                                                                                 }
                                                                             });
                                                                 }
@@ -249,13 +248,15 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                         }
                                     });
                                 } else {
+                                    holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg);
                                     FancyToast.makeText(context,"Max amount",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                                 }
                             } else {
                                 holder.getButtonGo().setText("I will go");
+                                holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg);
                                 ref2.child("go").setValue(finalGo.replace(","+userID, ""));
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("UserPrivateEvents").child(eventId).setValue(null);
+                                        .child("UserPrivateEvents").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
@@ -270,7 +271,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 });
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("Chats").child("chats").child(eventId).setValue(null);
+                                        .child("Chats").child("chats").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("Chats").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
@@ -330,7 +331,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                         }
                                         String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
                                         String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a);
+                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a, false);
                                         bottomSheetEventDialog.show(fragmentManager, "Event info");
                                     }
 
@@ -459,7 +460,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                         }
                                         String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
                                         String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a);
+                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a, false);
                                         bottomSheetEventDialog.show(fragmentManager, "Event info");
                                     }
 

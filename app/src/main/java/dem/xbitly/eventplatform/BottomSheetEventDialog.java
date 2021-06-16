@@ -1,5 +1,8 @@
 package dem.xbitly.eventplatform;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,16 +15,18 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.activities.CreateReviewActivity;
+import dem.xbitly.eventplatform.activities.MainActivity;
 
 public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
     private final String id, name, address, count_people, date, time;
-    private boolean userIsGo;
+    private boolean userIsGo, eventIsPrivate;
 
-    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo){
+    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate){
 
         this.id = id;
         this.name = name;
@@ -30,6 +35,7 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         this.date = date;
         this.time = time;
         this.userIsGo = userIsGo;
+        this.eventIsPrivate = eventIsPrivate;
 
     }
 
@@ -43,7 +49,21 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         TextView count_people = v.findViewById(R.id.count_people);
         TextView date = v.findViewById(R.id.date);
         TextView time = v.findViewById(R.id.time);
+        TextView event_private = v.findViewById(R.id.text_private);
         RelativeLayout buttonAddReview = v.findViewById(R.id.btn_add_review);
+
+        if(eventIsPrivate){
+            event_private.setVisibility(View.VISIBLE);
+        } else {
+            event_private.setVisibility(View.GONE);
+        }
+
+        address.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Address", address.getText().toString());
+            clipboard.setPrimaryClip(clip);
+            FancyToast.makeText(v.getContext(),"Address copied",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
+        });
 
         buttonClose.setOnClickListener(view -> {
             dismiss();
