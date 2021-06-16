@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,6 +251,34 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                             } else {
                                 holder.getButtonGo().setText("I will go");
                                 ref2.child("go").setValue(finalGo.replace(","+userID, ""));
+                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                        .child("UserPrivateEvents").child(Integer.toString(count)).setValue(null);
+                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                        .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            int count234 = Integer.parseInt(task.getResult().getValue().toString());
+                                            count234--;
+                                            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                    .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
+                                        }
+                                    }
+                                });
+                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                        .child("Chats").child("chats").child(Integer.toString(count)).setValue(null);
+                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                        .child("Chats").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            int countt23 = Integer.parseInt(task.getResult().getValue().toString());
+                                            countt23--;
+                                            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                    .child("Chats").child("count").setValue(countt23);
+                                        }
+                                    }
+                                });
                             }
                         });
                     }
