@@ -33,6 +33,7 @@ import com.sucho.placepicker.Constants;
 import com.sucho.placepicker.MapType;
 import com.sucho.placepicker.PlacePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -189,10 +190,13 @@ public class PrivateEventActivity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
+            SimpleDateFormat formatForTime = new SimpleDateFormat("hh:mm");
 
-            event_info.put("time", hourOfDay + ":" + minute);
 
-            binding.eventTime.setText(hourOfDay + ":" + minute);
+
+            event_info.put("time", formatForTime.format(dateAndTime));
+
+            binding.eventTime.setText(formatForTime.format(dateAndTime));
         }
     };
 
@@ -203,10 +207,11 @@ public class PrivateEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy");
 
-            event_info.put("date", dayOfMonth + "." + monthOfYear + "." + year);
+            event_info.put("date", formatForDate.format(dateAndTime));
 
-            binding.eventDate.setText(dayOfMonth + "." + monthOfYear + "." + year);
+            binding.eventDate.setText(formatForDate.format(dateAndTime));
         }
     };
 

@@ -75,6 +75,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                             ref.child(String.valueOf((count + 1))).child("text").setValue(binding.eventDesc.getText().toString());
                             ref.child(String.valueOf((count + 1))).child("userID").setValue(getIntent().getSerializableExtra("userID").toString());
                             ref.child(String.valueOf((count + 1))).child("eventID").setValue(getIntent().getSerializableExtra("eventID").toString());
+                            ref.child(String.valueOf(count+2)).child("go").setValue("");
 
                             int finalCount = count;
 

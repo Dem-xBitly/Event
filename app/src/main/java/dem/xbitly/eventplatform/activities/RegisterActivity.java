@@ -37,6 +37,9 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        binding.maleCheckRegister.setOnClickListener(v -> binding.femaleCheckRegister.setChecked(false));
+        binding.femaleCheckRegister.setOnClickListener(v -> binding.maleCheckRegister.setChecked(false));
+
 
         binding.backFromRegisterBtn.setOnClickListener(v -> {
             Intent startIntent = new Intent (RegisterActivity.this, StartActivity.class);
