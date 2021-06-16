@@ -270,9 +270,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
                         popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
                         popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
-                        SpannableString s = new SpannableString("Delete");
-                        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
-                        popup.getMenu().add(Menu.NONE, 2, Menu.NONE, s);
                     } else {
                         popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
                     }
@@ -308,9 +305,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 });
                                 break;
                             case 1: //Edit
-                                //code
-                                break;
-                            case 2: //Delete
                                 //code
                                 break;
                         }
@@ -405,9 +399,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
                         popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
                         popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
-                        SpannableString s = new SpannableString("Delete");
-                        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
-                        popup.getMenu().add(Menu.NONE, 2, Menu.NONE, s);
                     } else {
                         popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
                     }
@@ -443,9 +434,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 });
                                 break;
                             case 1: //Edit
-                                //code
-                                break;
-                            case 2: //Delete
                                 //code
                                 break;
                         }
