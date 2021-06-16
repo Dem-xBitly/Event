@@ -156,7 +156,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                                         .child("count").get().addOnCompleteListener(task11 -> {
                                             if (task11.isSuccessful()){
-
+                                                int count = Integer.parseInt(task11.getResult().getValue().toString());
+                                                count++;
+                                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
+                                                        .child("count").setValue(count);
                                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                                                         .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("eventID").setValue(getIntent().getIntExtra("eventID", 0));
                                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
@@ -200,12 +203,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(count2)).child("privacy").setValue("false");
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count").setValue(count);
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(count))
-                                        .child("privacy").setValue("no");
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(count))
-                                        .child("chatID").setValue(count2);
-                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(count))
-                                        .child("name").setValue(getIntent().getStringExtra("event_name"));
+
                                 FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(count2)).child("event_number").setValue(Integer.toString(getIntent().
                                         getIntExtra("eventID", 0)));
                             }
