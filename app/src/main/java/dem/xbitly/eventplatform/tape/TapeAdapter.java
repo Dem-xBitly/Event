@@ -49,6 +49,8 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     private int count;
 
+    private String eventId;
+
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context, FragmentManager fragmentManager) {
         this.countElements = sR.length + sI.length;
         this.reviewsID.addAll(Arrays.asList(sR));
@@ -195,12 +197,13 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                             dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
                                                     String eventID1 = task1.getResult().getValue().toString();
+                                                    eventId = eventID1;
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .child("UserPrivateEvents").child(Integer.toString(count)).child("privacy").setValue("no");
+                                                            .child("UserPrivateEvents").child(eventID1).child("privacy").setValue("no");
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .child("UserPrivateEvents").child(Integer.toString(count)).child("eventID").setValue(eventID1);
+                                                            .child("UserPrivateEvents").child(eventID1).child("eventID").setValue(eventID1);
                                                 }
                                             });
                                         }
@@ -234,7 +237,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                                                                     chatInfo.put("name", name);
                                                                                     chatInfo.put("privacy", "no");
                                                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                                            .child("Chats").child("chats").child(Integer.toString(count)).setValue(chatInfo);
+                                                                                            .child("Chats").child("chats").child(eventId).setValue(chatInfo);
                                                                                 }
                                                                             });
                                                                 }
@@ -252,7 +255,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 holder.getButtonGo().setText("I will go");
                                 ref2.child("go").setValue(finalGo.replace(","+userID, ""));
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("UserPrivateEvents").child(Integer.toString(count)).setValue(null);
+                                        .child("UserPrivateEvents").child(eventId).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
@@ -265,8 +268,9 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                         }
                                     }
                                 });
+
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("Chats").child("chats").child(Integer.toString(count)).setValue(null);
+                                        .child("Chats").child("chats").child(eventId).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("Chats").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override

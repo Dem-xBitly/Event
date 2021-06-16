@@ -75,7 +75,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
                             ref.child(String.valueOf((count + 1))).child("text").setValue(binding.eventDesc.getText().toString());
                             ref.child(String.valueOf((count + 1))).child("userID").setValue(getIntent().getSerializableExtra("userID").toString());
                             ref.child(String.valueOf((count + 1))).child("eventID").setValue(getIntent().getSerializableExtra("eventID").toString());
-                            ref.child(String.valueOf(count+2)).child("go").setValue(" ," + getIntent().getSerializableExtra("userID").toString());
+                            FirebaseDatabase.getInstance().getReference("PublicEvents").child(Integer.toString(getIntent().getIntExtra("eventID", 0)))
+                                    .child("go").setValue(" ," + getIntent().getSerializableExtra("userID").toString());
 
                             int finalCount = count;
 
@@ -165,13 +166,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                                 if (task.isSuccessful()){
-                                                    int userprivateevent = Integer.parseInt(task.getResult().getValue().toString());
-                                                    userprivateevent++;
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
-                                                            .child(Integer.toString(userprivateevent)).child("eventID").setValue(getIntent().getIntExtra("eventID", 0));
+                                                            .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("eventID").setValue(getIntent().getIntExtra("eventID", 0));
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
-                                                            .child(Integer.toString(userprivateevent)).child("privacy").setValue("no");
+                                                            .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("privacy").setValue("no");
                                                 }
                                             }
                                         });
@@ -188,11 +187,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count")
                                                             .setValue(chatID);
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                            .child(Integer.toString(chatID)).child("chatID").setValue(finalCount);
+                                                            .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("chatID").setValue(finalCount);
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                            .child(Integer.toString(chatID)).child("name").setValue(getIntent().getStringExtra("event_name"));
+                                                            .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("name").setValue(getIntent().getStringExtra("event_name"));
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                            .child(Integer.toString(chatID)).child("privacy").setValue("no");
+                                                            .child(Integer.toString(getIntent().getIntExtra("eventID", 0))).child("privacy").setValue("no");
 
                                                 }
                                             }

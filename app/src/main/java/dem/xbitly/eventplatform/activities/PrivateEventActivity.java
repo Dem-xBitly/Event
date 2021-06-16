@@ -224,6 +224,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                 double longitude = addressData.getLongitude();
                 ref.child("adress").child("latitude").setValue(latitude);
                 ref.child("adress").child("longitude").setValue(longitude);
+                ref.child("go").child("," + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 Intent intent = new Intent (PrivateEventActivity.this, UsersInvitationActivity.class);
                 intent.putExtra("event_number", event_number);
