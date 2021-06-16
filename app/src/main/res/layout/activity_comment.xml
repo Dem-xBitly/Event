@@ -26,14 +26,24 @@
         tools:text="kjfdkjv"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/comments_recycler"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_comments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/comment_edit"
         android:layout_below="@+id/back_from_comments_btn"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comments_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
     <EditText
         android:id="@+id/comment_edit"
