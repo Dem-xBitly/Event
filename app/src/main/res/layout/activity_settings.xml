@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="SETTINGS"
         android:textColor="#000"
+        android:fontFamily="@font/ubuntu_medium"
         android:textSize="26sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"

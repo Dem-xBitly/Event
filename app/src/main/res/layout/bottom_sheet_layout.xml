@@ -32,6 +32,7 @@
             android:layout_marginEnd="60dp"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:fontFamily="@font/ubuntu_medium"
             tools:text="NAME OF EVENT" />
 
         <TextView

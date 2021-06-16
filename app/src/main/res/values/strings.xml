@@ -41,6 +41,9 @@
     <string name="write_a_message">Write a message</string>
     <string name="add_review">Add review</string>
     <string name="review">Review</string>
+    <string name="edit">Edit</string>
+    <string name="save">SAVE</string>
+    <string name="cancel">CANCEL</string>
 
     <string-array name="languages">
         <item>Русский</item>

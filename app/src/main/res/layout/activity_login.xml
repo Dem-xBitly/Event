@@ -18,6 +18,7 @@
 
     <TextView
         android:id="@+id/sign_in_txt"
+        android:fontFamily="@font/ubuntu_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_in"

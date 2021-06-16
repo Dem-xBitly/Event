@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.BottomSheetEditDialog;
 import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.R;
@@ -351,9 +352,6 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                                 addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
 
                                                 String address = addresses.get(0).getAddressLine(0);
-                                                String city = addresses.get(0).getLocality();
-                                                String state = addresses.get(0).getAdminArea();
-                                                String country = addresses.get(0).getCountryName();
 
                                                 BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false);
                                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
@@ -373,7 +371,8 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 });
                                 break;
                             case 1: //Edit
-                                //code
+                                BottomSheetEditDialog bottomSheetEditDialog = new BottomSheetEditDialog(invitesID.get(position), false);
+                                bottomSheetEditDialog.show(fragmentManager, "Edit invite");
                                 break;
                         }
                         return true;
@@ -517,7 +516,8 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 });
                                 break;
                             case 1: //Edit
-                                //code
+                                BottomSheetEditDialog bottomSheetEditDialog = new BottomSheetEditDialog(reviewsID.get(position), true);
+                                bottomSheetEditDialog.show(fragmentManager, "Edit review");
                                 break;
                         }
                         return true;
