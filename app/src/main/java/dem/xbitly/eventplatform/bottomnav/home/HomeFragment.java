@@ -50,6 +50,12 @@ public class HomeFragment extends Fragment {
 
         rv = root.findViewById(R.id.home_posts_recycler);
 
+        updateRecycler(ref, ref2, root);
+
+        return root;
+    }
+
+    private void updateRecycler(DatabaseReference ref, DatabaseReference ref2, View root){
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -106,8 +112,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-        return root;
     }
 
     public void checkNetwork(){
