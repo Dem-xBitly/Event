@@ -16,7 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +35,32 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
     @Override
     protected void onBindViewHolder(@NonNull @NotNull viewHolder viewHolder, int i, @NonNull @NotNull Chat chat) {
         viewHolder.name.setText(chat.getName());
+
+
+
+        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(i+1)).child("messages").child("count").get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()){
+                            String msgID = task.getResult().getValue().toString();
+                            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(i+1)).child("messages").child("all_messages")
+                                    .child(msgID).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                    String last_msg = snapshot.child("text").getValue().toString();
+                                    String from = snapshot.child("from").getValue().toString();
+                                    viewHolder.last_msg.setText(from + ": " + last_msg);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+                });
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,15 +94,16 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
     @NotNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_person, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, parent, false);
         return new viewHolder(view);
     }
 
     class viewHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView name, last_msg;
         public viewHolder(@NonNull View itemView){
             super(itemView);
-            name = itemView.findViewById(R.id.username);
+            name = itemView.findViewById(R.id.chat_name);
+            last_msg = itemView.findViewById(R.id.last_message);
         }
     }
 }
