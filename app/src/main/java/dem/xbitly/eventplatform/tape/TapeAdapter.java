@@ -3,11 +3,8 @@ package dem.xbitly.eventplatform.tape;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -18,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +33,8 @@ import java.util.Objects;
 
 import dem.xbitly.eventplatform.BottomSheetEditDialog;
 import dem.xbitly.eventplatform.BottomSheetEventDialog;
-import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.CommentActivity;
 
 public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
@@ -198,13 +191,13 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                     FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                             .child("UserPrivateEvents").child("count").get().addOnCompleteListener(task -> {
                                         if (task.isSuccessful()){
-                                            count = Integer.parseInt(task.getResult().getValue().toString());
+                                            count = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
                                             count++;
-                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                                                     .child("UserPrivateEvents").child("count").setValue(count);
                                             dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
-                                                    String eventID1 = task1.getResult().getValue().toString();
+                                                    String eventID1 = Objects.requireNonNull(task1.getResult().getValue()).toString();
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                             .child("UserPrivateEvents").child(eventID1).child("privacy").setValue("no");
@@ -218,27 +211,27 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                                     dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(task -> {
                                         if (task.isSuccessful()){
-                                            String eventID12 = task.getResult().getValue().toString();
+                                            String eventID12 = Objects.requireNonNull(task.getResult().getValue()).toString();
                                             FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID12).child("chatID").get().addOnCompleteListener(task13 -> {
                                                 if (task13.isSuccessful()){
-                                                    String chatID = task13.getResult().getValue().toString();
+                                                    String chatID = Objects.requireNonNull(task13.getResult().getValue()).toString();
                                                     FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child("count").get().addOnCompleteListener(task12 -> {
                                                         if (task12.isSuccessful()){
-                                                            int members_count = Integer.parseInt(task12.getResult().getValue().toString());
+                                                            int members_count = Integer.parseInt(Objects.requireNonNull(task12.getResult().getValue()).toString());
                                                             members_count++;
                                                             FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child(Integer.toString(members_count))
-                                                                    .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                                    .setValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                                                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
                                                                     .child("count").get().addOnCompleteListener(task121 -> {
                                                                 if (task121.isSuccessful()){
-                                                                    count = Integer.parseInt(task121.getResult().getValue().toString());
+                                                                    count = Integer.parseInt(Objects.requireNonNull(task121.getResult().getValue()).toString());
                                                                     count++;
                                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
                                                                             .child("count").setValue(count);
                                                                     FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID12).child("name").get()
                                                                             .addOnCompleteListener(task1211 -> {
                                                                                 if (task1211.isSuccessful()){
-                                                                                    String name = task1211.getResult().getValue().toString();
+                                                                                    String name = Objects.requireNonNull(task1211.getResult().getValue()).toString();
                                                                                     HashMap<String, String> chatInfo = new HashMap<>();
                                                                                     chatInfo.put("chatID", chatID);
                                                                                     chatInfo.put("name", name);
@@ -266,32 +259,26 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("UserPrivateEvents").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                        if (task.isSuccessful()){
-                                            int count234 = Integer.parseInt(task.getResult().getValue().toString());
-                                            count234--;
-                                            FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                                    .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
-                                        }
-                                    }
-                                });
+                                        .child("UserPrivateEvents").child("count").get().addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()){
+                                                int count234 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                                                count234--;
+                                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                        .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
+                                            }
+                                        });
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("Chats").child("chats").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                        .child("Chats").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                        if (task.isSuccessful()){
-                                            int countt23 = Integer.parseInt(task.getResult().getValue().toString());
-                                            countt23--;
-                                            FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                                    .child("Chats").child("count").setValue(countt23);
-                                        }
-                                    }
-                                });
+                                        .child("Chats").child("count").get().addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()){
+                                                int countt23 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                                                countt23--;
+                                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                        .child("Chats").child("count").setValue(countt23);
+                                            }
+                                        });
                             }
                         });
                     }
