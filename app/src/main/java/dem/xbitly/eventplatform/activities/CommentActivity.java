@@ -89,10 +89,10 @@ public class CommentActivity extends AppCompatActivity {
                 });
             }
         });
-        if(e) {
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(e) {
                     binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
                     int count = 0;
                     try {
@@ -104,13 +104,13 @@ public class CommentActivity extends AppCompatActivity {
                     binding.commentsRecycler.setAdapter(commentAdapter);
                     e = false;
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
-        }
+            }
+        });
 
 
         binding.backFromCommentsBtn.setOnClickListener(view -> onBackPressed());
