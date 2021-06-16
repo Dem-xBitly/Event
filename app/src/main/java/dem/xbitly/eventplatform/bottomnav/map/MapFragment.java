@@ -164,10 +164,9 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                                                     double longitude = Double.parseDouble(snapshot.child("adress").child("longitude").getValue().toString());
                                                     double latitude = Double.parseDouble(snapshot.child("adress").child("latitude").getValue().toString());
-                                                    String title = snapshot.child("name").getValue().toString();
                                                     LatLng marker = new LatLng(latitude, longitude);
                                                     googleMap.addMarker(new MarkerOptions().position(marker)
-                                                            .icon(getBitmapFromVectorDrawable(context, R.drawable.ic_location_marker))).setTag(num);
+                                                            .icon(getBitmapFromVectorDrawable(context, R.drawable.ic_location_marker_green))).setTag(num);
                                                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
 
                                                 }
@@ -277,7 +276,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String country = addresses.get(0).getCountryName();
 
                                                                                                                                 BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
-                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), false);
+                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), false, true);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();
@@ -367,7 +366,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String country = addresses.get(0).getCountryName();
 
                                                                                                                                 BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
-                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), true);
+                                                                                                                                        address + ";" + city + ";" + state, event_info.get("count"), event_info.get("date"), event_info.get("time"), true, false);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();

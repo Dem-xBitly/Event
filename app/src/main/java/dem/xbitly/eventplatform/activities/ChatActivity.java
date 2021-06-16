@@ -174,7 +174,7 @@ public class ChatActivity extends AppCompatActivity {
                                                                             String country = addresses.get(0).getCountryName();
 
                                                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false);
+                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false, false);
                                                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                         } catch (IOException e) {
                                                                             e.printStackTrace();
@@ -222,7 +222,7 @@ public class ChatActivity extends AppCompatActivity {
                                                                             String country = addresses.get(0).getCountryName();
 
                                                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false);
+                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), true, false);
                                                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                         } catch (IOException e) {
                                                                             e.printStackTrace();
