@@ -29,6 +29,7 @@ public class CommentActivity extends AppCompatActivity {
     private FirebaseDatabase dBase;
     private DatabaseReference ref;
     boolean r = true;
+    boolean e = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,26 +89,28 @@ public class CommentActivity extends AppCompatActivity {
                 });
             }
         });
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
-                int count = 0;
-                try {
-                    count = Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString());
-                } catch (Exception e) {
-                    ref.child("count").setValue(0);
+        if(e) {
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    binding.commentsRecycler.setLayoutManager(new LinearLayoutManager(CommentActivity.this));
+                    int count = 0;
+                    try {
+                        count = Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString());
+                    } catch (Exception e) {
+                        ref.child("count").setValue(0);
+                    }
+                    CommentAdapter commentAdapter = new CommentAdapter(count, dBase, ref);
+                    binding.commentsRecycler.setAdapter(commentAdapter);
+                    e = false;
                 }
-                CommentAdapter commentAdapter = new CommentAdapter(count, dBase, ref);
-                binding.commentsRecycler.setAdapter(commentAdapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
 
 
         binding.backFromCommentsBtn.setOnClickListener(view -> onBackPressed());
