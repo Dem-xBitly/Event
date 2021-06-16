@@ -7,13 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,7 +55,7 @@ public class CommentActivity extends AppCompatActivity {
             SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy");
             SimpleDateFormat formatForTime = new SimpleDateFormat("hh:mm");
             if(text.isEmpty()){
-                Snackbar.make(view, "Empty", Snackbar.LENGTH_SHORT).show();
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             } else {
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override

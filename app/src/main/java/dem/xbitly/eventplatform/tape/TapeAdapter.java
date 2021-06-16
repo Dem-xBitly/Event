@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -28,9 +30,12 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import dem.xbitly.eventplatform.BottomSheetEventDialog;
@@ -46,6 +51,8 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
     private final Context context;
     FragmentManager fragmentManager;
     DatabaseReference ref, ref2, refLike;
+
+    boolean e = false;
 
     private int count;
 
@@ -314,25 +321,49 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                     popup.setOnMenuItemClickListener(menuItem -> {
                         switch (menuItem.getItemId()) {
                             case 0: //About event
+                                e = true;
                                 ref2 = dBase.getReference("PublicEvents").child(eventID);
                                 ref2.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                                        boolean a = go.contains(userID);
-                                        String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-                                        int count = go.split(",").length-1;
-                                        String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
-                                        String count_bs;
-                                        if(maxCount.equals("0")){
-                                            count_bs = "Infinity";
-                                        } else {
-                                            count_bs = count + "/" + maxCount;
+                                        if(e) {
+                                            String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
+                                            boolean a = go.contains(userID);
+                                            String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+                                            int count = go.split(",").length - 1;
+                                            String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
+                                            String count_bs;
+                                            if (maxCount.equals("0")) {
+                                                count_bs = "Infinity";
+                                            } else {
+                                                count_bs = count + "/" + maxCount;
+                                            }
+                                            String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
+                                            String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
+
+                                            double latitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
+                                            double longitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
+
+                                            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                                            List<Address> addresses;
+
+                                            try {
+                                                addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
+
+                                                String address = addresses.get(0).getAddressLine(0);
+                                                String city = addresses.get(0).getLocality();
+                                                String state = addresses.get(0).getAdminArea();
+                                                String country = addresses.get(0).getCountryName();
+
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false);
+                                                bottomSheetEventDialog.show(fragmentManager, "Event info");
+
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            e = false;
                                         }
-                                        String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
-                                        String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a, false);
-                                        bottomSheetEventDialog.show(fragmentManager, "Event info");
                                     }
 
                                     @Override
@@ -460,8 +491,23 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                         }
                                         String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
                                         String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, "Moscow", count_bs, date, time, a, false);
-                                        bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                        double latitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
+                                        double longitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
+
+                                        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                                        List<Address> addresses;
+
+                                        try {
+                                            addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
+
+                                            String address = addresses.get(0).getAddressLine(0);
+
+                                            BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false);
+                                            bottomSheetEventDialog.show(fragmentManager, "Event info");
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
 
                                     @Override

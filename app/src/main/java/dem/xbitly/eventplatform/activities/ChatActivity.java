@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -120,6 +121,8 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
+            } else {
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             }
         });
 
@@ -174,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
                                                                             String country = addresses.get(0).getCountryName();
 
                                                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false, false);
+                                                                                    address, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), false, false);
                                                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                         } catch (IOException e) {
                                                                             e.printStackTrace();
@@ -222,7 +225,7 @@ public class ChatActivity extends AppCompatActivity {
                                                                             String country = addresses.get(0).getCountryName();
 
                                                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                                                    address + ";" + city + ";" + state, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), true, false);
+                                                                                    address, eventInfo.get("count"), eventInfo.get("date"), eventInfo.get("time"), true, false);
                                                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                                         } catch (IOException e) {
                                                                             e.printStackTrace();

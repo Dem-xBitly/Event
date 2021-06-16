@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 import com.sucho.placepicker.AddressData;
 import com.sucho.placepicker.Constants;
 import com.sucho.placepicker.MapType;
@@ -35,7 +36,9 @@ import com.sucho.placepicker.PlacePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityEventPrivateBinding;
@@ -99,7 +102,8 @@ public class PrivateEventActivity extends AppCompatActivity {
                     }
                 });
 
-
+        binding.eventDate.setEnabled(false);
+        binding.eventTime.setEnabled(false);
 
         ref = database.getReference("PrivateEvents");
         ref.addValueEventListener(new ValueEventListener(){
@@ -139,7 +143,7 @@ public class PrivateEventActivity extends AppCompatActivity {
         binding.nextBtnFromEventBtn.setOnClickListener(v -> {
             if (binding.eventNamePrivate.getText().toString().isEmpty()|| binding.eventTime.getText().toString().isEmpty()
                     || binding.eventDate.getText().toString().isEmpty()) { //нельзя, чтобы поля пустыми были
-                Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             } else {
                 //если все хорошо, то создаем reference для этого мероприятия
                 ref.setValue(event_info).addOnCompleteListener(task -> {
@@ -151,7 +155,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                                 .showLatLong(true)
                                 .setMapType(MapType.NORMAL)
                                 .setFabColor(R.color.blue)
-                                .setMarkerDrawable(R.drawable.ic_location_marker)
+                                .setMarkerDrawable(R.drawable.ic_location_marker_green)
                                 .build(PrivateEventActivity.this);
 
                         startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
@@ -191,12 +195,12 @@ public class PrivateEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
             SimpleDateFormat formatForTime = new SimpleDateFormat("hh:mm");
+            Date date = new Date();
+            date.setHours(hourOfDay);
+            date.setMinutes(minute);
+            event_info.put("time", formatForTime.format(date));
 
-
-
-            event_info.put("time", formatForTime.format(dateAndTime));
-
-            binding.eventTime.setText(formatForTime.format(dateAndTime));
+            binding.eventTime.setText(formatForTime.format(date));
         }
     };
 
@@ -208,10 +212,10 @@ public class PrivateEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy");
+            Date date = new Date(year-1900, monthOfYear, dayOfMonth);
+            event_info.put("date", formatForDate.format(date));
 
-            event_info.put("date", formatForDate.format(dateAndTime));
-
-            binding.eventDate.setText(formatForDate.format(dateAndTime));
+            binding.eventDate.setText(formatForDate.format(date));
         }
     };
 
@@ -224,7 +228,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                 double longitude = addressData.getLongitude();
                 ref.child("adress").child("latitude").setValue(latitude);
                 ref.child("adress").child("longitude").setValue(longitude);
-                ref.child("go").child("," + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                ref.child("go").setValue("," + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
 
                 Intent intent = new Intent (PrivateEventActivity.this, UsersInvitationActivity.class);
                 intent.putExtra("event_number", event_number);

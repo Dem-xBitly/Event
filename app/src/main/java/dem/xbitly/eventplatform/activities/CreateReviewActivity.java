@@ -113,7 +113,7 @@ public class CreateReviewActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                FancyToast.makeText(CreateReviewActivity.this,"Empty review",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             }
         });
 

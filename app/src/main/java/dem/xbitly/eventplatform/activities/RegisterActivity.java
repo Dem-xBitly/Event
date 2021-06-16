@@ -10,6 +10,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.HashMap;
 
@@ -74,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 // ...
                             } else {
-                                Snackbar.make(v, "Some Error: " + task.getException(), Snackbar.LENGTH_SHORT).show();
+                                FancyToast.makeText(getApplicationContext(),"Some error: " + task.getException(),FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                             }
                         });
             }

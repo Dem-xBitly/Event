@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import dem.xbitly.eventplatform.databinding.ActivityProfileSettingsBinding;
 import dem.xbitly.eventplatform.network.NetworkManager;
@@ -44,7 +45,7 @@ public class ProfileSettings extends AppCompatActivity {
 
         binding.applyChangesProfileSettingsBtn.setOnClickListener(v -> {
             if (binding.usernameProfileSettings.getText().toString().isEmpty() || (!binding.maleCheck.isChecked() && !binding.femaleCheck.isChecked())){
-                Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             }
             else {
                 String gender = binding.maleCheck.isChecked() ? "male" : "female";

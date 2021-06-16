@@ -21,8 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import dem.xbitly.eventplatform.databinding.ActivityPublicEventBinding;
@@ -88,6 +91,9 @@ public class PublicEventActivity extends AppCompatActivity {
             }
         });
 
+        binding.eventDate.setEnabled(false);
+        binding.eventTime.setEnabled(false);
+
         //раздел со всеми созданными евентами этого человека
 
         binding.infinityAmountBtn.setOnClickListener(v -> {
@@ -105,7 +111,7 @@ public class PublicEventActivity extends AppCompatActivity {
 
             if (binding.eventNamePublic.getText().toString().isEmpty() || binding.eventMaxAmount.getText().toString().isEmpty()
                     || binding.eventTime.getText().toString().isEmpty() || binding.eventDate.getText().toString().isEmpty()) { //нельзя, чтобы поля пустыми были
-                Snackbar.make(v, "Fields cannot be empty", Snackbar.LENGTH_SHORT).show();
+                FancyToast.makeText(getApplicationContext(),"Fields cannot be empty",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
             } else {
                 if (binding.eventMaxAmount.getText().toString().equals("Infinity")) {
                     event_info.put("max_amount", "0");
@@ -118,7 +124,6 @@ public class PublicEventActivity extends AppCompatActivity {
                 //если все хорошо, то создаем reference для этого мероприятия
                 ref.setValue(event_info).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Snackbar.make(v, "Successfully", Snackbar.LENGTH_SHORT).show();
 
                         Intent intent = new Intent (PublicEventActivity.this, EventDescriptionActivity.class);
                         intent.putExtra("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -127,7 +132,7 @@ public class PublicEventActivity extends AppCompatActivity {
 
                         startActivity(intent);
                     } else {
-                        Snackbar.make(v, "Some errors", Snackbar.LENGTH_SHORT).show();
+                        FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                     }
                 });
 
@@ -161,10 +166,13 @@ public class PublicEventActivity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
+            SimpleDateFormat formatForTime = new SimpleDateFormat("hh:mm");
+            Date date = new Date();
+            date.setHours(hourOfDay);
+            date.setMinutes(minute);
+            event_info.put("time", formatForTime.format(date));
 
-            event_info.put("time", hourOfDay + ":" + minute);
-
-            binding.eventTime.setText(hourOfDay + ":" + minute);
+            binding.eventTime.setText(formatForTime.format(date));
         }
     };
 
@@ -175,10 +183,11 @@ public class PublicEventActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            SimpleDateFormat formatForDate = new SimpleDateFormat("dd.MM.yyyy");
+            Date date = new Date(year-1900, monthOfYear, dayOfMonth);
+            event_info.put("date", formatForDate.format(date));
 
-            event_info.put("date", dayOfMonth + "." + monthOfYear + "." + year);
-
-            binding.eventDate.setText(dayOfMonth + "-" + monthOfYear + "-" + year);
+            binding.eventDate.setText(formatForDate.format(date));
         }
     };
 
