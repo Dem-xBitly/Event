@@ -45,8 +45,8 @@ public class NotificationsFragment extends Fragment {
 
         FirebaseRecyclerOptions<Notification> options =
                 new FirebaseRecyclerOptions.Builder<Notification>()
-                .setQuery(FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations"), Notification.class)
-                .build();
+                        .setQuery(FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations"), Notification.class)
+                        .build();
 
 
 
