@@ -1,8 +1,5 @@
 package dem.xbitly.eventplatform.notifications;
 
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -27,35 +23,25 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import dem.xbitly.eventplatform.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.R;
 
 public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, NotificationAdapter.viewholder>
 {
 
-    DatabaseReference ref, ref2;
+    DatabaseReference ref;
     int event_number;
     String name, userID;
     int day, month, year, hour, minute;
     double longitude, latitude;
     boolean have_event_number=false;
-    private final Context context;
-    FragmentManager fragmentManager;
 
     int event_number_in_private_events;
 
     int countt;
 
 
-    public NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notification> options, Context context, FragmentManager fragmentManager) {
+    public NotificationAdapter(@NonNull FirebaseRecyclerOptions<Notification> options) {
         super(options);
-        this.context = context;
-        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -65,47 +51,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
         ref = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents");
 
-        holder.event_name.setOnClickListener(view -> {
-            String key = getRef(i).getKey();
-            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("invitations").child(key).child("event_number").get().addOnCompleteListener(task -> {
-                        String eventID = task.getResult().getValue().toString();
-                FirebaseDatabase dBase = FirebaseDatabase.getInstance();
-                ref2 = dBase.getReference("PrivateEvents").child(eventID);
-                ref2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                        String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-                        String count_bs = Integer.toString(go.split(",").length-1);
-                        String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
-                        String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                        double latitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
-                        double longitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
 
-                        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                        List<Address> addresses;
-
-                        try {
-                            addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
-
-                            String address = addresses.get(0).getAddressLine(0);
-
-                            BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, false, true);
-                            bottomSheetEventDialog.show(fragmentManager, "Event info");
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                    });
-        });
 
         String key = getRef(i).getKey();
         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key).addValueEventListener(new ValueEventListener() {
@@ -134,10 +80,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                                 if (Boolean.parseBoolean(snapshot.child("accepted").getValue().toString())){
                                     holder.ill_go_btn.setText("Refuse");
-                                    holder.ill_go_btn.setBackgroundResource(R.drawable.go_btn_bg_success);
                                 } else {
-                                    holder.ill_go_btn.setText("I will go");
-                                    holder.ill_go_btn.setBackgroundResource(R.drawable.go_btn_bg);
+                                    holder.ill_go_btn.setText("I'll go!");
                                 }
                             }
 
@@ -153,6 +97,8 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                         if (holder.ill_go_btn.getText().toString().equals("Refuse")){
                             String key = getRef(i).getKey();
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
+                                    .child("accepted").setValue(true);
                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("invitations").child(key).child("event_number").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
@@ -207,15 +153,15 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                             }
                                         });
 
-                                        holder.ill_go_btn.setText("I will go");
-                                        holder.ill_go_btn.setBackgroundResource(R.drawable.go_btn_bg);
+                                        holder.ill_go_btn.setText("I'll go");
 
 
                                     }
                                 }
                             });
                         }else{
-
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
+                                    .child("accepted").setValue(true);
                             String key = getRef(i).getKey();
                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("invitations").child(key).child("event_number").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -269,10 +215,13 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                                 }
                             });
 
-                            FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
-                                    .child("accepted").setValue(true);
 
-                            holder.ill_go_btn.setBackgroundResource(R.drawable.go_btn_bg_success);
+
+
+
+
+
+
                             holder.ill_go_btn.setText("Refuse");
 
                         }
