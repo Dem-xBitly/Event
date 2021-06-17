@@ -50,13 +50,26 @@ public class NotificationsFragment extends Fragment {
 
 
 
-        adapter = new NotificationAdapter(options);
+        try {
+            adapter = new NotificationAdapter(options, root.getContext(), getParentFragmentManager());
+        } catch (Exception e){
+            load(options, root);
+        }
+
         recView.setAdapter(adapter);
 
 
 
 
         return root;
+    }
+
+    public void load(FirebaseRecyclerOptions<Notification> options, View root){
+        try {
+            adapter = new NotificationAdapter(options, root.getContext(), getParentFragmentManager());
+        } catch (Exception e){
+            load(options, root);
+        }
     }
 
     public void checkNetwork(){

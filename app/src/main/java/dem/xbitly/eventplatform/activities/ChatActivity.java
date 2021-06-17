@@ -166,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
                                                     String address = addresses.get(0).getAddressLine(0);
 
                                                     BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                            address, count_bs, eventInfo.get("date"), eventInfo.get("time"), false, false);
+                                                            address, count_bs, eventInfo.get("date"), eventInfo.get("time"), false, true);
                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
