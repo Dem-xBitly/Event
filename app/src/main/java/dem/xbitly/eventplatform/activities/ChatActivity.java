@@ -130,6 +130,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.eventInfoBtn.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(getApplicationContext(), v);
             popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+            popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Members");
             popup.show();
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
@@ -226,9 +227,17 @@ public class ChatActivity extends AppCompatActivity {
 
                         }
                     });
+                } else {
+
+                    FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                            .child("event_number").get().addOnCompleteListener(task -> {
+                                Intent intent = new Intent (ChatActivity.this, MembersActivity.class);
+                                intent.putExtra("eventID", Objects.requireNonNull(task.getResult().getValue()).toString());
+                                intent.putExtra("private", privacy);
+                                startActivity(intent);
+                            });
+
                 }
-
-
                 return false;
             });
         });

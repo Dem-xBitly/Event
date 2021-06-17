@@ -51,6 +51,7 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         TextView time = v.findViewById(R.id.time);
         TextView event_private = v.findViewById(R.id.text_private);
         RelativeLayout buttonAddReview = v.findViewById(R.id.btn_add_review);
+        RelativeLayout buttonRefuse = v.findViewById(R.id.btn_refuse);
 
         if(eventIsPrivate){
             event_private.setVisibility(View.VISIBLE);
@@ -68,6 +69,11 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         buttonClose.setOnClickListener(view -> {
             dismiss();
         });
+
+        buttonRefuse.setOnClickListener(view -> {
+            //отмена эвента
+        });
+
 
         if (userIsGo) {
             buttonAddReview.setVisibility(View.VISIBLE);

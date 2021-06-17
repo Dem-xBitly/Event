@@ -44,6 +44,8 @@
     <string name="edit">Edit</string>
     <string name="save">SAVE</string>
     <string name="cancel">CANCEL</string>
+    <string name="members">Members</string>
+    <string name="refuse">Refuse</string>
 
     <string-array name="languages">
         <item>Русский</item>
