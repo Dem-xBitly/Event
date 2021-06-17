@@ -109,6 +109,7 @@ public class MapFragment extends Fragment implements LocationListener {
                 Dialog dialog = new Dialog(getActivity());
 
                 dialog.setContentView(customLayout);
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.create_event_dialog_shape);
 
                 dialog.show();
                 dialog.setCanceledOnTouchOutside(false);
