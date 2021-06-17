@@ -58,9 +58,7 @@ public class NotificationsFragment extends Fragment {
 
         recView.setAdapter(adapter);
 
-
-
-
+        //ыщьу еуче
         return root;
     }
 
