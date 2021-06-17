@@ -153,7 +153,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
 
                         if (holder.ill_go_btn.getText().toString().equals("Refuse")){
                             FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
-                                    .child("accepted").setValue(true);
+                                    .child("accepted").setValue(false);
                             String key = getRef(i).getKey();
                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("invitations").child(key).child("event_number").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -218,7 +218,7 @@ public class NotificationAdapter extends FirebaseRecyclerAdapter<Notification, N
                             });
                         }else{
                             FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations").child(key)
-                                    .child("accepted").setValue(false);
+                                    .child("accepted").setValue(true);
                             String key = getRef(i).getKey();
                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("invitations").child(key).child("event_number").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
