@@ -48,8 +48,6 @@ public class NotificationsFragment extends Fragment {
                         .setQuery(FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("invitations"), Notification.class)
                         .build();
 
-
-
         try {
             adapter = new NotificationAdapter(options, root.getContext(), getParentFragmentManager());
         } catch (Exception e){
@@ -58,7 +56,6 @@ public class NotificationsFragment extends Fragment {
 
         recView.setAdapter(adapter);
 
-        //ыщьу еуче
         return root;
     }
 
