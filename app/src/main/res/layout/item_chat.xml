@@ -28,13 +28,6 @@
             android:textSize="18sp"
             tools:text="Ivan Ivanov" />
 
-        <TextView
-            android:id="@+id/last_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/chat_name"
-            android:textSize="14sp"
-            tools:text="Last message" />
     </RelativeLayout>
 
 
