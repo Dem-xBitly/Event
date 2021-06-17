@@ -36,32 +36,6 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
     protected void onBindViewHolder(@NonNull @NotNull viewHolder viewHolder, int i, @NonNull @NotNull Chat chat) {
         viewHolder.name.setText(chat.getName());
 
-
-
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(i+1)).child("messages").child("count").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()){
-                            String msgID = task.getResult().getValue().toString();
-                            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(i+1)).child("messages").child("all_messages")
-                                    .child(msgID).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                    String last_msg = snapshot.child("text").getValue().toString();
-                                    String from = snapshot.child("from").getValue().toString();
-                                    viewHolder.last_msg.setText(from + ": " + last_msg);
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-                                }
-                            });
-                        }
-                    }
-                });
-
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +73,10 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
     }
 
     class viewHolder extends RecyclerView.ViewHolder {
-        TextView name, last_msg;
+        TextView name;
         public viewHolder(@NonNull View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.chat_name);
-            last_msg = itemView.findViewById(R.id.last_message);
         }
     }
 }
