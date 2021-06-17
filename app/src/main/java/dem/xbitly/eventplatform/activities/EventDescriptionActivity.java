@@ -243,7 +243,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent (EventDescriptionActivity.this, MainActivity.class);
+                Intent intent = new Intent (EventDescriptionActivity.this, UsersInvitationActivity.class);
+
                 startActivity(intent);
             }
         } else {

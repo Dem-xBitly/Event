@@ -24,7 +24,7 @@ import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
 import dem.xbitly.eventplatform.chat.Chat;
 import dem.xbitly.eventplatform.chat.ChatAdapter;
 import dem.xbitly.eventplatform.network.NetworkManager;
-import dem.xbitly.eventplatform.users.User;
+
 
 public class MessengerFragment extends Fragment {
 

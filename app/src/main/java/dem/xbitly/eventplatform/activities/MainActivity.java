@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_profile, R.id.navigation_message, R.id.navigation_notifications)
+                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_profile, R.id.navigation_message)
                     .build();
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
             NavigationUI.setupWithNavController(navView, navController);
@@ -191,6 +191,44 @@ public class MainActivity extends AppCompatActivity {
                                             .child("UserPrivateEvents").child(eventId).child("eventID").setValue(event_number_in_private_events);
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .child("UserPrivateEvents").child(eventId).child("privacy").setValue("yes");
+                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventId).child("name")
+                                            .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                            if (task.isSuccessful()){
+                                                String name = task.getResult().getValue().toString();
+                                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                        .child(eventId).child("name").setValue(name);
+                                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                        .child(eventId).child("privacy").setValue("yes");
+                                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
+                                                        .child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                        if (task.isSuccessful()){
+                                                            int count_j = Integer.parseInt(task.getResult().getValue().toString());
+                                                            count_j++;
+                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
+                                                                    .child("count").setValue(count_j);
+
+                                                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(event_number_in_private_events).child("chatID").get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                String chatID = task.getResult().getValue().toString();
+                                                                                FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
+                                                                                        .child(eventId).child("chatID").setValue(chatID);
+
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .child("UserPrivateEvents").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                         @Override
@@ -201,44 +239,7 @@ public class MainActivity extends AppCompatActivity {
                                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                         .child("UserPrivateEvents").child("count").setValue(count_o);
 
-                                                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventId).child("name")
-                                                        .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                                        if (task.isSuccessful()){
-                                                            String name = task.getResult().getValue().toString();
-                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                                    .child(eventId).child("name").setValue(name);
-                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                                    .child(eventId).child("privacy").setValue("yes");
-                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
-                                                                    .child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                                                    if (task.isSuccessful()){
-                                                                        int count_j = Integer.parseInt(task.getResult().getValue().toString());
-                                                                        count_j++;
-                                                                        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
-                                                                                .child("count").setValue(count_j);
 
-                                                                        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(event_number_in_private_events).child("chatID").get()
-                                                                                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                                                    @Override
-                                                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                                                                        if (task.isSuccessful()){
-                                                                                            String chatID = task.getResult().getValue().toString();
-                                                                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats")
-                                                                                                    .child(eventId).child("chatID").setValue(chatID);
-
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                    }
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-                                                });
                                             }
                                         }
                                     });

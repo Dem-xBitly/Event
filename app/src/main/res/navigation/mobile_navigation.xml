@@ -20,10 +20,6 @@
         android:id="@+id/navigation_message"
         android:name="dem.xbitly.eventplatform.bottomnav.messanger.MessengerFragment"
         tools:layout="@layout/fragment_messenger" />
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="dem.xbitly.eventplatform.bottomnav.notifications.NotificationsFragment"
-        tools:layout="@layout/fragment_notifications" />
 
     <fragment
         android:id="@+id/navigation_profile"
