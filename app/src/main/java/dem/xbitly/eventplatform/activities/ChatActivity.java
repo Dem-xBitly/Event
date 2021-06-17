@@ -158,13 +158,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                                 String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
                                                 int count = go.split(",").length - 1;
-                                                String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
-                                                String count_bs;
-                                                if (maxCount.equals("0")) {
-                                                    count_bs = "Infinity";
-                                                } else {
-                                                    count_bs = count + "/" + maxCount;
-                                                }
+                                                String count_bs = Integer.toString(count);
 
                                                 try {
                                                     addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);

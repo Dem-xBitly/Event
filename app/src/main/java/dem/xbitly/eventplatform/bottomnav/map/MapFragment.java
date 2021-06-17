@@ -152,7 +152,7 @@ public class MapFragment extends Fragment implements LocationListener {
                     try {
                         int n = Integer.parseInt(snapshot.child("count").getValue().toString());
 
-                        for (int i = 1; i <= n; ++i) {
+                        for (int i = 0; i <= n; ++i) {
                             try {
                                 String privacy = snapshot.child(Integer.toString(i)).child("privacy").getValue().toString();
 

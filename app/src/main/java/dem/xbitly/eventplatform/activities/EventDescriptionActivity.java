@@ -1,13 +1,21 @@
 package dem.xbitly.eventplatform.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +44,11 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     private int count;
 
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private double latitude;
+    private double longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +60,25 @@ public class EventDescriptionActivity extends AppCompatActivity {
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
         ref = dBase.getReference("Invite");
         ref2 = dBase.getReference("Users/"+getIntent().getSerializableExtra("userID").toString());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                        }
+                    }
+                });
 
         binding.nextBtnFromEventdiskBtn.setOnClickListener(v -> {
             if (!binding.eventDesc.getText().toString().isEmpty()){
@@ -112,7 +144,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 });
 
                 Intent intent = new PlacePicker.IntentBuilder()
-                        .setLatLong(40.748672, -73.985628)
+                        .setLatLong(latitude, longitude)
                         .showLatLong(true)
                         .setMapType(MapType.NORMAL)
                         .setFabColor(R.color.blue)

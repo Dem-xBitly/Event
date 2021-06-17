@@ -2,6 +2,7 @@ package dem.xbitly.eventplatform.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +81,17 @@ public class UsersInvitationActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnShareLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getDynamicLink());
+                Intent chosenIntent = Intent.createChooser(intent, "Send invitation link");
+                startActivity(chosenIntent);
+            }
+        });
+
 
 
         binding.inviteUsersBtn.setOnClickListener(new View.OnClickListener() {
@@ -124,18 +138,32 @@ public class UsersInvitationActivity extends AppCompatActivity {
                         }
                     }
                 });
-
                 Intent intent = new Intent (getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-
             }
-
 
         });
 
+    }
 
+    public Uri createDynamicLink(){
+        Uri.Builder builder = new Uri.Builder();
+        DynamicLink link = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://event.com/invite/?eventID=" + Integer.toString(getIntent().getIntExtra("event_number", 0))))
+                .setDomainUriPrefix("https://eventplatform.page.link")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build()).buildDynamicLink();
 
+        Uri linkUri = link.getUri();
+        return linkUri;
+    }
 
+    public String getDynamicLink(){
+        Uri cacheLink = createDynamicLink();
+        Uri link;
+        Uri.Builder uriBuilder = Uri.parse(cacheLink.toString()).buildUpon();
+        uriBuilder.appendQueryParameter("eventID", Integer.toString(getIntent().getIntExtra("event_number", 0)));
+        link = uriBuilder.build();
+        return link.toString();
     }
 
     public void writeDataToDB1(int a, int b){
@@ -159,29 +187,17 @@ public class UsersInvitationActivity extends AppCompatActivity {
 
                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                             .child(Integer.toString(count)).child("privacy").setValue("yes");
+                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents").child("count")
+                            .setValue(Integer.toString(count));
                 }
             }
         });
 
-        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()){
-                    event_name = task.getResult().getValue().toString();
-                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(++user_chat_count_num)).child("name").setValue(event_name);
-                }
-            }
-        });
 
         FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                 .child("chatID").setValue(a);
 
         FirebaseDatabase.getInstance().getReference("Chats").child("count").setValue(a);
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count").setValue(b);
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(b)).child("chatID").setValue(a);
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(b)).child("name")
-                .setValue(getIntent().getStringExtra("event_name"));
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(String.valueOf(b)).child("privacy").setValue("yes");
         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("event_number").setValue(Integer.toString(getIntent().getIntExtra("event_number", 0)));
         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("count").setValue(1);
         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("1").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -192,7 +208,7 @@ public class UsersInvitationActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
                 .child("userID").setValue("app");
         FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
-                .child("text").setValue("Welcome to the chat of the event. Please, be polite to the rest of the chat and have a pleasant discussion!");
+                .child("text").setValue("Welcome to the chat of the event. Please, be polite.");
         FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
                 .child("time").setValue("");
     }

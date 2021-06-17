@@ -21,7 +21,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
+        android:layout_marginRight="60dp"
         android:background="#000"
         android:text="@string/create_event"
         android:textColor="#fff" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnShareLink"
+        android:background="#000"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/ic_share_white"
+        />
+
 </RelativeLayout>

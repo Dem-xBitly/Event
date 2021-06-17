@@ -1,9 +1,12 @@
 package dem.xbitly.eventplatform.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +16,12 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +57,8 @@ public class PublicEventActivity extends AppCompatActivity {
 
     private int event_number;//номер евента
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +75,8 @@ public class PublicEventActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         ref = database.getReference("PublicEvents");
+
+
 
         binding.eventDate.setEnabled(false);
         binding.eventTime.setEnabled(false);
