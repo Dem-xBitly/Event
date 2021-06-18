@@ -156,6 +156,7 @@ public class UsersInvitationActivity extends AppCompatActivity {
                     .child("time").setValue("");
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                     .child("chatID").setValue(a);
+            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("chatID").setValue(Integer.toString(a));
         }else{
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                     .child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("privacy").setValue("no");
