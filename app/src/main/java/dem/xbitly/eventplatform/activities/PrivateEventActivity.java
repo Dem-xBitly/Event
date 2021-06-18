@@ -148,7 +148,7 @@ public class PrivateEventActivity extends AppCompatActivity {
 
                                 ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
                                 ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                snapshot.getRef().child("count").setValue(event_number + 1);
+                                snapshot.getRef().child("count").setValue(event_number + 2);
                                 a = false;
                             } catch (Exception e) {
                                 event_number = 1;
@@ -172,7 +172,7 @@ public class PrivateEventActivity extends AppCompatActivity {
 
                                 ref.child("name").setValue(binding.eventNamePrivate.getText().toString());
                                 ref.child("userID").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                snapshot.getRef().child("count").setValue(event_number + 1);
+                                snapshot.getRef().child("count").setValue(event_number + 2);
                                 a = false;
                             }
                         }
@@ -250,6 +250,7 @@ public class PrivateEventActivity extends AppCompatActivity {
                 Intent intent = new Intent (PrivateEventActivity.this, UsersInvitationActivity.class);
                 intent.putExtra("event_number", event_number);
                 intent.putExtra("event_name", binding.eventNamePrivate.getText().toString());
+                intent.putExtra("privacy", true);
                 startActivity(intent);
             }
         } else {

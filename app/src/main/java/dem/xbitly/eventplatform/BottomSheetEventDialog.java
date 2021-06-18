@@ -12,10 +12,20 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.activities.CreateReviewActivity;
@@ -23,7 +33,7 @@ import dem.xbitly.eventplatform.activities.MainActivity;
 
 public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
-    private final String id, name, address, count_people, date, time;
+    private String id, name, address, count_people, date, time;
     private boolean userIsGo, eventIsPrivate;
 
     public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate){
@@ -36,6 +46,10 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         this.time = time;
         this.userIsGo = userIsGo;
         this.eventIsPrivate = eventIsPrivate;
+
+    }
+
+    public BottomSheetEventDialog(){
 
     }
 
@@ -71,7 +85,59 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         });
 
         buttonRefuse.setOnClickListener(view -> {
-            //отмена эвента
+            if (this.eventIsPrivate){
+                String id = this.id;
+                FirebaseDatabase.getInstance().getReference("PrivateEvents").child(this.id).child("go").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()){
+                            String finalGo = task.getResult().getValue().toString();
+                            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(id).child("go")
+                                    .setValue(finalGo.replace(","+FirebaseAuth.getInstance().getCurrentUser().getUid(), ""));
+                        }
+                    }
+                });
+            }else{
+                String id = this.id;
+                FirebaseDatabase.getInstance().getReference("PublicEvents").child(this.id).child("go").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()){
+                            String finalGo = task.getResult().getValue().toString();
+                            FirebaseDatabase.getInstance().getReference("PublicEvents").child(id).child("go")
+                                    .setValue(finalGo.replace(","+FirebaseAuth.getInstance().getCurrentUser().getUid(), ""));
+                        }
+                    }
+                });
+            }
+
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                    .child("UserPrivateEvents").child(this.id).setValue(null);
+            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                    .child("UserPrivateEvents").child("count").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    int count234 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                    count234--;
+                    FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                            .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
+                }
+            });
+
+            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                    .child("Chats").child("chats").child(this.id).setValue(null);
+            FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                    .child("Chats").child("count").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    int countt23 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                    countt23--;
+                    FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                            .child("Chats").child("count").setValue(countt23);
+                }
+            });
+
+            Intent intent = new Intent (v.getContext(), MainActivity.class);
+            v.getContext().startActivity(intent);
         });
 
 
@@ -88,6 +154,7 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
                 v.getContext().startActivity(intent);
             });
         } else {
+            buttonRefuse.setVisibility(View.GONE);
             buttonAddReview.setVisibility(View.GONE);
         }
 

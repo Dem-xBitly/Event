@@ -244,7 +244,8 @@ public class EventDescriptionActivity extends AppCompatActivity {
                 });
 
                 Intent intent = new Intent (EventDescriptionActivity.this, UsersInvitationActivity.class);
-
+                intent.putExtra("privacy", false);
+                intent.putExtra("event_number", getIntent().getIntExtra("eventID", 0));
                 startActivity(intent);
             }
         } else {

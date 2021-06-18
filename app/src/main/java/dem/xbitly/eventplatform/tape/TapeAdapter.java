@@ -200,10 +200,10 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                                     String eventID1 = Objects.requireNonNull(task1.getResult().getValue()).toString();
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .child("UserPrivateEvents").child(eventID1).child("privacy").setValue("no");
+                                                            .child("UserPrivateEvents").child(snapshot2.child("eventID").getValue().toString()).child("privacy").setValue("no");
 
                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                            .child("UserPrivateEvents").child(eventID1).child("eventID").setValue(eventID1);
+                                                            .child("UserPrivateEvents").child(snapshot2.child("eventID").getValue().toString()).child("eventID").setValue(eventID1);
                                                 }
                                             });
                                         }
@@ -237,7 +237,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                                                                     chatInfo.put("name", name);
                                                                                     chatInfo.put("privacy", "no");
                                                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                                            .child("Chats").child("chats").child(eventID).setValue(chatInfo);
+                                                                                            .child("Chats").child("chats").child(snapshot2.child("eventID").getValue().toString()).setValue(chatInfo);
                                                                                 }
                                                                             });
                                                                 }

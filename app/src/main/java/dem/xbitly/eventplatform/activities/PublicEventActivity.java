@@ -130,10 +130,10 @@ public class PublicEventActivity extends AppCompatActivity {
                                         FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                                     }
                                 });
-                                snapshot.getRef().child("count").setValue(event_number+1);
+                                snapshot.getRef().child("count").setValue(event_number+2);
                                 a = false;
                             } catch (Exception e) {
-                                event_number = 1;
+                                event_number = 0;
                                 ref = database.getReference("PublicEvents").child(String.valueOf(event_number));
                                 ref.setValue(event_info).addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
@@ -148,7 +148,7 @@ public class PublicEventActivity extends AppCompatActivity {
                                         FancyToast.makeText(getApplicationContext(),"Some errors",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                                     }
                                 });
-                                snapshot.getRef().child("count").setValue(event_number+1);
+                                snapshot.getRef().child("count").setValue(event_number+2);
                                 a = false;
                             }
                         }

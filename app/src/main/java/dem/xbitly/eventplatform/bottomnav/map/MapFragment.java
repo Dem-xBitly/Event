@@ -152,14 +152,14 @@ public class MapFragment extends Fragment implements LocationListener {
                     try {
                         int n = Integer.parseInt(snapshot.child("count").getValue().toString());
 
-                        for (int i = 0; i <= n; ++i) {
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             try {
-                                String privacy = snapshot.child(Integer.toString(i)).child("privacy").getValue().toString();
+                                String privacy = snapshot1.child("privacy").getValue().toString();
 
 
                                 if (privacy.equals("yes")){
-                                    String num = "1" + snapshot.child(Integer.toString(i)).child("eventID").getValue().toString();//1 в начале строки означает, что privacy мероприятия =1, значит евент закрытый
-                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(snapshot.child(Integer.toString(i)).child("eventID").getValue().toString())
+                                    String num = "1" + snapshot1.child("eventID").getValue().toString();//1 в начале строки означает, что privacy мероприятия =1, значит евент закрытый
+                                    FirebaseDatabase.getInstance().getReference("PrivateEvents").child(snapshot1.child("eventID").getValue().toString())
                                             .addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -178,8 +178,8 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 }
                                             });
                                 }else{
-                                    String num = "0" + snapshot.child(Integer.toString(i)).child("eventID").getValue().toString(); //0 в начале строки означает, что privacy мероприятия =0, значит евент публичный
-                                    FirebaseDatabase.getInstance().getReference("PublicEvents").child(snapshot.child(Integer.toString(i)).child("eventID").getValue().toString())
+                                    String num = "0" + snapshot1.child("eventID").getValue().toString(); //0 в начале строки означает, что privacy мероприятия =0, значит евент публичный
+                                    FirebaseDatabase.getInstance().getReference("PublicEvents").child(snapshot1.child("eventID").getValue().toString())
                                             .addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -227,13 +227,14 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                                     if(task.isSuccessful()){
                                                         String count_m = task.getResult().getValue().toString();
-                                                        FirebaseDatabase.getInstance().getReference("Chats").child(count_m) //колво человек, зареганых на евент
-                                                                .child("members").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID) //колво человек, зареганых на евент
+                                                                .child("go").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                                                 if(task.isSuccessful()){
-                                                                    String count = task.getResult().getValue().toString();
-                                                                    event_info.put("count", count);
+                                                                    String go = task.getResult().getValue().toString();
+                                                                    int count = go.split(",").length - 1;
+                                                                    event_info.put("count", Integer.toString(count));
 
                                                                     FirebaseDatabase.getInstance().getReference("PrivateEvents").child(eventID).child("time").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                                         @Override
@@ -316,14 +317,15 @@ public class MapFragment extends Fragment implements LocationListener {
                                                 @Override
                                                 public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                                     if(task.isSuccessful()){
-                                                        String count_m = task.getResult().getValue().toString();
-                                                        FirebaseDatabase.getInstance().getReference("Chats").child(count_m) //колво человек, зареганых на евент
-                                                                .child("members").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                        String chatID = task.getResult().getValue().toString();
+                                                        FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID) //колво человек, зареганых на евент
+                                                                .child("go").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                                                                 if(task.isSuccessful()){
-                                                                    String count = task.getResult().getValue().toString();
-                                                                    event_info.put("count", count);
+                                                                    String go = task.getResult().getValue().toString();
+                                                                    int count = go.split(",").length - 1;
+                                                                    event_info.put("count", Integer.toString(count));
 
                                                                     FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID).child("time").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                                                         @Override
