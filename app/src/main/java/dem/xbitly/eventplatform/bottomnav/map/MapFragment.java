@@ -64,8 +64,6 @@ import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class MapFragment extends Fragment implements LocationListener {
 
-    private MapViewModel dashboardViewModel;
-
     private RelativeLayout create_event;
 
     private LocationManager locationManager;
@@ -77,8 +75,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(MapViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_map, container, false);
         this.context = root.getContext();
 

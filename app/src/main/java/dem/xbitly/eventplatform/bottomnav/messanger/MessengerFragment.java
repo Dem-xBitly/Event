@@ -27,17 +27,12 @@ import dem.xbitly.eventplatform.network.NetworkManager;
 
 
 public class MessengerFragment extends Fragment {
-
-    private MessengerViewModel messengerViewModel;
-
     private RecyclerView recView;
 
     private ChatAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        messengerViewModel =
-                new ViewModelProvider(this).get(MessengerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_messenger, container, false);
 
         checkNetwork();

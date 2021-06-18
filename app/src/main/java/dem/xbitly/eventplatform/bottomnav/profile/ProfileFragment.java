@@ -33,8 +33,6 @@ import dem.xbitly.eventplatform.tape.TapeAdapter;
 
 public class ProfileFragment extends Fragment {
 
-    private ProfileViewModel notificationsViewModel;
-
     private RecyclerView rv;
 
     private TextView profile_name;
@@ -45,8 +43,6 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         checkNetwork();
