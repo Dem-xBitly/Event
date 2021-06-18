@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +29,10 @@ public class MembersActivity extends AppCompatActivity {
         binding = ActivityMembersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.backFromChatBtn.setOnClickListener(view -> onBackPressed());
+        binding.backFromChatBtn.setOnClickListener(view -> {
+            Intent intent = new Intent (MembersActivity.this, ChatActivity.class);
+            startActivity(intent);
+        });
 
         String path;
         if(getIntent().getBooleanExtra("private", false)){
