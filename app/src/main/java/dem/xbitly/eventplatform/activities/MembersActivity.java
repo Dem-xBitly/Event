@@ -29,10 +29,7 @@ public class MembersActivity extends AppCompatActivity {
         binding = ActivityMembersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.backFromChatBtn.setOnClickListener(view -> {
-            Intent intent = new Intent (MembersActivity.this, ChatActivity.class);
-            startActivity(intent);
-        });
+        binding.backFromChatBtn.setOnClickListener(view -> onBackPressed());
 
         String path;
         if(getIntent().getBooleanExtra("private", false)){
