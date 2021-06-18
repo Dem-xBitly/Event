@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import dem.xbitly.eventplatform.BottomSheetEditDialog;
-import dem.xbitly.eventplatform.BottomSheetEventDialog;
+import dem.xbitly.eventplatform.bottomsheet.BottomSheetEditDialog;
+import dem.xbitly.eventplatform.bottomsheet.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.activities.CommentActivity;
 

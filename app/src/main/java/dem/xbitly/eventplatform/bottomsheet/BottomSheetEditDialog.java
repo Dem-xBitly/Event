@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.bottomsheet;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.Objects;
+
+import dem.xbitly.eventplatform.R;
 
 public class BottomSheetEditDialog extends BottomSheetDialogFragment {
 

@@ -1,4 +1,4 @@
-package dem.xbitly.eventplatform;
+package dem.xbitly.eventplatform.bottomsheet;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.activities.CreateReviewActivity;
 import dem.xbitly.eventplatform.activities.MainActivity;

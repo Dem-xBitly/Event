@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import dem.xbitly.eventplatform.BottomSheetEventDialog;
+import dem.xbitly.eventplatform.bottomsheet.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityMainBinding;
 import dem.xbitly.eventplatform.network.NetworkManager;
