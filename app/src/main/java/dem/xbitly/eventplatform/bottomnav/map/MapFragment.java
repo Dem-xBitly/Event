@@ -278,7 +278,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String country = addresses.get(0).getCountryName();
 
                                                                                                                                 BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
-                                                                                                                                        address, event_info.get("count"), event_info.get("date"), event_info.get("time"), false, true);
+                                                                                                                                        address, event_info.get("count"), event_info.get("date"), event_info.get("time"), false, true, true);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();
@@ -366,7 +366,7 @@ public class MapFragment extends Fragment implements LocationListener {
                                                                                                                                 String address = addresses.get(0).getAddressLine(0);
 
                                                                                                                                 BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, event_info.get("name"),
-                                                                                                                                        address, event_info.get("count"), event_info.get("date"), event_info.get("time"), true, false);
+                                                                                                                                        address, event_info.get("count"), event_info.get("date"), event_info.get("time"), true, false, true);
                                                                                                                                 bottomSheetEventDialog.show(getParentFragmentManager(), "Event info");
                                                                                                                             } catch (IOException e) {
                                                                                                                                 e.printStackTrace();
