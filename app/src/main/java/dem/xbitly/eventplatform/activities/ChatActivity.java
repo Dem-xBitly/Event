@@ -258,6 +258,13 @@ public class ChatActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        readMessages();
+    }
+
     public void readMessages(){
         FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0))).child("messages").child("all_messages").addValueEventListener(new ValueEventListener() {
             @Override
