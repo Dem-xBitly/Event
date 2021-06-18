@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,6 +62,10 @@ public class EventDescriptionActivity extends AppCompatActivity {
         ref = dBase.getReference("Invite");
         ref2 = dBase.getReference("Users/"+getIntent().getSerializableExtra("userID").toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        binding.backFromEventDescBtn.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){

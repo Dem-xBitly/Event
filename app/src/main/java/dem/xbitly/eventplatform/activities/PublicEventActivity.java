@@ -82,12 +82,15 @@ public class PublicEventActivity extends AppCompatActivity {
         binding.eventTime.setEnabled(false);
 
         //раздел со всеми созданными евентами этого человека
-
         binding.infinityAmountBtn.setOnClickListener(v -> {
             binding.eventMaxAmount.setText("Infinity");
             binding.eventMaxAmount.setEnabled(false);
 
             event_info.put("max_amount", "0"); //если число участников может быть бесконечным, то записываем 0, что означает бесконечность
+        });
+
+        binding.backFromPublicEventBtn.setOnClickListener(v -> {
+         onBackPressed();
         });
 
         binding.pickDateBtn.setOnClickListener(v -> setDate());

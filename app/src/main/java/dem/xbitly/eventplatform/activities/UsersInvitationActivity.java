@@ -46,6 +46,10 @@ public class UsersInvitationActivity extends AppCompatActivity {
         binding.invitationLinkTxt.setText(getDynamicLink());
         binding.invitationLinkTxt.setEnabled(false);
 
+        binding.backFromEventDescBtn.setOnClickListener(v -> {
+            onBackPressed();
+        });
+
         binding.btnShareLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
