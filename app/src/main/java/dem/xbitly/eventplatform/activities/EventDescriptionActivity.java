@@ -237,7 +237,7 @@ public class EventDescriptionActivity extends AppCompatActivity {
                                         .child("text").setValue("Welcome to the chat of the event. Please be polite to the rest of the chat");
                                 FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(count2)).child("messages").child("all_messages").child("1")
                                         .child("time").setValue("");
-                                FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(count2)).child("privacy").setValue("false");
+                                FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(count2)).child("privacy").setValue("no");
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("count").setValue(count);
 

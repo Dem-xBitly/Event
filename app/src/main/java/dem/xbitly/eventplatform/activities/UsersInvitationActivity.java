@@ -116,8 +116,7 @@ public class UsersInvitationActivity extends AppCompatActivity {
     public void writeDataToDB1(int a, int b){
         a++;
         b++;
-        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
-                .child("chatID").setValue(a);
+
         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("name")
                 .setValue(getIntent().getStringExtra("event_name"));
 
@@ -142,34 +141,32 @@ public class UsersInvitationActivity extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 1)))
                     .child("privacy").setValue("yes");
             FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("privacy").setValue("yes");
+            FirebaseDatabase.getInstance().getReference("Chats").child("count").setValue(a);
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("event_number").setValue(Integer.toString(getIntent().getIntExtra("event_number", 0)));
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("count").setValue(1);
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("1").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("count").setValue(1);
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("all_messages").child("1")
+                    .child("from").setValue("App");
+            FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
+                    .child("userID").setValue("app");
+            FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
+                    .child("text").setValue("Welcome to the chat of the event. Please, be polite.");
+            FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
+                    .child("time").setValue("");
+            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
+                    .child("chatID").setValue(a);
         }else{
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                     .child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("privacy").setValue("no");
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                     .child("privacy").setValue("no");
-            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("privacy").setValue("no");
         }
 
         FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                 .child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("eventID").setValue(getIntent().getIntExtra("event_number", 0));
 
 
-        FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
-                .child("chatID").setValue(a);
-
-        FirebaseDatabase.getInstance().getReference("Chats").child("count").setValue(a);
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("event_number").setValue(Integer.toString(getIntent().getIntExtra("event_number", 0)));
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("count").setValue(1);
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("members").child("1").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("count").setValue(1);
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("all_messages").child("1")
-                .child("from").setValue("App");
-        FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
-                .child("userID").setValue("app");
-        FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
-                .child("text").setValue("Welcome to the chat of the event. Please, be polite.");
-        FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
-                .child("time").setValue("");
     }
 
     public void checkNetwork(){
