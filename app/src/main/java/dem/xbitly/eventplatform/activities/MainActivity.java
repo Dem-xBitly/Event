@@ -2,11 +2,15 @@ package dem.xbitly.eventplatform.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -387,9 +391,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkNetwork(){
-        if(!NetworkManager.isNetworkAvailable(this)){
-            Intent in_intent = new Intent (MainActivity.this, InternetErrorConnectionActivity.class);
-            startActivity(in_intent);
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (MainActivity.this, InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
         }
     }
 

@@ -1,7 +1,11 @@
 package dem.xbitly.eventplatform.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,9 +61,17 @@ public class ProfileSettings extends AppCompatActivity {
     }
 
     public void checkNetwork(){
-        if(!NetworkManager.isNetworkAvailable(this)){
-            Intent in_intent = new Intent (ProfileSettings.this, InternetErrorConnectionActivity.class);
-            startActivity(in_intent);
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (ProfileSettings.this, InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
         }
     }
 }

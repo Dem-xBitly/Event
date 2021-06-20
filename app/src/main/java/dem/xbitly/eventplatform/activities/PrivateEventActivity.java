@@ -11,10 +11,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -264,9 +268,17 @@ public class PrivateEventActivity extends AppCompatActivity {
     }
 
     public void checkNetwork(){
-        if(!NetworkManager.isNetworkAvailable(this)){
-            Intent in_intent = new Intent (PrivateEventActivity.this, InternetErrorConnectionActivity.class);
-            startActivity(in_intent);
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (PrivateEventActivity.this, InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
         }
     }
 

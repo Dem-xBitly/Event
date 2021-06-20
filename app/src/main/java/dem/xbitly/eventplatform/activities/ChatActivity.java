@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.PopupMenu;
 
@@ -145,19 +149,19 @@ public class ChatActivity extends AppCompatActivity {
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                                eventInfo.put("name", Objects.requireNonNull(snapshot.child("name").getValue()).toString());
-                                                eventInfo.put("time", Objects.requireNonNull(snapshot.child("time").getValue()).toString());
-                                                eventInfo.put("date", Objects.requireNonNull(snapshot.child("date").getValue()).toString());
-                                                eventInfo.put("longitude", Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
-                                                eventInfo.put("latitude", Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
-                                                double latitude_d = Double.parseDouble(Objects.requireNonNull(eventInfo.get("latitude")));
-                                                double longitude_d = Double.parseDouble(Objects.requireNonNull(eventInfo.get("longitude")));
+                                                String name = snapshot.child("name").getValue().toString();
+                                                String go = snapshot.child("go").getValue().toString();
+                                                int count = go.split(",").length - 1;
+                                                String time = snapshot.child("time").getValue().toString();
+                                                String date = snapshot.child("date").getValue().toString();
+                                                String latitude = snapshot.child("adress").child("latitude").getValue().toString();
+                                                String longitude = snapshot.child("adress").child("longitude").getValue().toString();
+                                                double latitude_d = Double.parseDouble(latitude);
+                                                double longitude_d = Double.parseDouble(longitude);
                                                 Geocoder geocoder;
                                                 List<Address> addresses;
                                                 geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
-                                                String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                                                int count = go.split(",").length - 1;
                                                 String count_bs = Integer.toString(count);
 
                                                 try {
@@ -165,8 +169,8 @@ public class ChatActivity extends AppCompatActivity {
 
                                                     String address = addresses.get(0).getAddressLine(0);
 
-                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                            address, count_bs, eventInfo.get("date"), eventInfo.get("time"), false, true, false);
+                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
+                                                            address, count_bs,date, time, false, true, false);
                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
@@ -183,19 +187,18 @@ public class ChatActivity extends AppCompatActivity {
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                                                eventInfo.put("name", Objects.requireNonNull(snapshot.child("name").getValue()).toString());
-                                                eventInfo.put("time", Objects.requireNonNull(snapshot.child("time").getValue()).toString());
-                                                eventInfo.put("date", Objects.requireNonNull(snapshot.child("date").getValue()).toString());
-                                                eventInfo.put("longitude", Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
-                                                eventInfo.put("latitude", Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
-                                                double latitude_d = Double.parseDouble(Objects.requireNonNull(eventInfo.get("latitude")));
-                                                double longitude_d = Double.parseDouble(Objects.requireNonNull(eventInfo.get("longitude")));
+                                                String name = snapshot.child("name").getValue().toString();
+                                                String go = snapshot.child("go").getValue().toString();
+                                                int count = go.split(",").length - 1;
+                                                String time = snapshot.child("time").getValue().toString();
+                                                String date = snapshot.child("date").getValue().toString();
+                                                String latitude = snapshot.child("adress").child("latitude").getValue().toString();
+                                                String longitude = snapshot.child("adress").child("longitude").getValue().toString();
+                                                double latitude_d = Double.parseDouble(latitude);
+                                                double longitude_d = Double.parseDouble(longitude);
                                                 Geocoder geocoder;
                                                 List<Address> addresses;
                                                 geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-                                                String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                                                int count = go.split(",").length - 1;
                                                 String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
                                                 String count_bs;
                                                 if (maxCount.equals("0")) {
@@ -209,9 +212,12 @@ public class ChatActivity extends AppCompatActivity {
 
                                                     String address = addresses.get(0).getAddressLine(0);
 
-                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), eventInfo.get("name"),
-                                                            address, count_bs, eventInfo.get("date"), eventInfo.get("time"), true, false, false);
-                                                    bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
+                                                    if (!getSupportFragmentManager().isDestroyed()){
+                                                        BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
+                                                                address, count_bs, date, time, true, false, false);
+                                                        bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
+                                                    }
+
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
@@ -246,9 +252,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void checkNetwork(){
-        if(!NetworkManager.isNetworkAvailable(ChatActivity.this)){
-            Intent in_intent = new Intent (ChatActivity.this, InternetErrorConnectionActivity.class);
-            startActivity(in_intent);
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (ChatActivity.this, InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
         }
     }
     @Override

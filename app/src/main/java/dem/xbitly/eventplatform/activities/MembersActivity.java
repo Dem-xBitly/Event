@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +32,8 @@ public class MembersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMembersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        checkNetwork();
 
         binding.backFromChatBtn.setOnClickListener(view -> onBackPressed());
 
@@ -55,5 +61,20 @@ public class MembersActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void checkNetwork(){
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (MembersActivity.this, InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
+        }
     }
 }

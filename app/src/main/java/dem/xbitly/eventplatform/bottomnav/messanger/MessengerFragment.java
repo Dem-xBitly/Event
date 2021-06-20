@@ -1,7 +1,11 @@
 package dem.xbitly.eventplatform.bottomnav.messanger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +55,17 @@ public class MessengerFragment extends Fragment {
     }
 
     public void checkNetwork(){
-        if(!NetworkManager.isNetworkAvailable(this.getContext())){
-            Intent in_intent = new Intent (this.getContext(), InternetErrorConnectionActivity.class);
-            startActivity(in_intent);
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (getContext(), InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
         }
     }
 
@@ -68,4 +80,5 @@ public class MessengerFragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
 }
