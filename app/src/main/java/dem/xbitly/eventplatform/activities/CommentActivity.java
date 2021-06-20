@@ -57,6 +57,7 @@ public class CommentActivity extends AppCompatActivity {
         binding.refreshComments.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                checkNetwork();
                 binding.refreshComments.setRefreshing(true);
                 e = true;
                 ref.addValueEventListener(new ValueEventListener() {

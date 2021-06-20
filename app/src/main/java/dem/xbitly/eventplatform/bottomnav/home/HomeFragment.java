@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                checkNetwork();
                 refresh.setRefreshing(true);
                 isUpdateRV = true;
                 updateRecycler(ref, ref2, root);
