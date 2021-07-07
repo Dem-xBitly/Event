@@ -2,6 +2,8 @@ package dem.xbitly.eventplatform.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -9,11 +11,19 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,13 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -42,10 +45,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
+import dem.xbitly.eventplatform.activities.StartActivity;
 import dem.xbitly.eventplatform.bottomsheet.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.databinding.ActivityMainBinding;
-import dem.xbitly.eventplatform.network.NetworkManager;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
