@@ -2,9 +2,11 @@ package dem.xbitly.eventplatform.bottomnav.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,71 +72,88 @@ public class HomeFragment extends Fragment {
                 checkNetwork();
                 refresh.setRefreshing(true);
                 isUpdateRV = true;
-                updateRecycler(ref, ref2, root);
+                updateRecyclerData(ref, ref2, root);
             }
         });
 
-        updateRecycler(ref, ref2, root);
+        SharedPreferences prefs = getActivity().getSharedPreferences("App", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        if (prefs.getBoolean("fromSplash", false))
+            getDataFromSplash(ref, ref2, root);
+        else
+            updateRecyclerData(ref, ref2, root);
 
         return root;
     }
 
-    private void updateRecycler(DatabaseReference ref, DatabaseReference ref2, View root){
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void updateRecyclerData(DatabaseReference ref, DatabaseReference ref2, View root){
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                ArrayList<String> s = new ArrayList<>();
+                    ArrayList<String> s = new ArrayList<>();
 
-                for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
-                    s.add((i+1)+"");
-                }
+                    for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
+                        s.add((i+1)+"");
+                    }
 
-                ref2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ref2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        ArrayList<String> s1 = new ArrayList<>();
+                            ArrayList<String> s1 = new ArrayList<>();
 
-                        for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
-                            s1.add((i+1)+"");
-                        }
+                            for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
+                                s1.add((i+1)+"");
+                            }
 
-                        String[] ss = s.toArray(new String[0]);
-                        String[] ss1 = s1.toArray(new String[0]);
+                            String[] ss = s.toArray(new String[0]);
+                            String[] ss1 = s1.toArray(new String[0]);
 
-                        if(isUpdateRV) {
+                            if(isUpdateRV) {
 
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
-                            linearLayoutManager.setReverseLayout(true);
-                            linearLayoutManager.setStackFromEnd(true);
-                            rv.setLayoutManager(linearLayoutManager);
-                            rv.setHasFixedSize(true);
-                            try {
-                                isUpdateRV = false;
-                                TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
-                                rv.setAdapter(tapeAdapter);
-                            } catch (Exception e){
-                                isUpdateRV = true;
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
+                                linearLayoutManager.setReverseLayout(true);
+                                linearLayoutManager.setStackFromEnd(true);
+                                rv.setLayoutManager(linearLayoutManager);
+                                rv.setHasFixedSize(true);
+                                try {
+                                    isUpdateRV = false;
+                                    TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
+                                    rv.setAdapter(tapeAdapter);
+                                } catch (Exception e){
+                                    isUpdateRV = true;
+                                }
+
                             }
 
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                    refresh.setRefreshing(false);
+                }
 
-                    }
-                });
-                refresh.setRefreshing(false);
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+    }
 
-            }
-        });
+    private void getDataFromSplash(DatabaseReference ref, DatabaseReference ref2, View root){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setHasFixedSize(true);
+        String[] ss = getActivity().getIntent().getStringArrayExtra("ss");
+        String[] ss1 = getActivity().getIntent().getStringArrayExtra("ss1");
+        TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
+        rv.setAdapter(tapeAdapter);
     }
 
     public void checkNetwork(){
