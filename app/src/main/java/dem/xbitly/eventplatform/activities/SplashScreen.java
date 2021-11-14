@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,7 +76,8 @@ public class SplashScreen extends AppCompatActivity {
                         Intent intent = new Intent(SplashScreen.this, MainActivity.class);
                         intent.putExtra("ss", ss);
                         intent.putExtra("ss1", ss1);
-                        startActivity(intent);
+                        Bundle b = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this).toBundle();
+                        startActivity(intent, b);
 
                     }
 
