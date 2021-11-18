@@ -340,7 +340,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                                                 String address = addresses.get(0).getAddressLine(0);
 
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false, true);
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false, true, true);
                                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
 
                                             } catch (IOException e) {
@@ -488,8 +488,15 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                                             String address = addresses.get(0).getAddressLine(0);
 
-                                            BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false, true);
-                                            bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                            if (a) {
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a,
+                                                        false, true, true);
+                                                bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                            }else{
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a,
+                                                        false, true, false);
+                                                bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                            }
 
                                         } catch (IOException e) {
                                             e.printStackTrace();

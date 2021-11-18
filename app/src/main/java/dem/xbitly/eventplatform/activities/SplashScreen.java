@@ -8,7 +8,10 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +46,12 @@ public class SplashScreen extends AppCompatActivity {
         DatabaseReference ref2 = dBase.getReference("Invite");
 
         updateRecycler(ref, ref2);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkNetwork();
     }
 
     private void updateRecycler(DatabaseReference ref, DatabaseReference ref2){
@@ -93,5 +102,20 @@ public class SplashScreen extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void checkNetwork(){
+        boolean connected = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo nInfo = cm.getActiveNetworkInfo();
+            connected = nInfo != null && nInfo.isAvailable() && nInfo.isConnected();
+            if (!connected) {
+                Intent in_intent = new Intent (getApplicationContext(), InternetErrorConnectionActivity.class);
+                startActivity(in_intent);
+            }
+        } catch (Exception e) {
+            Log.e("Connectivity Exception", e.getMessage());
+        }
     }
 }

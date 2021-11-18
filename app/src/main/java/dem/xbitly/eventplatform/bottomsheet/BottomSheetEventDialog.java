@@ -35,9 +35,9 @@ import dem.xbitly.eventplatform.activities.MainActivity;
 public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
     private String id, name, address, count_people, date, time;
-    private boolean userIsGo, eventIsPrivate, refuse;
+    private boolean userIsGo, eventIsPrivate, refuse, chat_btn_show;
 
-    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate, boolean refuse){
+    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate, boolean refuse, boolean chat_btn){
 
         this.id = id;
         this.name = name;
@@ -48,6 +48,7 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         this.userIsGo = userIsGo;
         this.eventIsPrivate = eventIsPrivate;
         this.refuse = refuse;
+        this.chat_btn_show = chat_btn;
     }
 
     public BottomSheetEventDialog(){
@@ -67,12 +68,20 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         TextView event_private = v.findViewById(R.id.text_private);
         RelativeLayout buttonAddReview = v.findViewById(R.id.btn_add_review);
         RelativeLayout buttonRefuse = v.findViewById(R.id.btn_refuse);
+        RelativeLayout buttonChat = v.findViewById(R.id.btn_go_to_chat);
 
         if(eventIsPrivate){
             event_private.setVisibility(View.VISIBLE);
         } else {
             event_private.setVisibility(View.GONE);
         }
+
+        if (chat_btn_show) {
+            buttonChat.setVisibility(View.VISIBLE);
+            //TODO: set OnClickListener to btn_go_to_chat
+        }
+        else
+            buttonChat.setVisibility(View.GONE);
 
         address.setOnClickListener(view -> {
             ClipboardManager clipboard = (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);

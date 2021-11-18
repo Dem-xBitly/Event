@@ -170,7 +170,7 @@
             android:id="@+id/i5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_add_blue"/>
+            android:src="@drawable/ic_baseline_add_blue" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -178,9 +178,36 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/i5"
+            android:text="@string/add_review"
             android:textColor="@color/blue"
-            android:textSize="14sp"
-            android:text="@string/add_review"/>
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_go_to_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/r5"
+        android:layout_marginBottom="20dp"
+        android:layout_toEndOf="@id/btn_add_review"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:id="@+id/go_to_chat_arrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chats_bottom_sheet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/go_to_chat_arrow_img"
+            android:text="Go to chat"
+            android:textColor="@color/blue"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -170,7 +170,7 @@ public class ChatActivity extends AppCompatActivity {
                                                     String address = addresses.get(0).getAddressLine(0);
 
                                                     BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
-                                                            address, count_bs,date, time, false, true, false);
+                                                            address, count_bs,date, time, false, true, false, false);
                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
@@ -214,7 +214,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                                     if (!getSupportFragmentManager().isDestroyed()){
                                                         BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
-                                                                address, count_bs, date, time, true, false, false);
+                                                                address, count_bs, date, time, true, false, false, false);
                                                         bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                     }
 

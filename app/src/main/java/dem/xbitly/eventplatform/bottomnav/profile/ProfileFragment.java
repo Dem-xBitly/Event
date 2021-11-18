@@ -213,8 +213,10 @@ public class ProfileFragment extends Fragment {
             filePath = data.getData();
             CropImage.activity(filePath)
                     .start(getActivity());
+            Log.d("photo_picking", "photo picked");
         }
         else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            Log.d("photo_picking", "request code has given");
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 resultUri = result.getUri();
@@ -228,6 +230,7 @@ public class ProfileFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Log.d("photo_picking", "Error in result code");
                 Exception error = result.getError();
             }
         }
