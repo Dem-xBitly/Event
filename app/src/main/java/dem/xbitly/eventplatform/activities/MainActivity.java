@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                                             String address = addresses.get(0).getAddressLine(0);
 
                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(event_number_in_private_events, name,
-                                                    address, count_bs, date, time, false, true, false, true);
+                                                    address, count_bs, date, time, false, true, false, false, "", ""); //пользователь еще не зареган на евент, так что в чат не даем переходить
                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                             String address = addresses.get(0).getAddressLine(0);
 
                                             BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(event_number_in_private_events, name,
-                                                    address, count_bs, date, time, false, true, false, true);
+                                                    address, count_bs, date, time, false, true, false, false, "", ""); //пользователь еще не зареган на евент, так что в чат не даем переходить
                                             bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                         } catch (IOException e) {
                                             e.printStackTrace();

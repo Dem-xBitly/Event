@@ -28,16 +28,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import dem.xbitly.eventplatform.R;
+import dem.xbitly.eventplatform.activities.ChatActivity;
 import dem.xbitly.eventplatform.activities.CommentActivity;
 import dem.xbitly.eventplatform.activities.CreateReviewActivity;
 import dem.xbitly.eventplatform.activities.MainActivity;
 
 public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
-    private String id, name, address, count_people, date, time;
+    private String id, name, address, count_people, date, time, chatID, chatID2;
     private boolean userIsGo, eventIsPrivate, refuse, chat_btn_show;
 
-    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate, boolean refuse, boolean chat_btn){
+    public BottomSheetEventDialog(String id, String name, String address, String count_people, String date, String time, boolean userIsGo, boolean eventIsPrivate, boolean refuse, boolean chat_btn, String chatID, String chatID2){
 
         this.id = id;
         this.name = name;
@@ -47,8 +48,10 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         this.time = time;
         this.userIsGo = userIsGo;
         this.eventIsPrivate = eventIsPrivate;
-        this.refuse = refuse;
+        this.refuse = true;
         this.chat_btn_show = chat_btn;
+        this.chatID = chatID;
+        this.chatID2 = chatID2;
     }
 
     public BottomSheetEventDialog(){
@@ -72,18 +75,14 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
 
         if(eventIsPrivate){
             event_private.setVisibility(View.VISIBLE);
+            buttonAddReview.setVisibility(View.GONE);
         } else {
             event_private.setVisibility(View.GONE);
         }
 
-        if (chat_btn_show) {
-            buttonChat.setVisibility(View.VISIBLE);
-            //TODO: set OnClickListener to btn_go_to_chat
-        }
-        else
-            buttonChat.setVisibility(View.GONE);
 
-        address.setOnClickListener(view -> {
+
+        address.setOnClickListener(view -> { //копирование адреса проведения
             ClipboardManager clipboard = (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Address", address.getText().toString());
             clipboard.setPrimaryClip(clip);
@@ -94,7 +93,7 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
             dismiss();
         });
 
-        if (refuse){
+        if (refuse){ //кнопка отмены регистрации на мероприятие
             buttonRefuse.setVisibility(View.VISIBLE);
             buttonRefuse.setOnClickListener(view -> {
                 if (this.eventIsPrivate){
@@ -154,6 +153,27 @@ public class BottomSheetEventDialog extends BottomSheetDialogFragment {
         }else{
             buttonRefuse.setVisibility(View.GONE);
         }
+
+        if (chat_btn_show) { //кнопка для перехода в чат евента
+            buttonChat.setVisibility(View.VISIBLE);
+            //TODO: set OnClickListener to btn_go_to_chat
+        }
+        else
+            buttonChat.setVisibility(View.GONE);
+
+        String id1 = this.chatID;
+        String id2 = this.chatID2;
+
+        buttonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getContext(), ChatActivity.class);
+                intent.putExtra("chatID", id1); //chat id in all Chats
+                intent.putExtra("chatID2", id2);
+                intent.putExtra("privacy", eventIsPrivate); //private event or not
+                startActivity(intent);
+            }
+        });
 
 
 

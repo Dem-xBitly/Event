@@ -321,6 +321,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                             int count = go.split(",").length - 1;
                                             String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
                                             String count_bs;
+                                            String chatID = snapshot.child("chatID").getValue().toString();
                                             if (maxCount.equals("0")) {
                                                 count_bs = "Infinity";
                                             } else {
@@ -340,7 +341,9 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                                                 String address = addresses.get(0).getAddressLine(0);
 
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a, false, true, true);
+                                                BottomSheetEventDialog bottomSheetEventDialog =
+                                                        new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a,
+                                                                false, true, true, chatID, eventID); // отображаем bottomsheet, из которого можно также перейти в чат
                                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
 
                                             } catch (IOException e) {
@@ -465,11 +468,12 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                                        boolean a = go.contains(userID);
+                                        boolean user_is_go = go.contains(userID);
                                         String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
                                         int count = go.split(",").length-1;
                                         String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
                                         String count_bs;
+                                        String chatID = snapshot.child("chatID").getValue().toString();
                                         if(maxCount.equals("0")){
                                             count_bs = "Infinity";
                                         } else {
@@ -488,13 +492,13 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                                             String address = addresses.get(0).getAddressLine(0);
 
-                                            if (a) {
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a,
-                                                        false, true, true);
+                                            if (user_is_go) {
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
+                                                        false, true, true, chatID, eventID); // отображаем bottomsheet, из которого можно также перейти в чат
                                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
                                             }else{
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, a,
-                                                        false, true, false);
+                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
+                                                        false, true, false, "", ""); // оставляем id-шники пустыми, тк пользователь еще не зареган на евент
                                                 bottomSheetEventDialog.show(fragmentManager, "Event info");
                                             }
 

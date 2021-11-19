@@ -51,7 +51,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
                     public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                         if (task.isSuccessful()){
                             Intent intent = new Intent (v.getContext(), ChatActivity.class);
-                            intent.putExtra("chatID", Integer.parseInt(task.getResult().getValue().toString())); //chat id in all Chats
+                            intent.putExtra("chatID", task.getResult().getValue().toString()); //chat id in all Chats
                             intent.putExtra("chatID2", chat_id);
                             intent.putExtra("privacy", finalPrivacy); //private event or not
                             v.getContext().startActivity(intent);

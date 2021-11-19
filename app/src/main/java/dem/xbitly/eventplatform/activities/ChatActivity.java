@@ -69,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
          options =
                 new FirebaseRecyclerOptions.Builder<Message>()
                         .setQuery(FirebaseDatabase.getInstance().getReference("Chats")
-                                .child(Integer.toString(getIntent().getIntExtra("chatID", 0))).child("messages").child("all_messages"), Message.class)
+                                .child(getIntent().getStringExtra("chatID")).child("messages").child("all_messages"), Message.class)
                         .build();
         recView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
         readMessages();
@@ -93,14 +93,14 @@ public class ChatActivity extends AppCompatActivity {
 
         binding.messageBtnSend.setOnClickListener(v -> {
             if (binding.messageEdit.getText().toString().length() != 0){
-                FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID"))
                         .child("messages").child("count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                         if (task.isSuccessful()){
                             count = Integer.parseInt(task.getResult().getValue().toString());
                             count++;
-                            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                            FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID"))
                                     .child("messages").child("count").setValue(count);
                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -113,7 +113,7 @@ public class ChatActivity extends AppCompatActivity {
                                         messageInfo.put("from", task2.getResult().getValue().toString());
                                         messageInfo.put("text", binding.messageEdit.getText().toString());
                                         messageInfo.put("time", time);
-                                        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                                        FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID"))
                                                 .child("messages").child("all_messages").child(Integer.toString(count)).setValue(messageInfo);
                                         binding.messageEdit.setText("");
                                         recView.scrollToPosition(adapter.getItemCount()-1);
@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
             popup.show();
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                    FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID"))
                             .child("event_number").get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             int event_number = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
@@ -170,7 +170,7 @@ public class ChatActivity extends AppCompatActivity {
                                                     String address = addresses.get(0).getAddressLine(0);
 
                                                     BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
-                                                            address, count_bs,date, time, false, true, false, false);
+                                                            address, count_bs,date, time, false, true, false, false, "", ""); //тк нам не нужно переходить в чат здесь, то оставляем id-шники пустыми
                                                     bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
@@ -214,7 +214,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                                     if (!getSupportFragmentManager().isDestroyed()){
                                                         BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(Integer.toString(event_number), name,
-                                                                address, count_bs, date, time, true, false, false, false);
+                                                                address, count_bs, date, time, true, false, false, false, "", ""); //тк нам не нужно переходить в чат здесь, то оставляем id-шники пустыми
                                                         bottomSheetEventDialog.show(getSupportFragmentManager(), "Event info");
                                                     }
 
@@ -279,7 +279,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void readMessages(){
-        FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0))).child("messages").child("all_messages").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID")).child("messages").child("all_messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 messages.clear();
