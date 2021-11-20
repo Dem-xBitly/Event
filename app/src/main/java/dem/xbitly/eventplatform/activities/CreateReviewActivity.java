@@ -76,6 +76,7 @@ public class CreateReviewActivity extends AppCompatActivity {
                             ref.child(String.valueOf((count + 1))).child("like").setValue("");
                             ref.child(String.valueOf((count + 1))).child("userID").setValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                             ref.child(String.valueOf((count + 1))).child("eventID").setValue(getIntent().getSerializableExtra("eventID").toString());
+                            ref.child(String.valueOf((count+1))).child("comments").child("count").setValue("0");
 
                             int finalCount = count;
 

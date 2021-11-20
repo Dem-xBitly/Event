@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -25,8 +26,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +48,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dem.xbitly.eventplatform.R;
 import dem.xbitly.eventplatform.activities.InternetErrorConnectionActivity;
 import dem.xbitly.eventplatform.activities.MainActivity;
@@ -62,7 +67,7 @@ public class ProfileFragment extends Fragment {
 
     private String username;
 
-    private ImageView profile_image;
+    private CircleImageView profile_image;
 
     private boolean isUpdateRV = true;
 
@@ -74,6 +79,8 @@ public class ProfileFragment extends Fragment {
     private StorageReference storageReference;
 
     private Uri resultUri;
+
+    private boolean e = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -92,9 +99,11 @@ public class ProfileFragment extends Fragment {
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
+                SelectImage();
             }
         });
+
+        getProfileImage();
 
         ref.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,45 +156,157 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    private void chooseImage() {
+    private void getProfileImage(){
+        e = true;
+        FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile_image")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (e){
+                            String ref = snapshot.getValue().toString();
+                            Log.d("profile_image", ref);
+                            Glide.with(getContext()).load(ref).into(profile_image);
+                            e = false;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void SelectImage()
+    {
+
+        // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
     }
 
-    private void uploadImage() {
+    // Override onActivityResult method
+    @Override
+    public void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data)
+    {
 
-        if(resultUri != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        super.onActivityResult(requestCode,
+                resultCode,
+                data);
+
+        // checking request code and result code
+        // if request code is PICK_IMAGE_REQUEST and
+        // resultCode is RESULT_OK
+        // then set image in the image view
+        if (requestCode == PICK_IMAGE_REQUEST
+                && resultCode == RESULT_OK
+                && data != null
+                && data.getData() != null) {
+
+            // Get the Uri of data
+            filePath = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(
+                                getContext().getContentResolver(),
+                                filePath);
+                profile_image.setImageBitmap(bitmap);
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
+
+            uploadImage();
+        }
+    }
+
+    // method to upload profile image
+    private void uploadImage() {
+        if (filePath != null) {
+
+            // Code for showing progressDialog while uploading
+            ProgressDialog progressDialog
+                    = new ProgressDialog(getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
-            ref.putFile(resultUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            FancyToast.makeText(getContext(),"Image uploaded",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
-                        }
-                    })
+            // Defining the child of storageReference
+            String name = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            StorageReference ref = storageReference.child("images/" + name);
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(filePath)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+
+                                    FancyToast.makeText(getContext(),"Profile photo updated",FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
+
+                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile_image")
+                                                    .setValue(uri.toString());
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("profile_image", "ERROR: "+e.getMessage());
+                                        }
+                                    });
+
+
+                                }
+                            })
+
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+
+                            // Error, Image not uploaded
                             progressDialog.dismiss();
-                            FancyToast.makeText(getContext(),"Upload failed: " + e.getMessage(),FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                            FancyToast.makeText(getContext(),"Failed to update profile photo: " + e.getMessage(),FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                         }
                     })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int) progress + "%");
+                                }
+                            });
         }
     }
 
@@ -201,38 +322,6 @@ public class ProfileFragment extends Fragment {
             }
         } catch (Exception e) {
             Log.e("Connectivity Exception", e.getMessage());
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            filePath = data.getData();
-            CropImage.activity(filePath)
-                    .start(getActivity());
-            Log.d("photo_picking", "photo picked");
-        }
-        else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-            Log.d("photo_picking", "request code has given");
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                resultUri = result.getUri();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
-                    profile_image.setImageBitmap(bitmap);
-                    uploadImage();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Log.d("photo_picking", "Error in result code");
-                Exception error = result.getError();
-            }
         }
     }
 }

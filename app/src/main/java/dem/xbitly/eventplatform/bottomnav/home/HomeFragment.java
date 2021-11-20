@@ -47,6 +47,9 @@ public class HomeFragment extends Fragment {
 
     private SwipeRefreshLayout refresh;
 
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor edit;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,8 +79,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("App", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = prefs.edit();
+        prefs = getActivity().getSharedPreferences("App", Context.MODE_PRIVATE);
+        edit = prefs.edit();
         if (prefs.getBoolean("fromSplash", false))
             getDataFromSplash(ref, ref2, root);
         else
@@ -154,6 +157,7 @@ public class HomeFragment extends Fragment {
         String[] ss1 = getActivity().getIntent().getStringArrayExtra("ss1");
         TapeAdapter tapeAdapter = new TapeAdapter(ss, ss1, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), root.getContext(), getParentFragmentManager());
         rv.setAdapter(tapeAdapter);
+        edit.putBoolean("fromSplash", false);
     }
 
     public void checkNetwork(){

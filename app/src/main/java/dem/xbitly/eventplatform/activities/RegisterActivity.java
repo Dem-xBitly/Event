@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 userMap.put ("email", binding.emailEdit.getText().toString());
                                 userMap.put ("password", binding.passwordSignUp.getText().toString());
                                 userMap.put("gender", gender);
+                                userMap.put("profile_image", "");
 
                                 ref.child(mAuth.getCurrentUser().getUid()).setValue(userMap);
                                 ref.child(mAuth.getCurrentUser().getUid()).child("Chats").child("count").setValue(0);

@@ -55,46 +55,48 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void updateRecycler(DatabaseReference ref, DatabaseReference ref2){
-
+        isUpdateRV = true;
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (isUpdateRV) {
+                    ArrayList<String> s = new ArrayList<>();
+                    for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
+                        s.add((i + 1) + "");
+                    }
 
-                ArrayList<String> s = new ArrayList<>();
-                for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
-                    s.add((i+1)+"");
-                }
+                    ref2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                ref2.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ArrayList<String> s1 = new ArrayList<>();
 
-                        ArrayList<String> s1 = new ArrayList<>();
+                            for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
+                                s1.add((i + 1) + "");
+                            }
 
-                        for (int i = 0; i < Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString()); i++) {
-                            s1.add((i+1)+"");
+                            String[] ss = s.toArray(new String[0]);
+                            String[] ss1 = s1.toArray(new String[0]);
+
+                            SharedPreferences prefs = getSharedPreferences("App", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putBoolean("fromSplash", true);
+
+                            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                            intent.putExtra("ss", ss);
+                            intent.putExtra("ss1", ss1);
+                            Bundle b = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this).toBundle();
+                            startActivity(intent, b);
+
                         }
 
-                        String[] ss = s.toArray(new String[0]);
-                        String[] ss1 = s1.toArray(new String[0]);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        SharedPreferences prefs = getSharedPreferences("App", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putBoolean("fromSplash", true);
-
-                        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                        intent.putExtra("ss", ss);
-                        intent.putExtra("ss1", ss1);
-                        Bundle b = ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this).toBundle();
-                        startActivity(intent, b);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                        }
+                    });
+                    isUpdateRV = false;
+                }
             }
 
             @Override

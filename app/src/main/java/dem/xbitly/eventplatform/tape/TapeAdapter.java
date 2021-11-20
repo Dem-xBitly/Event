@@ -48,6 +48,9 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     boolean e = false;
 
+    boolean k = true;
+    boolean j = true;
+
     private int count;
 
     public TapeAdapter(String[] sR, String[] sI, String userID, Context context, FragmentManager fragmentManager) {
@@ -134,6 +137,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
         FirebaseDatabase dBase = FirebaseDatabase.getInstance();
 
+        k = true;
         ref = dBase.getReference("Invite").child(invitesID.get(position));
         ref2 = dBase.getReference("Invite");
         ref.addValueEventListener(new ValueEventListener() {
@@ -169,12 +173,12 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                         } catch (Exception e) {
                             ref2.child("go").setValue("");
                         }
-                        if(go.contains(userID)){
+                        if (go.contains(userID)) {
                             holder.getButtonGo().setText("Refuse");
                             holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg_success);
                         }
-                        if(ee != 0){
-                            holder.getCountUsers().setText((go.split(",").length-1)+"/"+ee);
+                        if (ee != 0) {
+                            holder.getCountUsers().setText((go.split(",").length - 1) + "/" + ee);
                         }
                         String finalGo = go;
                         int finalEe = ee;
@@ -182,15 +186,15 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                             ref2 = dBase.getReference("PublicEvents").child(Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString());
 
-                            if(!finalGo.contains(userID)) {
-                                if(finalGo.split(",").length <= finalEe || finalEe == 0) {
+                            if (!finalGo.contains(userID)) {
+                                if (finalGo.split(",").length <= finalEe || finalEe == 0) {
                                     holder.getButtonGo().setText("Refuse");
                                     holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg_success);
 
                                     ref2.child("go").setValue(finalGo + "," + userID);
                                     FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                             .child("UserPrivateEvents").child("count").get().addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             count = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
                                             count++;
                                             FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
@@ -210,27 +214,27 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                     });
 
                                     dBase.getReference("Invite").child(invitesID.get(position)).child("eventID").get().addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             String eventID12 = Objects.requireNonNull(task.getResult().getValue()).toString();
                                             FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID12).child("chatID").get().addOnCompleteListener(task13 -> {
-                                                if (task13.isSuccessful()){
+                                                if (task13.isSuccessful()) {
                                                     String chatID = Objects.requireNonNull(task13.getResult().getValue()).toString();
                                                     FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child("count").get().addOnCompleteListener(task12 -> {
-                                                        if (task12.isSuccessful()){
+                                                        if (task12.isSuccessful()) {
                                                             int members_count = Integer.parseInt(Objects.requireNonNull(task12.getResult().getValue()).toString());
                                                             members_count++;
                                                             FirebaseDatabase.getInstance().getReference("Chats").child(chatID).child("members").child(Integer.toString(members_count))
                                                                     .setValue(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
                                                             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
                                                                     .child("count").get().addOnCompleteListener(task121 -> {
-                                                                if (task121.isSuccessful()){
+                                                                if (task121.isSuccessful()) {
                                                                     count = Integer.parseInt(Objects.requireNonNull(task121.getResult().getValue()).toString());
                                                                     count++;
                                                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats")
                                                                             .child("count").setValue(count);
                                                                     FirebaseDatabase.getInstance().getReference("PublicEvents").child(eventID12).child("name").get()
                                                                             .addOnCompleteListener(task1211 -> {
-                                                                                if (task1211.isSuccessful()){
+                                                                                if (task1211.isSuccessful()) {
                                                                                     String name = Objects.requireNonNull(task1211.getResult().getValue()).toString();
                                                                                     HashMap<String, String> chatInfo = new HashMap<>();
                                                                                     chatInfo.put("chatID", chatID);
@@ -250,35 +254,35 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                     });
                                 } else {
                                     holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg);
-                                    FancyToast.makeText(context,"Max amount",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
+                                    FancyToast.makeText(context, "Max amount", FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                                 }
                             } else {
                                 holder.getButtonGo().setText("I will go");
                                 holder.getButtonGo().setBackgroundResource(R.drawable.go_btn_bg);
-                                ref2.child("go").setValue(finalGo.replace(","+userID, ""));
+                                ref2.child("go").setValue(finalGo.replace("," + userID, ""));
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("UserPrivateEvents").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("UserPrivateEvents").child("count").get().addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()){
-                                                int count234 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
-                                                count234--;
-                                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                                        .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
-                                            }
-                                        });
+                                    if (task.isSuccessful()) {
+                                        int count234 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                                        count234--;
+                                        FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                .child("UserPrivateEvents").child("count").setValue(Integer.toString(count234));
+                                    }
+                                });
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("Chats").child("chats").child(eventID).setValue(null);
                                 FirebaseDatabase.getInstance().getReference("Users").child(userID)
                                         .child("Chats").child("count").get().addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()){
-                                                int countt23 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
-                                                countt23--;
-                                                FirebaseDatabase.getInstance().getReference("Users").child(userID)
-                                                        .child("Chats").child("count").setValue(countt23);
-                                            }
-                                        });
+                                    if (task.isSuccessful()) {
+                                        int countt23 = Integer.parseInt(Objects.requireNonNull(task.getResult().getValue()).toString());
+                                        countt23--;
+                                        FirebaseDatabase.getInstance().getReference("Users").child(userID)
+                                                .child("Chats").child("count").setValue(countt23);
+                                    }
+                                });
                             }
                         });
                     }
@@ -314,7 +318,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                                 ref2.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(e) {
+                                        if (e) {
                                             String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
                                             boolean a = go.contains(userID);
                                             String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
@@ -387,140 +391,140 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                holder.getTimeAndData().setText(Objects.requireNonNull(snapshot2.child("date").getValue()).toString() + " " + Objects.requireNonNull(snapshot2.child("time").getValue()).toString());
-                String str = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
-                holder.getText().setText(str);
+                    holder.getTimeAndData().setText(Objects.requireNonNull(snapshot2.child("date").getValue()).toString() + " " + Objects.requireNonNull(snapshot2.child("time").getValue()).toString());
+                    String str = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
+                    holder.getText().setText(str);
 
-                String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
-                String eventID = Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString();
+                    String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
+                    String eventID = Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString();
 
-                ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot2.child("userID").getValue()).toString());
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot3) {
-                        holder.getUsername().setText(Objects.requireNonNull(snapshot3.child("name").getValue()).toString());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-                String[] split = like.split(",");
-                holder.getLike().setText("Like: "  + (split.length-1));
-
-                if(like.contains(userID)){
-                    holder.getButtonLike().setImageResource(R.drawable.ic_like_pressed);
-                } else {
-                    holder.getButtonLike().setImageResource(R.drawable.ic_like);
-                }
-
-                holder.getButtonLike().setOnClickListener(view -> {
-
-                    refLike = dBase.getReference("Reviews").child(reviewsID.get(position));
-
-                    if(like.contains(userID)){
-
-                        refLike.child("like").setValue(like.replace(","+userID, ""));
-
-                    } else {
-
-                        refLike.child("like").setValue(like+","+userID);
-
-                    }
-
-                });
-
-                holder.getButtonComment().setOnClickListener(view -> {
-                    Intent intent = new Intent(context, CommentActivity.class);
-                    if(str.length() > 9){
-                        intent.putExtra("name", str.substring(0, 7)+"...");
-                    } else {
-                        intent.putExtra("name", str);
-                    }
-                    intent.putExtra("id", reviewsID.get(position));
-                    context.startActivity(intent);
-                });
-
-                holder.getButtonShare().setOnClickListener(view -> {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_TEXT, str);
-                    Intent chosenIntent = Intent.createChooser(intent, "Send review");
-                    context.startActivity(chosenIntent);
-                });
-
-                holder.getButtonMenu().setOnClickListener(view -> {
-                    PopupMenu popup = new PopupMenu(context, view);
-                    if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
-                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
-                        popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
-                    } else {
-                        popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
-                    }
-                    popup.show();
-                    popup.setOnMenuItemClickListener(menuItem -> {
-                        switch (menuItem.getItemId()) {
-                            case 0: //About event
-                                ref2 = dBase.getReference("PublicEvents").child(eventID);
-                                ref2.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
-                                        boolean user_is_go = go.contains(userID);
-                                        String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-                                        int count = go.split(",").length-1;
-                                        String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
-                                        String count_bs;
-                                        String chatID = snapshot.child("chatID").getValue().toString();
-                                        if(maxCount.equals("0")){
-                                            count_bs = "Infinity";
-                                        } else {
-                                            count_bs = count + "/" + maxCount;
-                                        }
-                                        String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
-                                        String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
-                                        double latitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
-                                        double longitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
-
-                                        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                                        List<Address> addresses;
-
-                                        try {
-                                            addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
-
-                                            String address = addresses.get(0).getAddressLine(0);
-
-                                            if (user_is_go) {
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
-                                                        false, true, true, chatID, eventID); // отображаем bottomsheet, из которого можно также перейти в чат
-                                                bottomSheetEventDialog.show(fragmentManager, "Event info");
-                                            }else{
-                                                BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
-                                                        false, true, false, "", ""); // оставляем id-шники пустыми, тк пользователь еще не зареган на евент
-                                                bottomSheetEventDialog.show(fragmentManager, "Event info");
-                                            }
-
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-                                break;
-                            case 1: //Edit
-                                BottomSheetEditDialog bottomSheetEditDialog = new BottomSheetEditDialog(reviewsID.get(position), true);
-                                bottomSheetEditDialog.show(fragmentManager, "Edit review");
-                                break;
+                    ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot2.child("userID").getValue()).toString());
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot3) {
+                            holder.getUsername().setText(Objects.requireNonNull(snapshot3.child("name").getValue()).toString());
                         }
-                        return true;
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
                     });
-                });
+
+                    String[] split = like.split(",");
+                    holder.getLike().setText("Like: " + (split.length - 1));
+
+                    if (like.contains(userID)) {
+                        holder.getButtonLike().setImageResource(R.drawable.ic_like_pressed);
+                    } else {
+                        holder.getButtonLike().setImageResource(R.drawable.ic_like);
+                    }
+
+                    holder.getButtonLike().setOnClickListener(view -> {
+
+                        refLike = dBase.getReference("Reviews").child(reviewsID.get(position));
+
+                        if (like.contains(userID)) {
+
+                            refLike.child("like").setValue(like.replace("," + userID, ""));
+
+                        } else {
+
+                            refLike.child("like").setValue(like + "," + userID);
+
+                        }
+
+                    });
+
+                    holder.getButtonComment().setOnClickListener(view -> {
+                        Intent intent = new Intent(context, CommentActivity.class);
+                        if (str.length() > 9) {
+                            intent.putExtra("name", str.substring(0, 7) + "...");
+                        } else {
+                            intent.putExtra("name", str);
+                        }
+                        intent.putExtra("id", reviewsID.get(position));
+                        context.startActivity(intent);
+                    });
+
+                    holder.getButtonShare().setOnClickListener(view -> {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, str);
+                        Intent chosenIntent = Intent.createChooser(intent, "Send review");
+                        context.startActivity(chosenIntent);
+                    });
+
+                    holder.getButtonMenu().setOnClickListener(view -> {
+                        PopupMenu popup = new PopupMenu(context, view);
+                        if (Objects.requireNonNull(snapshot2.child("userID").getValue()).toString().equals(userID)) {
+                            popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                            popup.getMenu().add(Menu.NONE, 1, Menu.NONE, "Edit");
+                        } else {
+                            popup.getMenu().add(Menu.NONE, 0, Menu.NONE, "About event");
+                        }
+                        popup.show();
+                        popup.setOnMenuItemClickListener(menuItem -> {
+                            switch (menuItem.getItemId()) {
+                                case 0: //About event
+                                    ref2 = dBase.getReference("PublicEvents").child(eventID);
+                                    ref2.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String go = Objects.requireNonNull(snapshot.child("go").getValue()).toString();
+                                            boolean user_is_go = go.contains(userID);
+                                            String text = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+                                            int count = go.split(",").length - 1;
+                                            String maxCount = Objects.requireNonNull(snapshot.child("max_amount").getValue()).toString();
+                                            String count_bs;
+                                            String chatID = snapshot.child("chatID").getValue().toString();
+                                            if (maxCount.equals("0")) {
+                                                count_bs = "Infinity";
+                                            } else {
+                                                count_bs = count + "/" + maxCount;
+                                            }
+                                            String time = Objects.requireNonNull(snapshot.child("time").getValue()).toString();
+                                            String date = Objects.requireNonNull(snapshot.child("date").getValue()).toString();
+                                            double latitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("latitude").getValue()).toString());
+                                            double longitude_d = Double.parseDouble(Objects.requireNonNull(snapshot.child("adress").child("longitude").getValue()).toString());
+
+                                            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                                            List<Address> addresses;
+
+                                            try {
+                                                addresses = geocoder.getFromLocation(latitude_d, longitude_d, 1);
+
+                                                String address = addresses.get(0).getAddressLine(0);
+
+                                                if (user_is_go) {
+                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
+                                                            false, true, true, chatID, eventID); // отображаем bottomsheet, из которого можно также перейти в чат
+                                                    bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                                } else {
+                                                    BottomSheetEventDialog bottomSheetEventDialog = new BottomSheetEventDialog(eventID, text, address, count_bs, date, time, user_is_go,
+                                                            false, true, false, "", ""); // оставляем id-шники пустыми, тк пользователь еще не зареган на евент
+                                                    bottomSheetEventDialog.show(fragmentManager, "Event info");
+                                                }
+
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                    break;
+                                case 1: //Edit
+                                    BottomSheetEditDialog bottomSheetEditDialog = new BottomSheetEditDialog(reviewsID.get(position), true);
+                                    bottomSheetEditDialog.show(fragmentManager, "Edit review");
+                                    break;
+                            }
+                            return true;
+                        });
+                    });
             }
 
             @Override
