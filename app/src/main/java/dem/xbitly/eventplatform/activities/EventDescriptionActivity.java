@@ -45,7 +45,9 @@ public class EventDescriptionActivity extends AppCompatActivity {
 
     private ActivityEventDescriptionBinding binding;
     private DatabaseReference ref, ref2;
+
     boolean r = true;
+    boolean a = true;
 
     private int count;
 
@@ -99,48 +101,64 @@ public class EventDescriptionActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(r) {
-                            int count = 0;
+                            count = 0;
                             try {
                                 count = Integer.parseInt(Objects.requireNonNull(snapshot.child("count").getValue()).toString());
                             } catch (Exception e) {
                                 ref.child("count").setValue(0);
                             }
 
-                            ref.child("count").setValue((count + 1));
-                            ref.child(String.valueOf((count + 1))).child("date").setValue(formatForDate.format(date));
-                            ref.child(String.valueOf((count + 1))).child("time").setValue(formatForTime.format(date));
-                            ref.child(String.valueOf((count + 1))).child("text").setValue(binding.eventDesc.getText().toString());
-                            ref.child(String.valueOf((count + 1))).child("userID").setValue(getIntent().getSerializableExtra("userID").toString());
-                            ref.child(String.valueOf((count + 1))).child("eventID").setValue(getIntent().getSerializableExtra("eventID").toString());
-                            FirebaseDatabase.getInstance().getReference("PublicEvents").child(Integer.toString(getIntent().getIntExtra("eventID", 0)))
-                                    .child("go").setValue(" ," + getIntent().getSerializableExtra("userID").toString());
+                            a = true;
+                            FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profile_image")
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (a){
+                                                String profile_image_link = snapshot.getValue().toString();
 
-                            int finalCount = count;
+                                                ref.child("count").setValue((count + 1));
+                                                ref.child(String.valueOf((count + 1))).child("date").setValue(formatForDate.format(date));
+                                                ref.child(String.valueOf((count + 1))).child("time").setValue(formatForTime.format(date));
+                                                ref.child(String.valueOf((count + 1))).child("text").setValue(binding.eventDesc.getText().toString());
+                                                ref.child(String.valueOf((count + 1))).child("userID").setValue(getIntent().getSerializableExtra("userID").toString());
+                                                ref.child(String.valueOf((count + 1))).child("eventID").setValue(getIntent().getSerializableExtra("eventID").toString());
+                                                ref.child(String.valueOf((count+1))).child("image").setValue(profile_image_link);
+                                                FirebaseDatabase.getInstance().getReference("PublicEvents").child(Integer.toString(getIntent().getIntExtra("eventID", 0)))
+                                                        .child("go").setValue(" ," + getIntent().getSerializableExtra("userID").toString());
 
-                            ref2.addValueEventListener(new ValueEventListener() {
+                                                int finalCount = count;
 
-                                boolean e = true;
+                                                ref2.addValueEventListener(new ValueEventListener() {
 
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                    String str;
-                                    if(e) {
-                                        if (Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString().equals("")){
-                                            str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + (finalCount + 1);
-                                        } else {
-                                            str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + "," + (finalCount + 1);
+                                                    boolean e = true;
+
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                                        String str;
+                                                        if(e) {
+                                                            if (Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString().equals("")){
+                                                                str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + (finalCount + 1);
+                                                            } else {
+                                                                str = Objects.requireNonNull(snapshot2.child("myInvites").getValue()).toString() + "," + (finalCount + 1);
+                                                            }
+                                                            ref2.child("myInvites").setValue(str);
+                                                            e = false;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                            }
                                         }
-                                        ref2.child("myInvites").setValue(str);
-                                        e = false;
-                                    }
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-                            });
-
+                                        }
+                                    });
 
                             r = false;
                         }

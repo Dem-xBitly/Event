@@ -1,6 +1,7 @@
 package dem.xbitly.eventplatform.chat;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat, ChatAdapter.viewH
                     @Override
                     public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                         if (task.isSuccessful()){
+                            Log.d("kk", "chatID: " + task.getResult().getValue().toString());
                             Intent intent = new Intent (v.getContext(), ChatActivity.class);
                             intent.putExtra("chatID", task.getResult().getValue().toString()); //chat id in all Chats
                             intent.putExtra("chatID2", chat_id);

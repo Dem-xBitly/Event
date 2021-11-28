@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,6 +39,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersHolder> {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 System.out.println(id);
                 String name = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+                String image = snapshot.child("profile_image").getValue().toString();
+                Glide.with(holder.itemView.getContext()).load(image).into(holder.getProfilePhoto());
                 holder.getProfileName().setText(name);
             }
 

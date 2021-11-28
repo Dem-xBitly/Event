@@ -9,12 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dem.xbitly.eventplatform.R;
 
 public class TapeHolder extends RecyclerView.ViewHolder {
 
     private final TextView text, username, timeAndData, countUsers, like;
-    private final ImageView photo;
+    private final CircleImageView photo;
     private final ImageButton buttonLike, buttonShare, buttonComment, buttonMenu;
     private final Button buttonGo;
 

@@ -3,24 +3,33 @@ package dem.xbitly.eventplatform.tape;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.CursorIndexOutOfBoundsException;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.IOException;
@@ -50,6 +59,7 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
     boolean k = true;
     boolean j = true;
+    boolean h = true;
 
     private int count;
 
@@ -147,6 +157,28 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
                 holder.getTimeAndData().setText(Objects.requireNonNull(snapshot2.child("date").getValue()).toString() + " " + Objects.requireNonNull(snapshot2.child("time").getValue()).toString());
                 String str = Objects.requireNonNull(snapshot2.child("text").getValue()).toString();
                 holder.getText().setText(str);
+
+
+                e = true;
+                h = true;
+
+                dBase.getReference("Invite").child(reviewsID.get(position)).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot4) {
+                        if (h){
+                            String uri = snapshot4.child("image").getValue().toString();
+
+                            if (!uri.isEmpty())
+                                Glide.with(context).load(uri).into(holder.getPhoto());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Error in loading profile image", Toast.LENGTH_SHORT).show()
+                        ;
+                    }
+                });
 
                 ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot2.child("userID").getValue()).toString());
                 ref.addValueEventListener(new ValueEventListener() {
@@ -397,6 +429,24 @@ public class TapeAdapter extends RecyclerView.Adapter<TapeHolder> {
 
                     String like = Objects.requireNonNull(snapshot2.child("like").getValue()).toString();
                     String eventID = Objects.requireNonNull(snapshot2.child("eventID").getValue()).toString();
+
+                dBase.getReference("Reviews").child(reviewsID.get(position)).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot4) {
+                        if (h){
+                            String uri = snapshot4.child("image").getValue().toString();
+
+                            if (!uri.isEmpty())
+                                Glide.with(context).load(uri).into(holder.getPhoto());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Error in loading profile image", Toast.LENGTH_SHORT).show()
+                        ;
+                    }
+                });
 
                     ref = dBase.getReference("Users").child(Objects.requireNonNull(snapshot2.child("userID").getValue()).toString());
                     ref.addValueEventListener(new ValueEventListener() {

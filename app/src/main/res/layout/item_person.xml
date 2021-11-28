@@ -9,11 +9,12 @@
     android:layout_marginBottom="5dp"
     android:layout_marginTop="5dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
         android:layout_margin="10dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/profile_image_shape" />
 
     <TextView

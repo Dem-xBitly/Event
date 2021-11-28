@@ -234,10 +234,11 @@ public class ChatActivity extends AppCompatActivity {
                     });
                 } else {
 
-                    FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(getIntent().getIntExtra("chatID", 0)))
+                    FirebaseDatabase.getInstance().getReference("Chats").child(getIntent().getStringExtra("chatID"))
                             .child("event_number").get().addOnCompleteListener(task -> {
+                                Log.d("kk", task.getResult().getValue().toString());
                                 Intent intent = new Intent (ChatActivity.this, MembersActivity.class);
-                                intent.putExtra("eventID", Objects.requireNonNull(task.getResult().getValue()).toString());
+                                intent.putExtra("eventID", task.getResult().getValue().toString());
                                 intent.putExtra("private", privacy);
                                 startActivity(intent);
                             });
