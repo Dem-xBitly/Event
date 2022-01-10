@@ -152,6 +152,7 @@ public class UsersInvitationActivity extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("count").setValue(1);
             FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("messages").child("all_messages").child("1")
                     .child("from").setValue("App");
+            FirebaseDatabase.getInstance().getReference("Chats").child(Integer.toString(a)).child("invitationLink").setValue(getDynamicLink());
             FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
                     .child("userID").setValue("app");
             FirebaseDatabase.getInstance().getReference("Chats").child(String.valueOf(a)).child("messages").child("all_messages").child("1")
@@ -161,6 +162,7 @@ public class UsersInvitationActivity extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Chats").child("chats").child(Integer.toString(getIntent().getIntExtra("event_number", 0)))
                     .child("chatID").setValue(a);
             FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("chatID").setValue(Integer.toString(a));
+            FirebaseDatabase.getInstance().getReference("PrivateEvents").child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("invitationLink").setValue(getDynamicLink());
         }else{
             FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserPrivateEvents")
                     .child(Integer.toString(getIntent().getIntExtra("event_number", 0))).child("privacy").setValue("no");

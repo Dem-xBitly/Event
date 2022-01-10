@@ -3,17 +3,37 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable-v24/ic_baseline_more_vert.xml" value="0.3104166666666667" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.36822916666666666" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/bottom_navigation_selector.xml" value="0.3104166666666667" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/chat_info_content_shape.xml" value="0.2078125" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/chat_info_header_shape.xml" value="0.3723958333333333" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.29739583333333336" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_arrow_back_black_25.xml" value="0.29739583333333336" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.35260416666666666" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_more_vert2.xml" value="0.3104166666666667" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_navigate_next_24.xml" value="0.3104166666666667" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_baseline_person_add_24.xml" value="0.3723958333333333" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_chats.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_chats_bottom_sheet.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_event_info.xml" value="0.36822916666666666" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/ic_launcher_background.xml" value="0.36822916666666666" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/item_copy_invitation_link_shape.xml" value="0.3723958333333333" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/item_shape.xml" value="0.3723958333333333" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/items_settings_shape.xml" value="0.3723958333333333" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/new_event_btn_shape.xml" value="0.2078125" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/profile_image_shape.xml" value="0.3723958333333333" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/drawable/splash_screen.xml" value="0.36822916666666666" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_chat.xml" value="0.17391304347826086" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_chat_info.xml" value="0.33" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_chat_information.xml" value="0.3333333333333333" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_comment.xml" value="0.19972826086956522" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_internet_error_connection.xml" value="0.171225937183384" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/activity_user_profile.xml" value="0.2171875" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/bottom_sheet_edit_layout.xml" value="0.15172101449275363" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.33645833333333336" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/content_scrolling.xml" value="0.2302158273381295" />
+        <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/fragment_home.xml" value="0.17325227963525835" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/fragment_profile.xml" value="0.17617753623188406" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/item_chat.xml" value="0.1636271529888551" />
         <entry key="..\:/Programming_for_Android/Event/app/src/main/res/layout/item_comment.xml" value="0.19655797101449277" />

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#f8f8f8"
+    tools:context=".ChatInformationActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.EventPlatform.AppBarOverlay">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chat_info_header_shape"
+                android:paddingBottom="10dp">
+
+                <ImageButton
+                    android:id="@+id/back_from_chat_info_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_baseline_arrow_back_black_25" />
+
+                <TextView
+                    android:id="@+id/chat_info_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="Chat info"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/popup_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_more_vert_24" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/chat_image"
+                    android:layout_width="53dp"
+                    android:layout_height="53dp"
+                    android:background="@drawable/profile_image_shape"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/chat_info_txt"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp"
+                    />
+
+                <TextView
+                    android:id="@+id/chat_name_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:layout_marginTop="30dp"
+                    android:text="Olimpiad Programming Chat"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/chat_image"
+                    app:layout_constraintTop_toBottomOf="@id/chat_info_txt" />
+
+                <TextView
+                    android:id="@+id/chat_members_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="50 members"
+                    android:textColor="#97000000"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/chat_image"
+                    app:layout_constraintTop_toBottomOf="@id/chat_name_info"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include android:id="@+id/content"
+        layout="@layout/content_scrolling" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_members_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_person_add_24"
+        android:layout_marginRight="30dp"
+        android:tint="#fff"
+        android:backgroundTint="#606EED"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

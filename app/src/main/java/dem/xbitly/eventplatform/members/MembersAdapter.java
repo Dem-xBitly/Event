@@ -34,6 +34,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MembersHolder holder, int position) {
+//        holder.getProfileName().setText(id[position+1]);
         FirebaseDatabase.getInstance().getReference("Users").child(id[position+1]).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

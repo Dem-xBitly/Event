@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.PopupMenu;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import dem.xbitly.eventplatform.ChatInformationActivity;
 import dem.xbitly.eventplatform.bottomsheet.BottomSheetEventDialog;
 import dem.xbitly.eventplatform.Message.Message;
 import dem.xbitly.eventplatform.Message.MessageAdapter;
@@ -57,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Message> options;
 
     private boolean privacy;
+    private boolean e = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,32 @@ public class ChatActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     binding.nameTxt.setText(task.getResult().getValue().toString());
                 }
+            }
+        });
+
+        binding.nameTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                e = true;
+                FirebaseDatabase.getInstance().getReference().child("Chats").child(getIntent().getStringExtra("chatID")).child("event_number")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (e){
+                                    int eventId = Integer.parseInt(snapshot.getValue().toString());
+                                    Intent intent = new Intent(ChatActivity.this, ChatInformationActivity.class);
+                                    intent.putExtra("chatID", Integer.parseInt(getIntent().getStringExtra("chatID")));
+                                    intent.putExtra("eventID", eventId);
+                                    startActivity(intent);
+                                    e = false;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
             }
         });
 
