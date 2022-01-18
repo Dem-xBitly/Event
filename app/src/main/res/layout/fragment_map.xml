@@ -7,36 +7,6 @@
     tools:context=".bottomnav.map.MapFragment"
     android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/search_map_fragment_shape"
-        >
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_events"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/events_recView"
-            app:layout_constraintTop_toBottomOf="@id/search_events"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -75,17 +45,5 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/find_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="13dp"
-        android:backgroundTint="@color/blue"
-        android:src="@drawable/ic_icons8_search"
-        app:layout_constraintBottom_toTopOf="@id/create_event_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:borderWidth="0dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

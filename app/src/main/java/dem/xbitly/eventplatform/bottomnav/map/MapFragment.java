@@ -75,8 +75,6 @@ public class MapFragment extends Fragment implements LocationListener {
     private boolean e=true;
     private boolean a=true;
 
-    private FloatingActionButton find_btn;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +93,6 @@ public class MapFragment extends Fragment implements LocationListener {
         }
 
         create_event = root.findViewById(R.id.create_event_btn);
-        find_btn=root.findViewById(R.id.find_btn);
         create_event.setOnClickListener(new View.OnClickListener() { //кнопка создания мероприятия
             @Override
             public void onClick(View v) {
@@ -131,13 +128,6 @@ public class MapFragment extends Fragment implements LocationListener {
                         startActivity(new Intent(getContext(), PrivateEventActivity.class));
                     }
                 });
-            }
-        });
-
-        find_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
