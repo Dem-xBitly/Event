@@ -83,7 +83,7 @@ public class ChatInformationActivity extends AppCompatActivity {
         eventId = getIntent().getIntExtra("eventID", -1);
         chatId  = getIntent().getIntExtra("chatID", -1);
 
-        binding.addMembersBtn.setVisibility(View.GONE); //по умолчанию кнопка получения ссылки-инвайта недоступна
+        binding.addMembersBtn.setVisibility(View.GONE); // по умолчанию кнопка получения ссылки-инвайта недоступна
 
         int chatid = getIntent().getIntExtra("chatID", -1); //отлавливаем ошибку, если возник сбой при смене активностей
         if (chatid==-1)
