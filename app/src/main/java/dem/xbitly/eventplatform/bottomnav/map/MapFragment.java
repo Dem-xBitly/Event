@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,6 +75,8 @@ public class MapFragment extends Fragment implements LocationListener {
     private boolean e=true;
     private boolean a=true;
 
+    private FloatingActionButton find_btn;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class MapFragment extends Fragment implements LocationListener {
         }
 
         create_event = root.findViewById(R.id.create_event_btn);
+        find_btn=root.findViewById(R.id.find_btn);
         create_event.setOnClickListener(new View.OnClickListener() { //кнопка создания мероприятия
             @Override
             public void onClick(View v) {
@@ -130,7 +134,12 @@ public class MapFragment extends Fragment implements LocationListener {
             }
         });
 
+        find_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
         return root;
     }
